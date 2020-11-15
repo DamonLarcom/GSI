@@ -1,18 +1,19 @@
+//@ts-check
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 
 import config from "./Configuration"
+import {FRONTEND_URL, BACKEND_URL} from "./keys";
 
 const app = express();
-const port = 8080; // default port to listen
 
-
-app.use(cors({credentials: true, origin: 'http://localhost:8081'}));
+app.use(cors({credentials: true, origin: FRONTEND_URL}));
 app.use(bodyParser.json({limit: '1gb'}));
 
-const con = new config(app);
+new config(app);
+const url = new URL(BACKEND_URL);
 
-app.listen(port, () => {
-    console.log(`server started at http://localhost:${port}`);
+app.listen(url.port, () => {
+    console.log(`Server started at ${url}`);
 });
