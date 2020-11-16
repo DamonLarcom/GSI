@@ -1,31 +1,31 @@
 import React from "react";
-import { HashRouter as Router, Switch, Route, Link } from "react-router-dom";
-import { Home } from "./Home";
-import "../styles/globals.css";
+import {Home} from "./Home"
+import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
+
+import "../styles/globals.css"
 
 export default class App extends React.Component {
     constructor() {
         super();
     }
+
     ping() {
-        console.log("ping")
+        console.log('Hello')
     }
+    
     render() {
         return (
-            <div>
-                <Router>
-                    <div className="wrapper">
-
-                    </div>
+            <Router>
+                <div>
                     <nav>
                         <Link to="/home">Home</Link>
                     </nav>
-                    <Switch>
-                        <Route path="/home"><Home title="Test" user={{ name: "Something", password: "password" }} onTest={this.ping} /></Route>
-                        <Route exact path="/"><Home title="Test" user={{ name: "Something", password: "password" }} onTest={this.ping} /></Route>
-                    </Switch>
-                </Router>
-            </div>
+                  <Switch>
+                      <Route exact path="/"><Home title="Something" user={{name: "Something", password: "Something2"}} onTest={this.ping}/></Route>
+                      <Route path="/home"><Home title="Something" user={{name: "Something", password: "Something2"}} onTest={this.ping}/></Route>
+                  </Switch>
+                </div>
+            </Router>
         );
     }
 }
