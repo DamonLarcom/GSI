@@ -1,9 +1,9 @@
 //@ts-check
-import { MONGOURL } from "./keys";
+// import { MONGOURL } from "./keys";
 import { Routes } from "./Routes";
 
 export default class Configuration {
-    dbURL = MONGOURL;
+    // dbURL = MONGOURL;
     /**@type {import("express").Application} */
     app;
     /**
@@ -12,7 +12,7 @@ export default class Configuration {
     constructor(instance) {
         this.app = instance;
         this.configureRoutes(Routes);
-    }
+    }   
 
     /**
      * @param {any} obj
