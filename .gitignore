@@ -348,3 +348,33 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+*/node_modules
+frontend/.pnp
+frontend/.pnp.js
+
+# testing
+frontend/coverage
+
+frontend/out/
+
+# production
+frontend/build
+backend/dist
+shared/lib
+*/**/.env
+# misc
+frontend/.DS_Store
+frontend/*.pem
+t.local
+frontend/.env.production.local
+
+# vercel
+frontend/.vercel
+*/**/package-lock.json
+*/**/*.tgz
+*/**/.env
+backend/.env
+frontend/dist
