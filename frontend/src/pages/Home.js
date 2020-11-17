@@ -5,9 +5,7 @@ export const Home = (props) => {
 
     return(
         <div>
-            {true ? <p>This is </p> : <p>Not Here</p>}
-            <p>Hello Home{props.title}{fullUser}</p>
-            <button onClick={() => {props.onTest()}}>Test</button>
+            
         </div>
     );
 }
