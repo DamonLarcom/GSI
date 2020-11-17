@@ -1,7 +1,7 @@
 import React from "react";
 
-export const PostForm = (props) => {
-
+export default class PostForm extends React.Component {
+  render() {
     return(
         <div>
             {true ?
@@ -22,4 +22,5 @@ export const PostForm = (props) => {
             </div>}
         </div>
     );
+  }
 }
