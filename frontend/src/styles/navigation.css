@@ -1,0 +1,14 @@
+.navigation {
+    padding: 0.675em;
+    background-color: var(--primary);
+    color: var(--gray-dark);
+}
+
+.navigation .nav-link:hover {
+    color: var(--light);
+}
+
+.navigation .nav-link.active.active {
+    color: var(--light);
+    background-color: rgba(0, 0, 0, 0.2);
+}
