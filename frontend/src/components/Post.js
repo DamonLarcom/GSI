@@ -1,6 +1,10 @@
+//@ts-check
 import React from "react"
 import { Card } from "react-bootstrap"
 
+/**
+ * @param {{ username: String; text: String; userId: import("bson-objectid") }} props
+ */
 const Post = props => {
     return (
         <Card style={{ width: '18rem' }}>
