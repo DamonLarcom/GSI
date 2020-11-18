@@ -24,7 +24,7 @@ module.exports = () => {
 		// Deletes a post with the matching PostID in the path
 	});
 
-	postRouter.route("/editPost")
+	postRouter.route("/editPost/:postId")
 	.get((req, res) => {
 		res.render('editPostPage', {});
 	});

@@ -2,28 +2,28 @@ const express = require('express');
 const userRouter = express.Router();
 
 module.exports = () => {
-	
+
 	userRouter.route("/")
 	.get((req, res) => {
-		res.render('selfUserProfilePage', {});
+		res.render("selfUserProfilePage", {});
 	});
 
-	userRouter.route("/editUsername")
+	userRouter.route("/editUsername/:userId")
 	.get((req, res) => {
 		res.render('editUsernamePage', {});
 	});
 
-	userRouter.route("/editPassword")
+	userRouter.route("/editPassword/:userId")
 	.get((req, res) => {
 		res.render('editPasswordPage', {});
 	});
 
-	userRouter.route("/editProfile")
+	userRouter.route("/editProfile/:userId")
 	.get((req, res) => {
 		res.render('editProfileDetailsPage', {});
 	});
 
-	userRouter.route("/block")
+	userRouter.route("/block/:userId")
 	.get((req, res) => {
 		res.render('blockPage', {});
 	});
@@ -38,7 +38,7 @@ module.exports = () => {
 		// edit both the follower and the followee to reflect new following
 	});
 
-	userRouter.route("/follow")
+	userRouter.route("/following/:userId")
 	.get((req, res) => {
 		res.render('followPage', {});
 	});
