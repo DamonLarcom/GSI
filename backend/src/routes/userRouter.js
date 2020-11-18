@@ -4,7 +4,7 @@ const userRouter = express.Router();
 module.exports = () => {
 	userRouter.route("/")
 	.get((req, res) => {
-		res.send("user");
+		res.render('homePage', {});
 	});
 	userRouter.route("/blockToggle")
 	.put((req, res) => {
@@ -24,6 +24,7 @@ module.exports = () => {
 	userRouter.route("/logout")
 	.get((req, res) => {
 		// logs user out and redirects the page to the sign in page 
+		res.render('logInPage', {});
 	});
 	return userRouter;
 }
