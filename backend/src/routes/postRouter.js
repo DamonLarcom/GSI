@@ -5,9 +5,23 @@ module.exports = () => {
 
 	postRouter.route("/")
 	.get((req, res) => {
-		res.render('createPostPage', {});
+		Post.find((err, posts) => {
+			res.send(posts);
+		});
 	})
 	.post((req, res) => {
+		let post = new Post({
+			user: req.body.user,
+			text: req.body.text,
+			date: new Date.now(),
+			likeCount: 0,
+			comments: []
+		});
+		console.log(post);
+		post.save((err, post) => {
+			if (err) return console.error(err);
+			console.log("Post added");
+		});
 		// Creates a new post with the post as the body 
 		res.render('createPostPage', {});
 	});

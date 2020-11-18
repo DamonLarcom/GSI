@@ -17,7 +17,8 @@
         "connect-flash": "^0.1.1",
         "cors": "^2.8.5",
         "dotenv": "^8.2.0",
-        "express": "^4.17.1"
+        "express": "^4.17.1",
+        "mongoose": "^5.10.15"
     },
     "devDependencies": {
         "@babel/cli": "^7.12.1",
@@ -28,7 +29,8 @@
     },
     "nodemonConfig": {
         "env": {
-            "PORT": 4000
+            "PORT": 4000,
+            "URL": "mongodb+srv://Pro150:en8psyVqWO5E9ei6@pro150.vkybo.mongodb.net/Pro150?retryWrites=true&w=majority"
         }
     }
 }
