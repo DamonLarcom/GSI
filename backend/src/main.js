@@ -1,6 +1,10 @@
 //@ts-check
 const express = require("express");
 const bodyParser = require("body-parser");
+const passport = require("passport");
+const session = require('express-session');
+
+
 // import cors from "cors";
 
 // import config from "./Configuration"
@@ -14,6 +18,11 @@ const app = express();
 
 // new config(app);
 // const url = new URL(BACKEND_URL);
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(session({secret: 'gsi'}));
+require('./config/passport.js')(app);
 
 
 const homeRouter = require("./routes/homeRouter")();
