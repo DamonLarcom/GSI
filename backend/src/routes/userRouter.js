@@ -5,27 +5,22 @@ module.exports = () => {
 
 	userRouter.route("/")
 	.get((req, res) => {
-		res.render("selfUserProfilePage", {});
 	});
 
 	userRouter.route("/editUsername/:userId")
 	.get((req, res) => {
-		res.render('editUsernamePage', {});
 	});
 
 	userRouter.route("/editPassword/:userId")
 	.get((req, res) => {
-		res.render('editPasswordPage', {});
 	});
 
 	userRouter.route("/editProfile/:userId")
 	.get((req, res) => {
-		res.render('editProfileDetailsPage', {});
 	});
 
 	userRouter.route("/block/:userId")
 	.get((req, res) => {
-		res.render('blockPage', {});
 	});
 
 	userRouter.route("/blockToggle")
@@ -40,12 +35,10 @@ module.exports = () => {
 
 	userRouter.route("/following/:userId")
 	.get((req, res) => {
-		res.render('followPage', {});
 	});
 
 	userRouter.route("/:userId")
 	.get((req, res) => {
-		res.render('otherUserProfile', {});
 	})
 	.put((req, res) => {
 		// Body contains JSON object with a User object 
@@ -57,7 +50,6 @@ module.exports = () => {
 	userRouter.route("/logout")
 	.get((req, res) => {
 		// logs user out and redirects the page to the sign in page 
-		res.render('logInPage', {});
 	});
 
 	return userRouter;
