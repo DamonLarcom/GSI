@@ -1,5 +1,7 @@
 const express = require('express');
 const postRouter = express.Router();
+const User = require("../models/user");
+const Post = require("../models/post");
 
 module.exports = () => {
 

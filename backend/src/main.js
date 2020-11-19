@@ -2,6 +2,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const passport = require("passport");
+const session = require('express-session');
 
 // import config from "./Configuration"
 // import {FRONTEND_URL, BACKEND_URL} from "./keys";
@@ -14,6 +16,11 @@ app.use(cors({origin: 'http://localhost:8080'}));
 
 // new config(app);
 // const url = new URL(BACKEND_URL);
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(session({secret: 'gsi'}));
+require('./config/passport.js')(app);
 
 
 const homeRouter = require("./routes/homeRouter")();
