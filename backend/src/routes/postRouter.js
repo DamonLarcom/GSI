@@ -20,8 +20,10 @@ module.exports = () => {
 		post.save((err, post) => {
 			if (err) return console.error(err);
 			console.log("Post added");
+			res.redirect(`/post/${post.id}`)
 		});
 		// Creates a new post with the post as the body 
+		
 	});
 	postRouter.route("/:postId")
 	.patch((req, res) => {
