@@ -10,8 +10,8 @@ mongoose.connect(process.env.URL, {
 
 const mongoDb = mongoose.connection;
 mongoDb.on("error", console.error.bind(console, "connection error"));
-
-let userSchema = mongoose.Schema({
+mongoDb.on("open", () => { console.log("Connected to Mongo") })
+const userSchema = mongoose.Schema({
 	username: String,
 	password: String,
 	profile: {
@@ -29,7 +29,7 @@ let userSchema = mongoose.Schema({
 	authoredPosts: [String]
 });
 
-let postSchema = mongoose.Schema({
+const postSchema = mongoose.Schema({
 	user: String,
 	text: String,
 	date: Date,

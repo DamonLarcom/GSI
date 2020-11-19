@@ -2,22 +2,32 @@
 import React from "react";
 import Post from "../components/Post";
 import ObjectId from "bson-objectid"
+import axios from "axios";
 
-/**
- * @param {{ user: { name: string; password: string; }; title: React.ReactNode; onTest: () => void; }} props
- */
+export default class Home extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            posts: []
+        }
+        this.retrivePosts();
+    }
 
-const Home = (props) => {
-    const fullUser = props.user.name + ":" + props.user.password;
+    async retrivePosts() {
+        let data = await (await axios.get(`${process.env.BACKEND_URL}/post`)).data;
+        console.log(data);
+        this.setState({
+            posts: data
+        })
+    }
 
-    return(
-        <div>
-            {true ? <p>This is </p> : <p>Not Here</p>}
-            <p>Hello Home{props.title}{fullUser}</p>
-            <button onClick={() => {props.onTest()}}>Test</button>
-            <Post text="Something" username="Carter" userId={new ObjectId()}/>
-        </div>
-    );
+    render() {
+        return(
+            <div className="home posts-wrapper">
+                {this.state.posts.map(post => {
+                    return(<Post text={post.text} username={post.user} userId={post._id} key={post._id}/>);
+                })}
+            </div>
+        );
+    }
 }
-
-export default Home;

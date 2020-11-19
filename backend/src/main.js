@@ -1,14 +1,14 @@
 //@ts-check
 const express = require("express");
 const bodyParser = require("body-parser");
-// import cors from "cors";
+const cors = require("cors");
 
 // import config from "./Configuration"
 // import {FRONTEND_URL, BACKEND_URL} from "./keys";
 
 const app = express();
 
-// app.use(cors({credentials: true, origin: FRONTEND_URL}));
+app.use(cors({origin: 'http://localhost:8080'}));
 // app.use(bodyParser.urlencoded({extended: false}));
 
 
