@@ -13,13 +13,16 @@
     "license": "ISC",
     "dependencies": {
         "@babel/plugin-transform-runtime": "^7.12.1",
+        "bcryptjs": "^2.4.3",
         "body-parser": "^1.19.0",
         "connect-flash": "^0.1.1",
         "cors": "^2.8.5",
         "dotenv": "^8.2.0",
         "express": "^4.17.1",
         "mongoose": "^5.10.15",
-        "passport": "^0.4.1"
+        "passport": "^0.4.1",
+        "passport-local": "^1.0.0",
+        "passport-local-mongoose": "^6.0.1"
     },
     "devDependencies": {
         "@babel/cli": "^7.12.1",

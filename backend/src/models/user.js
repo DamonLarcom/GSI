@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
+const passportMongoose = require('passport-local-mongoose');
+
 
 mongoose.connect(process.env.URL, {
 	useUnifiedTopology: true,
@@ -26,5 +28,7 @@ let userSchema = mongoose.Schema({
 	likedPosts: [String],
 	authoredPosts: [String]
 });
+
+userSchema.plugin(passportMongoose);
 
 module.exports = User = mongoose.model("users", userSchema);
