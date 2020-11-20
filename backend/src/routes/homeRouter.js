@@ -65,7 +65,7 @@ module.exports = () => {
 					if (err) {
 						console.log(err);
 					}
-					passport.authenticate("local")(req, res, function () {
+					passport.authenticate("local")(function () {
 						passportMongoose.serializeUser(User.serializeUser());
 						res.redirect("/secret");
 					});
@@ -77,7 +77,7 @@ module.exports = () => {
 		.get((req, res) => {
 			passport.authenticate("local"), {
 				successRedirect: "homePage",
-				failureRedirect: "/login"
+				failureRedirect: "loginPage"
 			}, function (req, res) {
 				passportMongoose.serializeUser(User.serializeUser());
 			};
