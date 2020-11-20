@@ -29,3 +29,14 @@ a {
     border-color: rgb(255, 0, 0);
     border-radius: 2px;
 }
+
+.home.posts-wrapper {
+    display: grid;
+    gap: 1rem;
+    padding: 5%;
+}
+
+.home.posts-wrapper > .card {
+    width: 100%;
+    margin: 0 auto;
+}

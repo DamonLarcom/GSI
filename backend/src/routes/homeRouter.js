@@ -3,6 +3,8 @@ const homeRouter = express.Router();
 const passportMongoose = require('passport-local-mongoose');
 const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
+const User = require("../models/user");
+const Post = require("../models/post");
 mongoose.Promise = global.Promise;
 
 mongoose.connect(process.env.URL, {
@@ -47,11 +49,10 @@ let postSchema = mongoose.Schema({
 });
 
 userSchema.plugin(passportMongoose);
-User = mongoose.model("users", userSchema);
-Post = mongoose.model("posts", postSchema);
 passportMongoose.use(User.createStrategy());
 
 module.exports = () => {
+
 	homeRouter.route("/")
 		.get((req, res) => {
 			res.render('homePage', {});
