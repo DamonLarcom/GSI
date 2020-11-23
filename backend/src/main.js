@@ -32,6 +32,8 @@ app.use('/', homeRouter);
 app.use('/user', userRouter);
 app.use('/search', searchRouter);
 app.use('/post', postRouter);
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.listen(process.env.PORT, () => {
     console.log(`Server started on port ${process.env.PORT}`);
