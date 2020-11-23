@@ -22,12 +22,8 @@
         "express-session": "^1.17.1",
         "mongoose": "^5.10.15",
         "passport": "^0.4.1",
-<<<<<<< HEAD
-        "passport-local": "^1.0.0"
-=======
         "passport-local": "^1.0.0",
         "passport-local-mongoose": "^6.0.1"
->>>>>>> 3cde272db3206d8e724e8b2760f899baa69c5570
     },
     "devDependencies": {
         "@babel/cli": "^7.12.1",
