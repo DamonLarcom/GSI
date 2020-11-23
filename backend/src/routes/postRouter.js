@@ -15,7 +15,7 @@ module.exports = () => {
 		let post = new Post({
 			user: req.body.user,
 			text: req.body.text,
-			date: new Date.now(),
+			date: Date.now(),
 			likeCount: 0,
 			comments: []
 		});
