@@ -1,4 +1,3 @@
-//@ts-check
 import React from "react";
 import Post from "../components/Post";
 import ObjectId from "bson-objectid"

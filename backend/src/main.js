@@ -11,8 +11,6 @@ const session = require('express-session');
 const app = express();
 
 app.use(cors({origin: 'http://localhost:8080'}));
-// app.use(bodyParser.urlencoded({extended: false}));
-
 
 // new config(app);
 // const url = new URL(BACKEND_URL);

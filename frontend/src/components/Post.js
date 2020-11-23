@@ -11,8 +11,7 @@ const Post = props => {
     const history = useHistory();
     const deletePost = async () => {
         console.log("Delete Post");
-        const deleteStatus = (await axios.delete(`http://localhost:4000/post/${props.userId}`)).status
-        console.log(deleteStatus);
+        const deleteStatus = (await axios.delete(`${process.env.BACKEND_URL}/post/${props.userId}`)).status
         if(deleteStatus === 200) {
             // Probably not the best way to do it, but for what we're doing it should be fine
             location.reload();
