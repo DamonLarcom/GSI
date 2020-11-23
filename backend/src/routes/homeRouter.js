@@ -28,7 +28,6 @@ module.exports = () => {
 					});
 				});
 			// create user object from params, save in user collection, log the user in, and direct them to home page
-			res.render('signUpPage', {});
 		});
 	homeRouter.route("/login")
 		.get((req, res) => {
@@ -39,7 +38,6 @@ module.exports = () => {
 				passport.serializeUser(User.serializeUser());
 			};
 			// get user details from form and log them in, direct them to home page 
-			res.render('logInPage', {});
 		});
 
 	return homeRouter;
