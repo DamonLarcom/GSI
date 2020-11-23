@@ -5,6 +5,7 @@ import Navigation from "../components/Navigation";
 import Home from "./Home";
 
 import "../styles/globals.css"
+import Search from "./Search";
 
 export default class App extends React.Component {
     constructor() {
@@ -19,6 +20,7 @@ export default class App extends React.Component {
                   <Switch>
                       <Route exact path="/"><Home/></Route>
                       <Route path="/home"><Home/></Route>
+                      <Route path="/search"><Search/></Route>
                   </Switch>
                 </div>
             </Router>
