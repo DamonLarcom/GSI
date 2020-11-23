@@ -1,13 +1,22 @@
 //@ts-check
+import axios from "axios"
 import React from "react"
 import { Button, Card } from "react-bootstrap"
+import { useHistory } from "react-router-dom"
 
 /**
  * @param {{ username: String; text: String; userId: any }} props
  */
 const Post = props => {
-    const deletePost = () => {
-
+    const history = useHistory();
+    const deletePost = async () => {
+        console.log("Delete Post");
+        const deleteStatus = (await axios.delete(`http://localhost:4000/post/${props.userId}`)).status
+        console.log(deleteStatus);
+        if(deleteStatus === 200) {
+            // Probably not the best way to do it, but for what we're doing it should be fine
+            location.reload();
+        }
     }
 
     return (

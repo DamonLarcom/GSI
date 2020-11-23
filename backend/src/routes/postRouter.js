@@ -36,7 +36,14 @@ module.exports = () => {
 		// Edits a post with the post as the body
 	})
 	.delete((req, res) => {
-		// Deletes a post with the matching PostID in the path
+        // Deletes a post with the matching PostID in the path
+        Post.deleteOne({_id: req.params.postId}, err=>{
+            if(err) {
+                res.sendStatus(500);
+            } else {
+                res.sendStatus(200);
+            }
+        })
 	});
 
 	postRouter.route("/editPost/:postId")
