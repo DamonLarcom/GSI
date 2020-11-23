@@ -53,10 +53,5 @@
   },
   "browser": {
     "fs": false
-  },
-  "nodemonConfig": {
-    "env": {
-        "BACKEND_URL" : "https://localhost:4000"
-    }
-}
+  }
 }
