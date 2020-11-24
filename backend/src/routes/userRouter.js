@@ -57,6 +57,15 @@ module.exports = () => {
 	})
 	.delete((req, res) => {
 		// Deletes the user from the database with the path param id and redirects to log in page.
+		let userToDelete = user.findById(req.params.userId);
+		let userName = userToDelete.username;
+		user.findByIdAndDelete(
+			{ '_id': req.params.userId },
+			(err, user) => {
+				if (err) return console.error(err);
+				console.log(userName + ' deleted');
+			});
+		res.redirect('/login');
 	});
 
 	userRouter.route("/logout")
