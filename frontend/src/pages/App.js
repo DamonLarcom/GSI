@@ -6,6 +6,7 @@ import Home from "./Home";
 
 import "../styles/globals.css"
 import Search from "./Search";
+import PostForm from "./PostForm";
 
 export default class App extends React.Component {
     constructor() {
@@ -21,6 +22,7 @@ export default class App extends React.Component {
                       <Route exact path="/"><Home/></Route>
                       <Route path="/home"><Home/></Route>
                       <Route path="/search"><Search/></Route>
+                      <Route path="/post"><PostForm/></Route>
                   </Switch>
                 </div>
             </Router>

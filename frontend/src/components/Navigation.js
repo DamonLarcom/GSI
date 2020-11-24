@@ -15,6 +15,9 @@ const Navigation = (props) => {
             <Nav.Item>
                 <Nav.Link as={NavLink} to="/login">Login</Nav.Link>
             </Nav.Item>
+            <Nav.Item>
+                <Nav.Link as={NavLink} to="/post">Create Post</Nav.Link>
+            </Nav.Item>
         </Nav>
     );
 }
