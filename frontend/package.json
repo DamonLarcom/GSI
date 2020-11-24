@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "npm run build",
-    "start:dev": "webpack-dev-server --config webpack.development.js --open",
+    "dev": "webpack-dev-server --config webpack.development.js --open",
     "build": "webpack --config webpack.production.js"
   },
   "dependencies": {
