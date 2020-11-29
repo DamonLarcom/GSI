@@ -5,10 +5,10 @@ const { merge } = require("webpack-merge");
 module.exports = merge(Common, {
     mode: "development",
     output: {
-        filename: "main.js",
+        filename: "main.js"
     },
     devServer: {
         port: 8080,
-        historyApiFallback: true,
+        historyApiFallback: true
     }
 })

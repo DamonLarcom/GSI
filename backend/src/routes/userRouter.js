@@ -51,8 +51,23 @@ module.exports = () => {
 
 	userRouter.route("/:userId")
 	.get((req, res) => {
+        user.findById(req.params.userId, (err, usr) => {
+            if(err) {
+                res.sendStatus(500);
+            } else {
+                res.send(usr);
+            }
+        });
 	})
 	.put((req, res) => {
+        const usr = req.body.user;
+        user.updateOne({_id: req.params.userId}, {profile: {...usr}}, {upsert: true}, (err, doc) => {
+            if(err) {
+                res.sendStatus(500);
+            } else {
+                res.sendStatus(200);
+            }
+        });
 		// Body contains JSON object with a User object 
 	})
 	.delete((req, res) => {
