@@ -23,7 +23,7 @@ export default class Profile extends React.Component {
     submitEdit(e) {
         e.preventDefault();
         axios.put(`${process.env.BACKEND_URL}/user/${this.props.match.params.userId}`, {user: this.state}).then(res => {
-            window.location = "/#/"
+            window.location = `/#/profile/${this.props.match.params.userId}`
         });
     }
 

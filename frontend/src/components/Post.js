@@ -5,13 +5,13 @@ import { Button, Card } from "react-bootstrap"
 import { useHistory } from "react-router-dom"
 
 /**
- * @param {{ username: String; text: String; userId: any }} props
+ * @param {{ username: String; text: String; postId: any }} props
  */
 const Post = props => {
     const history = useHistory();
     const deletePost = async () => {
         console.log("Delete Post");
-        const deleteStatus = (await axios.delete(`${process.env.BACKEND_URL}/post/${props.userId}`)).status
+        const deleteStatus = (await axios.delete(`${process.env.BACKEND_URL}/post/${props.postId}`)).status
         if(deleteStatus === 200) {
             // Probably not the best way to do it, but for what we're doing it should be fine
             location.reload();

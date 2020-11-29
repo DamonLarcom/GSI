@@ -7,7 +7,8 @@ import Home from "./Home";
 import "../styles/globals.css"
 import Search from "./Search";
 import PostForm from "./PostForm";
-import Profile from "./ProfileForm";
+import Profile from "./Profile";
+import ProfileForm from "./ProfileForm";
 
 export default class App extends React.Component {
     constructor(props) {
@@ -20,7 +21,8 @@ export default class App extends React.Component {
                 <div>
                   <Navigation/>
                   <Switch>
-                      <Route path="/profile/edit/:userId" component={Profile}/>
+                      <Route path="/profile/:userId/edit" component={ProfileForm}/>
+                      <Route path="/profile/:userId" component={Profile}/>
                       <Route exact path="/"><Home/></Route>
                       <Route path="/home"><Home/></Route>
                       <Route path="/search"><Search/></Route>

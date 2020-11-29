@@ -81,8 +81,8 @@ module.exports = () => {
 				console.log(userName + ' deleted');
 			});
 		res.redirect('/login');
-	});
-
+    });
+    
 	userRouter.route("/logout")
 	.get((req, res) => {
 		// logs user out and redirects the page to the sign in page 
