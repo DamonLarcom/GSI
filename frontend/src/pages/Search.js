@@ -9,9 +9,19 @@ export default class Search extends React.Component {
         }
     }
 
+
+
     render() {
         return(
             <div>
+                <input onChange={(event) => {
+                        document.getElementById("searchResults").innerText=event.target.value;
+                    }} 
+                    id="searchBar" placeholder="Search"
+                />
+                <br/>
+                <br/>
+                <p id="searchResults"/>
             </div>
         );
     }
