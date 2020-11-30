@@ -9,7 +9,7 @@ const reducer = (state = defaultState, action) => {
         case "STORE_USER":
             return({
                 ...state,
-                user: {...action.data.user}
+                user: {...action.data.User}
             });
     }
 }

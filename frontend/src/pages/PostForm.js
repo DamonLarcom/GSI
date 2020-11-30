@@ -22,7 +22,7 @@ class PostForm extends React.Component {
 
     createPost(e) {
         e.preventDefault();
-        axios.post(`${process.env.BACKEND_URL}/post`, {user: this.props.data.user, text: this.state.text})
+        axios.post(`${process.env.BACKEND_URL}/post`, {user: this.props.user, text: this.state.text})
         location.href="#/"
         return false;
     }
