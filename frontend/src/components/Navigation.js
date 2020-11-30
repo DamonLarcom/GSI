@@ -19,6 +19,9 @@ const Navigation = (props) => {
             <Nav.Item>
                 <Nav.Link as={NavLink} to="/post">Create Post</Nav.Link>
             </Nav.Item>
+            <Nav.Item>
+                <Nav.Link as={NavLink} to="/search">Search</Nav.Link>
+            </Nav.Item>
         </Nav>
     );
 }
