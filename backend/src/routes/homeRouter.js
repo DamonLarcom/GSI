@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/user");
 const Post = require("../models/post");
 const passport = require("passport");
+const { deleteOne } = require('../models/user');
 
 passport.use(User.createStrategy());
 
@@ -11,32 +12,45 @@ module.exports = () => {
 
 	homeRouter.route("/")
 		.get((req, res) => {
-			res.render('homePage', {});
+			res.send("hi");
 		});
 	homeRouter.route("/signup")
 		.post((req, res) => {
-			User.register(new User({
-				username: req.body.username
-			}),
-				req.body.password, function (err, user) {
-					if (err) {
-						console.log(err);
-					}
-					passport.authenticate("local")(function () {
-						passport.serializeUser(User.serializeUser());
-						res.redirect("/secret");
+			User.findOne({username: req.body.username}, (err, foundUser) => {
+				if(err) console.error(err);
+				if(foundUser) {
+					console.log("someone already has this username");
+				} else {
+					let newUser = new User({
+						username: req.body.username,
+						profile: {
+							profileImage: "",
+							bio: "",
+							name: "",
+							email: "",
+							phoneNum: ""
+						}
 					});
-				});
+					console.log("hi");
+					User.register(newUser, req.body.password, (err2, user) => {
+						if(err2) console.error(err2);
+						console.log(user);
+						console.log("hi2");
+						passport.authenticate("local")(req, res, () => {
+							console.log(req.user);
+						});
+					});
+				}
+			})
+			
 			// create user object from params, save in user collection, log the user in, and direct them to home page
 		});
 	homeRouter.route("/login")
-		.get((req, res) => {
-			passport.authenticate("local"), {
-				successRedirect: "homePage",
-				failureRedirect: "loginPage"
-			}, function (req, res) {
-				passport.serializeUser(User.serializeUser());
-			};
+		.post(passport.authenticate("local", {
+			successRedirect: "/",
+			failureRedirect: "/login"
+			}), (req, res) => {
+			
 			// get user details from form and log them in, direct them to home page 
 		});
 

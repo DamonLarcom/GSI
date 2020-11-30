@@ -11,17 +11,17 @@ module.exports = function localStrategy() {
 
             User.findOne({username}, (err, user) => {
                 if (err) {
-                    done(null, false);
+                    return done(null, false);
                 }
                 if (!user) {
                     debug('this username does not exist');
-                    done(null, false);
+                    return done(null, false);
                 }
                 else {
                     if(user.password === password) {
-                        done(null, user);
+                        return done(null, user);
                     } else {
-                        done(null, false);
+                        return done(null, false);
                     }
                 }
             })
