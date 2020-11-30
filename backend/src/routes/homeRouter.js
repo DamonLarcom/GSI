@@ -12,7 +12,7 @@ module.exports = () => {
 
 	homeRouter.route("/")
 		.get((req, res) => {
-			res.send("hi");
+			res.json(req.user);
 		});
 	homeRouter.route("/signup")
 		.post((req, res) => {
