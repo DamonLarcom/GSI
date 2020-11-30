@@ -77,7 +77,7 @@ module.exports = () => {
 		user.findByIdAndDelete(
 			{ '_id': req.params.userId },
 			(err, user) => {
-				if (err) return console.error(err);
+				if (err) res.sendStatus(500);
 				console.log(userName + ' deleted');
 			});
 		res.redirect('/login');
