@@ -2,8 +2,9 @@ import React from "react";
 import Post from "../components/Post";
 import ObjectId from "bson-objectid"
 import axios from "axios";
+import { connect } from "react-redux";
 
-export default class Home extends React.Component {
+class Home extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -24,9 +25,11 @@ export default class Home extends React.Component {
         return(
             <div className="home posts-wrapper">
                 {this.state.posts.map(post => {
-                    return(<Post text={post.text} username={post.user} userId={post._id} key={post._id}/>);
+                    return(<Post text={post.text} username={post.user} postId={post._id} key={post._id}/>);
                 })}
             </div>
         );
     }
 }
+
+export default connect((state) => ({...state}))(Home)

@@ -1,8 +1,9 @@
 import axios from "axios";
 import React from "react";
 import { Button, Card, Form } from "react-bootstrap";
+import { connect } from "react-redux";
 
-export default class PostForm extends React.Component {
+class PostForm extends React.Component {
 
     constructor(props) {
         super(props)
@@ -21,9 +22,8 @@ export default class PostForm extends React.Component {
 
     createPost(e) {
         e.preventDefault();
-        console.log("Hello", this.state);
-        axios.post(`${process.env.BACKEND_URL}/post`, {user: this.state.user, text: this.state.text})
-        location.href="/home"
+        axios.post(`${process.env.BACKEND_URL}/post`, {user: this.props.data.user, text: this.state.text})
+        location.href="#/"
         return false;
     }
 
@@ -66,3 +66,5 @@ export default class PostForm extends React.Component {
         );
     }
 }
+
+export default connect((state) => ({...state}))(PostForm)
