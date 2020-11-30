@@ -40,6 +40,7 @@ export default class Profile extends React.Component {
         try {
             const data = await axios.delete(`${process.env.BACKEND_URL}/user/${this.props.match.params.userId}`, {...this.state.input});
             this.setState({ show: false });
+            window.location = "/"
         } catch (error) {
             console.log("Delete error", error);
             this.setState({ show: true})

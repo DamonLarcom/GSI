@@ -5,6 +5,7 @@ import { NavLink } from "react-router-dom";
 import { Nav } from "react-bootstrap";
 import Login from "./Login";
 import "../styles/navigation.css"
+import SignUp from "./SignUp";
 
 const Navigation = (props) => {
     return(
@@ -16,6 +17,7 @@ const Navigation = (props) => {
                 <Nav.Link as={NavLink} to={`/profile/${props.user._id}`}>Profile</Nav.Link>
             </Nav.Item>: null}
             <Login/>
+            <SignUp/>
             <Nav.Item>
                 <Nav.Link as={NavLink} to="/post">Create Post</Nav.Link>
             </Nav.Item>
