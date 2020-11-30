@@ -31,6 +31,13 @@ module.exports = () => {
 
 	postRouter.route("/:postId")
 	.get((req, res) => {
+        Post.findById(req.params.postId, (err, doc) => {
+            if(err) {
+                res.sendStatus(500);
+            } else {
+                res.send(doc);
+            }
+        })
 	})
 	.patch((req, res) => {
 		// Edits a post with the post as the body

@@ -1,6 +1,6 @@
 import axios from "axios";
 import React from "react";
-import { Card, Form } from "react-bootstrap";
+import { Button, Card, Form } from "react-bootstrap";
 
 export default class PostForm extends React.Component {
 
@@ -16,7 +16,7 @@ export default class PostForm extends React.Component {
     }
 
     handleChange(e) {
-        this.setState({text: event.target.value})
+        this.setState({text: e.target.value})
     }
 
     createPost(e) {
@@ -42,7 +42,7 @@ export default class PostForm extends React.Component {
                                     <Form.Control as="textarea" placeholder="Share your thoughts..." value={this.state.text} onChange={this.handleChange}></Form.Control>
                                 </Form.Group>
                                 <Form.Group>
-                                    <Form.Control as="button" type="submit" onClick={this.createPost}>Create Post</Form.Control>
+                                    <Form.Control as={Button} variant="primary" type="submit" onClick={this.createPost}>Create Post</Form.Control>
                                 </Form.Group>
                             </Form>
                         </Card.Body>
