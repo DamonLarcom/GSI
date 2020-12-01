@@ -17,7 +17,7 @@ export default class Search extends React.Component {
                 <input onChange={(event) => {
                         document.getElementById("searchResults").innerText=event.target.value;
                     }} 
-                    id="searchBar" placeholder="Search"
+                    id="searchBar" placeholder="Search" name="searchText"
                 />
                 <br/>
                 <br/>

@@ -11,6 +11,7 @@ mongoDb.on("error", console.error.bind(console, "connection error"));
 
 let postSchema = mongoose.Schema({
 	user: String,
+	username: String,
 	text: String,
 	date: Date,
 	likeCount: Number,

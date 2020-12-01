@@ -1,5 +1,6 @@
 const express = require('express');
 const searchRouter = express.Router();
+const User = require("../models/user")
 
 module.exports = () => {
 	
@@ -10,6 +11,8 @@ module.exports = () => {
 	searchRouter.route("/user")
 	.get((req, res) => {
 		// get the search term and search the user collection for a partial match on usernames and re-render the page with results 
+		let searchText = req.body.searchText;
+		
 	});
 
 	searchRouter.route("/keyword")

@@ -13,7 +13,8 @@ module.exports = () => {
 	})
 	.post((req, res) => {
 		let post = new Post({
-			user: req.body.user,
+			user: req.user.id,
+			username: req.user.username,
 			text: req.body.text,
 			date: Date.now(),
 			likeCount: 0,
@@ -23,7 +24,8 @@ module.exports = () => {
 		post.save((err, post) => {
 			if (err) return console.error(err);
 			console.log("Post added");
-			res.redirect(`/post/${post.id}`)
+			res.json(post);
+			// res.redirect(`/post/${post.id}`)
 		});
 		// Creates a new post with the post as the body 
 		
