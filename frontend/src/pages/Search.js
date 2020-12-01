@@ -14,7 +14,7 @@ export default class Search extends React.Component {
     }
 
     handleSubmit(event) {
-        var username = this.state.value;
+        var searchParam = this.state.value;
         var usersList = []; //get the list from the backend
         this.setState({value: event.target.value, results: usersList});
         event.preventDefault();
@@ -23,7 +23,7 @@ export default class Search extends React.Component {
     render() {
         return(
             <form onSubmit={this.handleSubmit}>
-                <input type="text" value={this.state.value} onChange={this.handleChange}/>
+                <input type="text" onChange={this.handleChange}/>
                 <input type="submit" value="Search"/>
                 <br/>
                 <br/>
