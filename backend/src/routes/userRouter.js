@@ -1,38 +1,29 @@
 const express = require('express');
-const user = require('../models/user');
+const User = require('../models/user');
 const userRouter = express.Router();
 
 module.exports = () => {
 
-	userRouter.route("/")
-	.get((req, res) => {
-	});
-
-	userRouter.route("/editUsername/:userId")
-	.get((req, res) => {
-	});
-
-	userRouter.route("/editPassword/:userId")
-	.get((req, res) => {
-	});
-
-	userRouter.route("/editProfile/:userId")
-	.get((req, res) => {
-	});
-
-	userRouter.route("/block/:userId")
-	.get((req, res) => {
-	});
-
-	userRouter.route("/blockToggle")
+	userRouter.route("/blockToggle/:userToBlockId")
 	.put((req, res) => {
 		// Header contains UserID named Blocker and another UserID named Blockee
+		let userToBlock = User.findById(req.params.userToBlockId);
+		let currentUser = User.findByUsername(req.user.username);
+		currentUser.profile.blockedUsers[currentUser.profile.blockedUsers.length] = userToBlock.id;
+		userToBlock.profile.blockedBy[userToBlock.profile.blockedBy.length] = currentUser.id;
+		userToBlock.save((err, utb) => {
+            if (err) return console.error(err);
+            console.log(userToBlock.username + " followed.");
+		});
+		currentUser.save((err, cu) => {
+            if (err) return console.error(err);
+        });
 	});
 
 	userRouter.route("/followToggle/:userToFollowId")
 	.put((req, res) => {
-		let userToFollow = user.findById(req.params.userToFollowId);
-		let currentUser = user.findByUsername(req.user.username);
+		let userToFollow = User.findById(req.params.userToFollowId);
+		let currentUser = User.findByUsername(req.user.username);
 		currentUser.profile.followedUsers[currentUser.profile.followedUsers.length] = userToFollow.id;
 		userToFollow.profile.followedBy[userToFollow.profile.followedBy.length] = currentUser.id;
 		userToFollow.save((err, utf) => {
@@ -42,7 +33,6 @@ module.exports = () => {
 		currentUser.save((err, cu) => {
             if (err) return console.error(err);
         });
-		req.params.userToFollowId;
 	});
 
 	userRouter.route("/following/:userId")
@@ -51,7 +41,7 @@ module.exports = () => {
 
 	userRouter.route("/:userId")
 	.get((req, res) => {
-        user.findById(req.params.userId, (err, usr) => {
+        User.findById(req.params.userId, (err, usr) => {
             if(err) {
                 res.sendStatus(500);
             } else {
@@ -61,7 +51,7 @@ module.exports = () => {
 	})
 	.put((req, res) => {
         const usr = req.body.user;
-        user.updateOne({_id: req.params.userId}, {profile: {...usr}}, {upsert: true}, (err, doc) => {
+        User.updateOne({_id: req.params.userId}, {profile: {...usr}}, {upsert: true}, (err, doc) => {
             if(err) {
                 res.sendStatus(500);
             } else {
@@ -72,7 +62,7 @@ module.exports = () => {
 	})
 	.delete((req, res) => {
 		// Deletes the user from the database with the path param id and redirects to log in page.
-		let userToDelete = user.findById(req.params.userId);
+		let userToDelete = User.findById(req.params.userId);
 		let userName = userToDelete.username;
 		user.findByIdAndDelete(
 			{ '_id': req.params.userId },
