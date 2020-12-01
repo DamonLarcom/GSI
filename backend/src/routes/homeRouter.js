@@ -31,11 +31,9 @@ module.exports = () => {
 							phoneNum: ""
 						}
 					});
-					console.log("hi");
 					User.register(newUser, req.body.password, (err2, user) => {
 						if(err2) console.error(err2);
 						console.log(user);
-						console.log("hi2");
 						passport.authenticate("local")(req, res, () => {
 							console.log(req.user);
 							res.json(req.user);
