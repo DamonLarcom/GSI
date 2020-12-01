@@ -7,17 +7,19 @@ export default class Search extends React.Component {
         super(props)
         this.state = {value: '', results: []};
         this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleChange(event) {
-        this.setState({value: event.target.value, results: {...this.state.results}});
+    handleChange(e) {
+        this.setState({...this.state, value: e.target.value});
     }
 
-    handleSubmit(event) {
-        var searchParam = this.state.value;
-        var usersList = []; //get the list from the backend
-        this.setState({value: event.target.value, results: usersList});
-        event.preventDefault();
+    async handleSubmit(e) {
+        console.log(this.state);
+        let searchParam = this.state.value;
+        const posts = await (await axios.put(`${process.env.BACKEND_URL}/search/user`, {searchText: this.state.value})).data
+        var usersList = posts; //get the list from the backend
+        this.setState({...this.state, results: usersList});
     }
 
     render() {
@@ -29,7 +31,7 @@ export default class Search extends React.Component {
                 <br/>
                 <ul>
                     {this.state.results.map(function(User) {
-                        return <li><a href="/#/profile/${id}">User.username</a></li>
+                        return <li key={User._id}><a href={`/#/profile/${User._id}`}>{User.username}</a></li>
                     })}
                 </ul>
             </form>

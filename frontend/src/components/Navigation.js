@@ -16,14 +16,17 @@ const Navigation = (props) => {
             {props.user?<Nav.Item>
                 <Nav.Link as={NavLink} to={`/profile/${props.user._id}`}>Profile</Nav.Link>
             </Nav.Item>: null}
-            <Login/>
-            <SignUp/>
+            {console.log()}
+            {!props.user ? <Login/>: null}
+            {!props.user ? <SignUp/>: null}
+            {props.user ? 
             <Nav.Item>
                 <Nav.Link as={NavLink} to="/post">Create Post</Nav.Link>
-            </Nav.Item>
+            </Nav.Item>: null}
+            {props.user ?
             <Nav.Item>
                 <Nav.Link as={NavLink} to="/search">Search</Nav.Link>
-            </Nav.Item>
+            </Nav.Item>: null}
         </Nav>
     );
 }

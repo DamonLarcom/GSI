@@ -1,8 +1,12 @@
+import QueryString from "querystring";
+
 import React from "react";
 import { connect } from "react-redux";
 
 import { Button, Modal, Nav, Form } from "react-bootstrap";
 import axios from "axios";
+
+import store from "../stores/store"
 
 class Login extends React.Component {
     constructor(props) {
@@ -15,18 +19,22 @@ class Login extends React.Component {
             }
         }
 
+        
         this.handleLogin = this.handleLogin.bind(this);
     }
 
     async handleLogin() {
         try {
-            const data = await (await axios.post(`${process.env.BACKEND_URL}/login`, {...this.state.input})).data;
-            this.props.dispatch({type: 'STORE_USER', data: { User: data }});
+            const data = await (await axios.post(`${process.env.BACKEND_URL}/login`, QueryString.stringify({ ...this.state.input }), {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                }
+            })).data;
+            this.props.dispatch({ type: 'STORE_USER', data: { User: data } });
             this.setState({ show: false });
         } catch (error) {
             console.log("Login error", error);
-            this.props.dispatch({type: 'STORE_USER', data: { user: {_id:"5fbd49f54df3985364f5e5b0", username: "Carter Wilde"}}});
-            this.setState({ show: true})
+            this.setState({ show: true })
         }
     }
 
@@ -45,12 +53,12 @@ class Login extends React.Component {
                         <Form>
                             <Form.Group controlId="formBasicEmail">
                                 <Form.Label>Username</Form.Label>
-                                <Form.Control type="email" placeholder="Enter username" onChange={e => {this.setState({input: {...this.state.input, username: e.target.value}})}}/>
+                                <Form.Control type="email" placeholder="Enter username" onChange={e => { this.setState({ input: { ...this.state.input, username: e.target.value } }) }} />
                             </Form.Group>
 
                             <Form.Group controlId="formBasicPassword">
                                 <Form.Label>Password</Form.Label>
-                                <Form.Control type="password" placeholder="Password" onChange={e => {this.setState({input: {...this.state.input, password: e.target.value}})}}/>
+                                <Form.Control type="password" placeholder="Password" onChange={e => { this.setState({ input: { ...this.state.input, password: e.target.value } }) }} />
                             </Form.Group>
                         </Form>
                     </Modal.Body>
@@ -64,4 +72,4 @@ class Login extends React.Component {
     }
 }
 
-export default connect((state) => ({ ...state }))(Login);
+export default connect((state) => ({ ...state }))(Login);;

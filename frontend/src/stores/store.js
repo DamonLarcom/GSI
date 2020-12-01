@@ -14,5 +14,5 @@ const reducer = (state = defaultState, action) => {
     }
 }
 
-const store = createStore(reducer, defaultState, window.devToolsExtension ? window.devToolsExtension() : f => f);
+let store = createStore(reducer, defaultState, window.devToolsExtension ? window.devToolsExtension() : f => f);
 export default store;

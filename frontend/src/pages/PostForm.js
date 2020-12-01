@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 class PostForm extends React.Component {
 
     constructor(props) {
-        super(props)
+        super(props);
         this.createPost = this.createPost.bind(this);
         this.handleChange = this.handleChange.bind(this);
 
