@@ -19,3 +19,5 @@ const BlockedUser = props => {
         </Card>
     );
 }
+
+export default BlockedUser;
