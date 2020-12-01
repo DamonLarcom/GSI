@@ -7,17 +7,18 @@ export default class Search extends React.Component {
         super(props)
         this.state = {value: '', results: []};
         this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleChange(event) {
-        this.setState({value: event.target.value, results: {...this.state.results}});
+    handleChange(e) {
+        this.setState({value: e.target.value, results: [...this.state.results]});
     }
 
-    handleSubmit(event) {
+    handleSubmit(e) {
+        e.preventDefault();
         var searchParam = this.state.value;
         var usersList = []; //get the list from the backend
-        this.setState({value: event.target.value, results: usersList});
-        event.preventDefault();
+        this.setState({value: e.target.value, results: usersList});
     }
 
     render() {
@@ -29,7 +30,7 @@ export default class Search extends React.Component {
                 <br/>
                 <ul>
                     {this.state.results.map(function(User) {
-                        return <li><a href="/#/profile/${id}">User.username</a></li>
+                        return <li><a href="/#/profile/${id}">{User.username}</a></li>
                     })}
                 </ul>
             </form>
