@@ -45,13 +45,10 @@ module.exports = () => {
 			// create user object from params, save in user collection, log the user in, and direct them to home page
 		});
 	homeRouter.route("/login")
-		.post(passport.authenticate("local", {
-			successRedirect: "/",
-			failureRedirect: "/login"
-			}), (req, res) => {
-			
+		.post(passport.authenticate("local"), (req, res) => {
+		    res.send(req.user);
 			// get user details from form and log them in, direct them to home page 
-		});
+        });
 
 	return homeRouter;
 }

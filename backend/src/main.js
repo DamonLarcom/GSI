@@ -12,7 +12,8 @@ const User = require("./models/user");
 
 const app = express();
 
-app.use(cors({origin: 'http://localhost:8080'}));
+//Allow credentials in preflight check
+app.use(cors({origin: 'http://localhost:8080', credentials: true}));
 
 // new config(app);
 // const url = new URL(BACKEND_URL);

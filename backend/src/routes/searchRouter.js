@@ -10,7 +10,7 @@ module.exports = () => {
 	});
 
 	searchRouter.route("/user")
-	.get((req, res) => {
+	.put((req, res) => {
 		// get the search term and search the user collection for a partial match on usernames and re-render the page with results 
 		User.find({"username": {"$regex": new RegExp(req.body.searchText, "i")}}, (err, users) => {
 			if(err) console.error(err);
