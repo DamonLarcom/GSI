@@ -12,6 +12,7 @@ import Profile from "./Profile";
 import ProfileForm from "./ProfileForm";
 import { connect } from "react-redux";
 import ProfileView from "./ProfileView";
+import Blocked from "./Blocked";
 
 class App extends React.Component {
     constructor(props) {
@@ -32,6 +33,7 @@ class App extends React.Component {
                 <div>
                   <Navigation/>
                   <Switch>
+                      <Route path="/profile/:userId/blocked" component={Blocked}/>
                       <Route path="/profile/:userId/view" component={ProfileView}/>
                       <Route path="/profile/:userId/edit" component={ProfileForm}/>
                       <Route path="/profile/:userId" component={Profile} key={location.pathname}/>

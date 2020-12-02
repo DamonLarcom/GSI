@@ -23,6 +23,12 @@ module.exports = () => {
 		post.save((err, post) => {
 			if (err) return console.error(err);
 			console.log("Post added");
+			User.findById(req.user._id, (err, user) => {
+				user.authoredPosts[user.authoredPosts.length] = post._id;
+				user.save((err, user) => {
+					if (err) return console.error(err);
+				})
+			})
 			res.json(post);
 			// res.redirect(`/post/${post.id}`)
 		});
@@ -31,16 +37,16 @@ module.exports = () => {
     .get((req, res) => {
         console.log("Hello!");
         console.log(req.user);
-        User.find({ _id: req.user._id }, function (err, users) {
+        User.findById(req.user._id, (err, users) => {
             if (err) console.log(err)
 
-            const followedUsers = users[0].profile.followedUsers
+            const followedUsers = users.profile.followedUsers;
 
             const posts = Post.find({ user: { $in: followedUsers } })
             posts.sort({ date: -1 })
-            posts.exec(function (error, posts) {
+            posts.exec(function (error, allPosts) {
                 if (error) console.log(error)
-                res.send(posts)
+                res.json(allPosts)
             })
         })
     });
@@ -52,29 +58,44 @@ module.exports = () => {
 	postRouter.route("/likeToggle/:postId")
 		.patch((req, res) => {
 			// update post object numLike and user who liked
-			let postToLike = Post.findById(req.params.postId);
-			let currentUser = User.findByUsername(req.user.username);
-
-			postToLike.likeCount = postToLike.likeCount + 1;
-			currentUser.likedPosts[currentUser.likedPosts.length] = postToLike.id;
-
-			postToLike.save((err, ptl) => {
-				if (err) return console.error(err);
-			});
-			currentUser.save((err, cu) => {
-				if (err) return console.error(err);
-				console.log(currentUser.username + " liked post " + postToLike.id);
+			Post.findById(req.params.postId, (err, postToLike) => {
+				postToLike.likeCount = postToLike.likeCount + 1;
+				User.findById(req.user._id, (err, currentUser) => {
+					currentUser.likedPosts[currentUser.likedPosts.length] = postToLike.id;
+					currentUser.save((err, cu) => {
+						if (err) return console.error(err);
+						console.log(currentUser.username + " liked post " + postToLike.id);
+					});
+				});
+	
+				postToLike.save((err, ptl) => {
+					if (err) return console.error(err);
+				});
 			});
 		});
 
 	postRouter.route("/comment/:postId")
 		.patch((req, res) => {
 			// add a comment on a post
+			Post.findById(req.params.postId, (err, post) => {
+				if(err) console.error(err);
+				post.comments[post.comments.length] = {commentAuthor: req.user._id,	commentText: req.body.commentText, commentDate: Date.now()};
+				post.save((err, post) => {
+					if(err) console.error(err);
+				})
+			})
 		});
 
 	postRouter.route("/deleteCom/:postId")
 		.patch((req, res) => {
-			// delete comment from post
+			Post.findById(req.params.postId, (err, post) => {
+				if(err) console.error(err);
+
+				post.comments.splice(post.comments.findIndex(c => c._id = req.body.commentToDelete._id), 1);
+				post.save((err, post) => {
+					if(err) console.error(err);
+				})
+			})
 		});
 
     postRouter.route("/:postId")
@@ -89,6 +110,12 @@ module.exports = () => {
 		})
 		.patch((req, res) => {
 			// Edits a post with the post as the body
+			Post.findById(req.params.postId, (err, post) => {
+				post.text = req.body.text;
+				post.save((err, post) => {
+					if(err) console.error(err);
+				})
+			});
 		})
 		.delete((req, res) => {
 			// Deletes a post with the matching PostID in the path

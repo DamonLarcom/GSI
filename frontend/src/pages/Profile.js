@@ -88,6 +88,7 @@ class Profile extends React.Component {
                             <Card.Text>{this.state.user.followedBy.length} Followers | {this.state.user.followedUsers.length} Following</Card.Text>
                             <Card.Text>{this.state.user.bio}</Card.Text>
                             {this.props?.user?._id == this.props.match.params.userId ? <Button variant="danger" onClick={() => { this.setState({ show: true }) }}>Delete</Button>: null}
+                            {this.props?.user?._id == this.props.match.params.userId ? <NavLink to={`/profile/${this.props.match.params.userId}/blocked`}>Blocked Users</NavLink>: null}
                             <Accordion>
                                 <Card>
                                     <Card.Header>
