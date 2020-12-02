@@ -7,32 +7,38 @@ module.exports = () => {
 	userRouter.route("/blockToggle/:userToBlockId")
 	.put((req, res) => {
 		// Header contains UserID named Blocker and another UserID named Blockee
-		let userToBlock = User.findById(req.params.userToBlockId);
-		let currentUser = User.findByUsername(req.user.username);
-		currentUser.profile.blockedUsers[currentUser.profile.blockedUsers.length] = userToBlock.id;
-		userToBlock.profile.blockedBy[userToBlock.profile.blockedBy.length] = currentUser.id;
-		userToBlock.save((err, utb) => {
-            if (err) return console.error(err);
-            console.log(userToBlock.username + " followed.");
+		User.findById(req.params.userToBlockId, (err, userToBlock) => {
+			userToBlock.profile.blockedBy[userToBlock.profile.blockedBy.length] = currentUser.id;
+			userToBlock.save((err, utb) => {
+				if (err) return console.error(err);
+				console.log(userToBlock.username + " followed.");
+			});
 		});
-		currentUser.save((err, cu) => {
-            if (err) return console.error(err);
-        });
+		User.findByUsername(req.user.username, (err, currentUser) => {
+			currentUser.profile.blockedUsers[currentUser.profile.blockedUsers.length] = userToBlock.id;
+			currentUser.save((err, cu) => {
+				if (err) return console.error(err);
+			});
+		});
 	});
 
 	userRouter.route("/followToggle/:userToFollowId")
 	.put((req, res) => {
-		let userToFollow = User.findById(req.params.userToFollowId);
-		let currentUser = User.findByUsername(req.user.username);
-		currentUser.profile.followedUsers[currentUser.profile.followedUsers.length] = userToFollow.id;
-		userToFollow.profile.followedBy[userToFollow.profile.followedBy.length] = currentUser.id;
-		userToFollow.save((err, utf) => {
-            if (err) return console.error(err);
-            console.log(userToFollow.username + " followed.");
+		User.findById(req.params.userToFollowId, (err, userToFollow) => {
+			if (err) return console.error(err);
+			userToFollow.profile.followedBy[userToFollow.profile.followedBy.length] = currentUser.id;
+			userToFollow.save((err, utf) => {
+				if (err) return console.error(err);
+				console.log(userToFollow.username + " followed.");
+			});
 		});
-		currentUser.save((err, cu) => {
-            if (err) return console.error(err);
-        });
+		User.findByUsername(req.user.username, (err, currentUser) => {
+			if (err) return console.error(err);
+			currentUser.profile.followedUsers[currentUser.profile.followedUsers.length] = userToFollow.id;
+			currentUser.save((err, cu) => {
+				if (err) return console.error(err);
+			});
+		});
 	});
 
 	userRouter.route("/following/:userId")
