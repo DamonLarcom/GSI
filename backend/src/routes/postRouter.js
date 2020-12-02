@@ -56,14 +56,14 @@ module.exports = () => {
 			let currentUser = User.findByUsername(req.user.username);
 
 			postToLike.likeCount = postToLike.likeCount + 1;
-			currentUser.likedPosts[currentUser.likedPosts.length] = postToLike._id;
+			currentUser.likedPosts[currentUser.likedPosts.length] = postToLike.id;
 
 			postToLike.save((err, ptl) => {
 				if (err) return console.error(err);
 			});
 			currentUser.save((err, cu) => {
 				if (err) return console.error(err);
-				console.log(currentUser.username + " liked post " + postToLike._id);
+				console.log(currentUser.username + " liked post " + postToLike.id);
 			});
 		});
 
