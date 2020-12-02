@@ -8,31 +8,43 @@ module.exports = () => {
 	.put((req, res) => {
 		// Header contains UserID named Blocker and another UserID named Blockee
 		User.findById(req.params.userToBlockId, (err, userToBlock) => {
-			userToBlock.profile.blockedBy.push(currentUser._id);
+			if (err) return console.error(err);
+			if(userToBlock.profile.blockedBy.indexOf(currentUser._id) > -1) {
+				userToBlock.profile.blockedBy.splice(userToBlock.profile.blockedBy.indexOf(currentUser._id), 1);
+			}
+			else {
+				userToBlock.profile.blockedBy.push(currentUser._id);
+			}
 			userToBlock.save((err, utb) => {
 				if (err) return console.error(err);
 				console.log(userToBlock.username + " followed.");
 			});
-		});
-		User.findByUsername(req.user.username, (err, currentUser) => {
-			currentUser.profile.blockedUsers.push(userToBlock._id);
-			currentUser.save((err, cu) => {
+			User.findByUsername(req.user.username, (err, currentUser) => {
 				if (err) return console.error(err);
+				if(currentUser.profile.blockedUsers.indexOf(userToBlock._id) > -1) {
+					currentUser.profile.blockedUsers.splice(currentUser.profile.blockedUsers.indexOf(userToBlock._id), 1);
+				}
+				else {
+					currentUser.profile.blockedUsers.push(userToBlock._id);
+				}
+				currentUser.save((err, cu) => {
+					if (err) return console.error(err);
+				});
 			});
 		});
 	});
 
 	userRouter.route("/blockedUsers")
 	.get((req, res) => {
-		User.find({ _id: req.user._id }, function (err, userArr) {
+		User.findById(req.user._id, (err, user) => {
             if (err) console.log(err)
 
-            const blockedUsers = userArr[0].profile.blockedUsers
+            const blockedUsers = user.profile.blockedUsers
 
             const users = User.find({ user: { $in: blockedUsers } })
             users.exec(function (error, users) {
                 if (error) console.log(error)
-                res.send(users)
+                res.json(users)
             })
         })
 	});
@@ -51,17 +63,17 @@ module.exports = () => {
 				if (err) return console.error(err);
 				console.log(userToFollow.username + " followed.");
 			});
-		});
-		User.findByUsername(req.user.username, (err, currentUser) => {
-			if (err) return console.error(err);
-			if(currentUser.profile.followedUsers.indexOf(userToFollow._id) > -1) {
-				currentUser.profile.followedUsers.splice(currentUser.profile.followedUsers.indexOf(userToFollow._id), 1);
-			}
-			else {
-				currentUser.profile.followedUsers.push(userToFollow._id);
-			}
-			currentUser.save((err, cu) => {
+			User.findByUsername(req.user.username, (err, currentUser) => {
 				if (err) return console.error(err);
+				if(currentUser.profile.followedUsers.indexOf(userToFollow._id) > -1) {
+					currentUser.profile.followedUsers.splice(currentUser.profile.followedUsers.indexOf(userToFollow._id), 1);
+				}
+				else {
+					currentUser.profile.followedUsers.push(userToFollow._id);
+				}
+				currentUser.save((err, cu) => {
+					if (err) return console.error(err);
+				});
 			});
 		});
 	});
