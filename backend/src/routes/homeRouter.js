@@ -33,9 +33,7 @@ module.exports = () => {
 					});
 					User.register(newUser, req.body.password, (err2, user) => {
 						if(err2) console.error(err2);
-						console.log(user);
 						passport.authenticate("local")(req, res, () => {
-							console.log(req.user);
 							res.json(req.user);
 						});
 					});
