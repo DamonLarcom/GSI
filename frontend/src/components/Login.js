@@ -6,8 +6,6 @@ import { connect } from "react-redux";
 import { Button, Modal, Nav, Form } from "react-bootstrap";
 import axios from "axios";
 
-import store from "../stores/store"
-
 class Login extends React.Component {
     constructor(props) {
         super(props);
@@ -72,4 +70,4 @@ class Login extends React.Component {
     }
 }
 
-export default connect((state) => ({ ...state }))(Login);;
+export default connect((state) => ({ ...state }))(Login);

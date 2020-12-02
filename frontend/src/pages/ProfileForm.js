@@ -2,7 +2,7 @@ import axios from "axios";
 import React from "react";
 import { Button, Card, Form } from "react-bootstrap";
 
-export default class Profile extends React.Component {
+export default class ProfileForm extends React.Component {
     constructor(props) {
         super(props);
         axios.get(`${process.env.BACKEND_URL}/user/${this.props.match.params.userId}`).then(res => {

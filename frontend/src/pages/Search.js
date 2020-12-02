@@ -2,6 +2,8 @@
 import React from "react";
 import axios from "axios";
 
+import {Button, Form, InputGroup, FormControl} from "react-bootstrap";
+
 export default class Search extends React.Component {
     constructor(props) {
         super(props)
@@ -15,27 +17,27 @@ export default class Search extends React.Component {
     }
 
     async handleSubmit(e) {
-        console.log(this.state);
-        let searchParam = this.state.value;
+        let searchParam = this.state?.value;
         const posts = await (await axios.put(`${process.env.BACKEND_URL}/search/user`, {searchText: this.state.value})).data
         var usersList = posts; //get the list from the backend
         this.setState({...this.state, results: usersList});
-        this.setState({value: e.target.value, results: [...this.state.results]});
     }
 
     render() {
         return(
-            <form onSubmit={this.handleSubmit}>
-                <input type="text" onChange={this.handleChange}/>
-                <input type="submit" value="Search"/>
-                <br/>
-                <br/>
+            <Form style={{margin: "5%"}}>
+                <InputGroup>
+                    <FormControl type="text" placeholder="Search" onChange={this.handleChange}/>
+                    <InputGroup.Append>
+                        <Button onClick={this.handleSubmit}>Search</Button>
+                    </InputGroup.Append>
+                </InputGroup>
                 <ul>
                     {this.state.results.map(function(User) {
-                        return <li key={User._id}><a href={`/#/profile/${User._id}`}>{User.username}</a></li>
+                        return <li key={User._id}><a href={`/#/profile/${User._id}/view`}>{User.username}</a></li>
                     })}
                 </ul>
-            </form>
+            </Form>
         );
     }
 }

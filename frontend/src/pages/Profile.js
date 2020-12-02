@@ -2,9 +2,10 @@ import axios from "axios";
 import React from "react";
 import { Accordion, Card, Button, Modal } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
+import { connect } from "react-redux";
 import Post from "../components/Post";
 
-export default class Profile extends React.Component {
+class Profile extends React.Component {
     constructor(props) {
         super(props);
 
@@ -27,11 +28,12 @@ export default class Profile extends React.Component {
         this.handleDelete = this.handleDelete.bind(this);
         this.getProfile();
     }
-    
+
     getProfile() {
         axios.get(`${process.env.BACKEND_URL}/user/${this.props.match.params.userId}`)
         .then(res => {
             this.setState({user:{...this.state.user, ...res.data.profile, authoredPosts: res.data.authoredPosts, username: res.data.username}});
+            this.forceUpdate();
             this.getPosts();
         });
     }
@@ -78,14 +80,14 @@ export default class Profile extends React.Component {
                 </Modal>
 
                 <Card style={{margin: "2em", padding: "2em"}}>
-                    <Card.Title>{this.state.user.username} ({this.state.user.name})</Card.Title>
+                    <Card.Title>{this.state.user.username} {this.state.user.name ? "(" + this.state.user.name + ")": null }</Card.Title>
                         <Card.Body>
-                            <NavLink to={`/profile/${this.props.match.params.userId}/edit`}>Edit</NavLink>
-                            <Card.Text>Email: {this.state.user.email}</Card.Text>
-                            <Card.Text>Phone: {this.state.user.phoneNum}</Card.Text>
-                            <Card.Text>{this.state.user.bio}</Card.Text>
+                            {this.props?.user?._id == this.props.match.params.userId ? <NavLink to={`/profile/${this.props.match.params.userId}/edit`}>Edit</NavLink>: null}
+                            {this.props.user?.email ? <Card.Text>Email: {this.state.user.email}</Card.Text>:null}
+                            {this.props.user?.phoneNum ? <Card.Text>Phone: {this.state.user.phoneNum}</Card.Text>:null}
                             <Card.Text>{this.state.user.followedBy.length} Followers | {this.state.user.followedUsers.length} Following</Card.Text>
-                            <Button variant="danger" onClick={() => { this.setState({ show: true }) }}>Delete</Button>
+                            <Card.Text>{this.state.user.bio}</Card.Text>
+                            {this.props?.user?._id == this.props.match.params.userId ? <Button variant="danger" onClick={() => { this.setState({ show: true }) }}>Delete</Button>: null}
                             <Accordion>
                                 <Card>
                                     <Card.Header>
@@ -110,3 +112,5 @@ export default class Profile extends React.Component {
         );
     }
 }
+
+export default connect(state=>({ ...state }))(Profile);

@@ -66,7 +66,8 @@ module.exports = () => {
 			{ '_id': req.params.userId },
 			(err, user) => {
 				if (err) res.sendStatus(500);
-				console.log(user.username + ' deleted');
+                console.log(user.username + ' deleted');
+                res.sendStatus(200);
 			});
     });
     
