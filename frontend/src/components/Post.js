@@ -2,31 +2,39 @@
 import axios from "axios"
 import React from "react"
 import { Button, Card } from "react-bootstrap"
-import { useHistory } from "react-router-dom"
+import { connect } from "react-redux";
 
 /**
  * @param {{ username: String; text: String; postId: any }} props
  */
-const Post = props => {
-    const history = useHistory();
-    const deletePost = async () => {
+class Post extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.deletePost = this.deletePost.bind(this);
+    }
+
+    async deletePost () {
         console.log("Delete Post");
-        const deleteStatus = (await axios.delete(`${process.env.BACKEND_URL}/post/${props.postId}`)).status
+        const deleteStatus = (await axios.delete(`${process.env.BACKEND_URL}/post/${this.props.postId}`)).status
         if(deleteStatus === 200) {
             // Probably not the best way to do it, but for what we're doing it should be fine
             location.reload();
         }
     }
 
-    return (
-        <Card>
-            <Card.Body>
-                <Card.Title>Posted by {props.username}</Card.Title>
-                <Card.Text>{props.text}</Card.Text>
-                <Button variant="danger" onClick={deletePost}>Delete</Button>
-            </Card.Body>
-        </Card>
-    );
+    render() {
+        return (
+            <Card>
+                {console.log(this.props)}
+                <Card.Body>
+                    <Card.Title>Posted by {this.props.username}</Card.Title>
+                    <Card.Text>{this.props.text}</Card.Text>
+                    {this.props?.user?._id == this.props.userId?<Button variant="danger" onClick={this.deletePost}>Delete</Button>:null}
+                </Card.Body>
+            </Card>
+        );
+    }
 }
 
-export default Post;
+export default connect(state=>({...state}))(Post);

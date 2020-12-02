@@ -100,7 +100,8 @@ class Profile extends React.Component {
                                         <>
                                         {
                                             this.state.user.posts.map(post => {
-                                                return(<Post key={post._id} username={post.user} text={post.text} postId={post._id}/>);
+                                                console.log(post)
+                                                return(<Post key={post._id} username={post.username} userId={post.user} text={post.text} postId={post._id}/>);
                                             })
                                         }
                                         </>

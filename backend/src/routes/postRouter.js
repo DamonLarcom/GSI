@@ -24,7 +24,7 @@ module.exports = () => {
 			if (err) return console.error(err);
 			console.log("Post added");
 			User.findById(req.user._id, (err, user) => {
-				user.authoredPosts[user.authoredPosts.length] = post._id;
+				user.authoredPosts.push(post._id);
 				user.save((err, user) => {
 					if (err) return console.error(err);
 				})
