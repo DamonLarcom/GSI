@@ -87,8 +87,8 @@ class Profile extends React.Component {
                             <Card.Text>{this.state.user.followedBy.length} Followers | {this.state.user.followedUsers.length} Following</Card.Text>
                             <Card.Text>{this.state.user.bio}</Card.Text>
                             <ButtonGroup>
-                                {this.props?.user?._id == this.props.match.params.userId ? <Button variant="secondary" as={NavLink} to={`/profile/${this.props.match.params.userId}/edit`}>Edit Profile</Button> : null}
-                                {this.props?.user?._id == this.props.match.params.userId ? <Button variant="secondary" as={NavLink} to={`/profile/${this.props.match.params.userId}/blocked`}>Blocked Users</Button>: null}
+                                {this.props?.user?._id == this.props.match.params.userId ? <Button variant="primary" as={NavLink} to={`/profile/${this.props.match.params.userId}/edit`}>Edit Profile</Button> : null}
+                                {this.props?.user?._id == this.props.match.params.userId ? <Button variant="outline-danger" as={NavLink} to={`/profile/${this.props.match.params.userId}/blocked`}>Blocked Users</Button>: null}
                                 {this.props?.user?._id == this.props.match.params.userId ? <Button variant="danger" onClick={() => { this.setState({ show: true }) }}>Delete Profile</Button>: null}    
                             </ButtonGroup>
                             
