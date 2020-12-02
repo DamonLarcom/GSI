@@ -52,18 +52,19 @@ module.exports = () => {
 	postRouter.route("/likeToggle/:postId")
 		.patch((req, res) => {
 			// update post object numLike and user who liked
-			let postToLike = Post.findById(req.params.postId);
-			let currentUser = User.findByUsername(req.user.username);
-
-			postToLike.likeCount = postToLike.likeCount + 1;
-			currentUser.likedPosts[currentUser.likedPosts.length] = postToLike.id;
-
-			postToLike.save((err, ptl) => {
-				if (err) return console.error(err);
-			});
-			currentUser.save((err, cu) => {
-				if (err) return console.error(err);
-				console.log(currentUser.username + " liked post " + postToLike.id);
+			Post.findById(req.params.postId, (err, postToLike) => {
+				postToLike.likeCount = postToLike.likeCount + 1;
+				User.findById(req.user._id, (err, currentUser) => {
+					currentUser.likedPosts[currentUser.likedPosts.length] = postToLike.id;
+					currentUser.save((err, cu) => {
+						if (err) return console.error(err);
+						console.log(currentUser.username + " liked post " + postToLike.id);
+					});
+				});
+	
+				postToLike.save((err, ptl) => {
+					if (err) return console.error(err);
+				});
 			});
 		});
 
