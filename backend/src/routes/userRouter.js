@@ -8,14 +8,14 @@ module.exports = () => {
 	.put((req, res) => {
 		// Header contains UserID named Blocker and another UserID named Blockee
 		User.findById(req.params.userToBlockId, (err, userToBlock) => {
-			userToBlock.profile.blockedBy[userToBlock.profile.blockedBy.length] = currentUser.id;
+			userToBlock.profile.blockedBy.push(currentUser._id);
 			userToBlock.save((err, utb) => {
 				if (err) return console.error(err);
 				console.log(userToBlock.username + " followed.");
 			});
 		});
 		User.findByUsername(req.user.username, (err, currentUser) => {
-			currentUser.profile.blockedUsers[currentUser.profile.blockedUsers.length] = userToBlock.id;
+			currentUser.profile.blockedUsers.push(userToBlock._id);
 			currentUser.save((err, cu) => {
 				if (err) return console.error(err);
 			});
@@ -41,7 +41,7 @@ module.exports = () => {
 	.put((req, res) => {
 		User.findById(req.params.userToFollowId, (err, userToFollow) => {
 			if (err) return console.error(err);
-			userToFollow.profile.followedBy[userToFollow.profile.followedBy.length] = currentUser.id;
+			userToFollow.profile.followedBy.push(currentUser._id);
 			userToFollow.save((err, utf) => {
 				if (err) return console.error(err);
 				console.log(userToFollow.username + " followed.");
@@ -49,7 +49,7 @@ module.exports = () => {
 		});
 		User.findByUsername(req.user.username, (err, currentUser) => {
 			if (err) return console.error(err);
-			currentUser.profile.followedUsers[currentUser.profile.followedUsers.length] = userToFollow.id;
+			currentUser.profile.followedUsers.push(userToFollow._id);
 			currentUser.save((err, cu) => {
 				if (err) return console.error(err);
 			});
