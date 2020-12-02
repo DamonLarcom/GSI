@@ -1,7 +1,7 @@
 import React from "react";
 import BlockedUser from "../components/BlockedUser";
 import axios from "axios";
-import { Card } from "react-bootstrap";
+import { Button, Card } from "react-bootstrap";
 
 class Blocked extends React.Component {
     constructor(props) {
@@ -30,6 +30,7 @@ class Blocked extends React.Component {
                             return(<BlockedUser key={blockeduser._id} username={blockeduser.username}/>);
                         })
                     }
+                    <Button variant="danger">Unblock</Button>
                 </Card.Body>
             </Card>
         );
