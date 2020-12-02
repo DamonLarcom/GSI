@@ -20,7 +20,7 @@ export default class Search extends React.Component {
         const posts = await (await axios.put(`${process.env.BACKEND_URL}/search/user`, {searchText: this.state.value})).data
         var usersList = posts; //get the list from the backend
         this.setState({...this.state, results: usersList});
-        this.setState({...this.state, value: e.target.value, results: [...this.state.results]});
+        this.setState({value: e.target.value, results: [...this.state.results]});
     }
 
     render() {
