@@ -1,6 +1,6 @@
 import axios from "axios";
 import React from "react";
-import { Accordion, Card, Button, Modal } from "react-bootstrap";
+import { Accordion, Card, Button, Modal, ButtonGroup } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import Post from "../components/Post";
@@ -82,13 +82,16 @@ class Profile extends React.Component {
                 <Card style={{margin: "2em", padding: "2em"}}>
                     <Card.Title>{this.state.user.username} {this.state.user.name ? "(" + this.state.user.name + ")": null }</Card.Title>
                         <Card.Body>
-                            {this.props?.user?._id == this.props.match.params.userId ? <NavLink to={`/profile/${this.props.match.params.userId}/edit`}>Edit</NavLink>: null}
                             {this.props.user?.email ? <Card.Text>Email: {this.state.user.email}</Card.Text>:null}
                             {this.props.user?.phoneNum ? <Card.Text>Phone: {this.state.user.phoneNum}</Card.Text>:null}
                             <Card.Text>{this.state.user.followedBy.length} Followers | {this.state.user.followedUsers.length} Following</Card.Text>
                             <Card.Text>{this.state.user.bio}</Card.Text>
-                            {this.props?.user?._id == this.props.match.params.userId ? <Button variant="danger" onClick={() => { this.setState({ show: true }) }}>Delete</Button>: null}
-                            {this.props?.user?._id == this.props.match.params.userId ? <NavLink to={`/profile/${this.props.match.params.userId}/blocked`}>Blocked Users</NavLink>: null}
+                            <ButtonGroup>
+                                {this.props?.user?._id == this.props.match.params.userId ? <Button variant="secondary" as={NavLink} to={`/profile/${this.props.match.params.userId}/edit`}>Edit Profile</Button> : null}
+                                {this.props?.user?._id == this.props.match.params.userId ? <Button variant="secondary" as={NavLink} to={`/profile/${this.props.match.params.userId}/blocked`}>Blocked Users</Button>: null}
+                                {this.props?.user?._id == this.props.match.params.userId ? <Button variant="danger" onClick={() => { this.setState({ show: true }) }}>Delete Profile</Button>: null}    
+                            </ButtonGroup>
+                            
                             <Accordion>
                                 <Card>
                                     <Card.Header>

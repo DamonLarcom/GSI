@@ -30,7 +30,6 @@ class Blocked extends React.Component {
                             return(<BlockedUser key={blockeduser._id} username={blockeduser.username}/>);
                         })
                     }
-                    <Button variant="danger">Unblock</Button>
                 </Card.Body>
             </Card>
         );
