@@ -1,5 +1,6 @@
 const express = require('express');
 const User = require('../models/user');
+const Post = require('../models/post');
 const userRouter = express.Router();
 
 module.exports = () => {
@@ -105,11 +106,12 @@ module.exports = () => {
 	})
 	.delete((req, res) => {
 		// Deletes the user from the database with the path param id and redirects to log in page.
-		User.findByIdAndDelete(
-			{ '_id': req.params.userId },
-			(err, user) => {
+		User.findByIdAndDelete(req.params.userId, (err, user) => {
 				if (err) res.sendStatus(500);
-                console.log(user.username + ' deleted');
+				console.log(user.username + ' deleted');
+				Post.deleteMany({ user: user._id }, (err, posts) => {
+					if(err) console.error(err);
+				});
                 res.sendStatus(200);
 			});
     });
