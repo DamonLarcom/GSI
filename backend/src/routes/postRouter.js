@@ -61,10 +61,10 @@ module.exports = () => {
 			Post.findById(req.params.postId, (err, postToLike) => {
 				postToLike.likeCount = postToLike.likeCount + 1;
 				User.findById(req.user._id, (err, currentUser) => {
-					currentUser.likedPosts[currentUser.likedPosts.length] = postToLike.id;
+					currentUser.likedPosts.push(postToLike._id);
 					currentUser.save((err, cu) => {
 						if (err) return console.error(err);
-						console.log(currentUser.username + " liked post " + postToLike.id);
+						console.log(currentUser.username + " liked post " + postToLike._id);
 					});
 				});
 	
@@ -79,7 +79,7 @@ module.exports = () => {
 			// add a comment on a post
 			Post.findById(req.params.postId, (err, post) => {
 				if(err) console.error(err);
-				post.comments[post.comments.length] = {commentAuthor: req.user._id,	commentText: req.body.commentText, commentDate: Date.now()};
+				post.comments.push({commentAuthor: req.user._id,	commentText: req.body.commentText, commentDate: Date.now()});
 				post.save((err, post) => {
 					if(err) console.error(err);
 				})
