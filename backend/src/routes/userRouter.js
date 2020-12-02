@@ -20,6 +20,21 @@ module.exports = () => {
         });
 	});
 
+	userRouter.route("/blockedUsers")
+	.get((req, res) => {
+		User.find({ _id: req.user._id }, function (err, userArr) {
+            if (err) console.log(err)
+
+            const blockedUsers = userArr[0].profile.blockedUsers
+
+            const users = User.find({ user: { $in: blockedUsers } })
+            users.exec(function (error, users) {
+                if (error) console.log(error)
+                res.send(users)
+            })
+        })
+	});
+
 	userRouter.route("/followToggle/:userToFollowId")
 	.put((req, res) => {
 		let userToFollow = User.findById(req.params.userToFollowId);

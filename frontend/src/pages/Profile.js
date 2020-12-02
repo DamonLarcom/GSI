@@ -86,6 +86,7 @@ export default class Profile extends React.Component {
                             <Card.Text>{this.state.user.bio}</Card.Text>
                             <Card.Text>{this.state.user.followedBy.length} Followers | {this.state.user.followedUsers.length} Following</Card.Text>
                             <Button variant="danger" onClick={() => { this.setState({ show: true }) }}>Delete</Button>
+                            <NavLink to={`/profile/${this.props.match.params.userId}/blocked`}>Blocked Users</NavLink>
                             <Accordion>
                                 <Card>
                                     <Card.Header>

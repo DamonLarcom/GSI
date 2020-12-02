@@ -9,6 +9,7 @@ import Search from "./Search";
 import PostForm from "./PostForm";
 import Profile from "./Profile";
 import ProfileForm from "./ProfileForm";
+import Blocked from "./Blocked";
 
 export default class App extends React.Component {
     constructor(props) {
@@ -22,6 +23,7 @@ export default class App extends React.Component {
                   <Navigation/>
                   <Switch>
                       <Route path="/profile/:userId/edit" component={ProfileForm}/>
+                      <Route path="/profile/:userId/blocked" component={Blocked}/>
                       <Route path="/profile/:userId" component={Profile}/>
                       <Route exact path="/"><Home/></Route>
                       <Route path="/home"><Home/></Route>
