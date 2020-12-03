@@ -19,7 +19,7 @@ class Post extends React.Component {
         const deleteStatus = (await axios.delete(`${process.env.BACKEND_URL}/post/${this.props.postId}`)).status
         if(deleteStatus === 200) {
             // Probably not the best way to do it, but for what we're doing it should be fine
-            location.reload();
+            this.props?.postDeleted({...this.props});
         }
     }
 
