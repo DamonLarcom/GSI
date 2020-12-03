@@ -46,7 +46,14 @@ module.exports = () => {
 		.post(passport.authenticate("local"), (req, res) => {
 		    res.send(req.user);
 			// get user details from form and log them in, direct them to home page 
-        });
+		});
+	homeRouter.route("/logout")
+	.get((req, res) => {
+		console.log("Hi");
+		// logs user out and redirects the page to the sign in page 
+		req.logout();
+		res.sendStatus(200);
+	});
 
 	return homeRouter;
 }

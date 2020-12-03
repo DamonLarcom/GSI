@@ -13,7 +13,7 @@ const reducer = (state = defaultState, action) => {
                 user: {...action.data.User}
             });
         case "LOGOUT_USER":
-            axios.get(`${process.env.BACKEND_URL}/user/logout`);
+            axios.get(`${process.env.BACKEND_URL}/logout`);
             let newState = {...state};
             delete newState.user;
             return(newState);
