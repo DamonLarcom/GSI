@@ -79,7 +79,7 @@ module.exports = () => {
 			// add a comment on a post
 			Post.findById(req.params.postId, (err, post) => {
 				if(err) console.error(err);
-				post.comments.push({commentAuthor: req.user._id,	commentText: req.body.commentText, commentDate: Date.now()});
+				post.comments.push({commentAuthor: req.user._id, commentText: req.body.commentText, commentDate: Date.now()});
 				post.save((err, post) => {
 					if(err) console.error(err);
 				})
@@ -119,10 +119,17 @@ module.exports = () => {
 		})
 		.delete((req, res) => {
 			// Deletes a post with the matching PostID in the path
-			Post.deleteOne({ _id: req.params.postId }, err => {
+			Post.findByIdAndDelete(req.params.postId, (err, post) => {
 				if (err) {
 					res.sendStatus(500);
 				} else {
+					User.findById(req.user._id, (err, user) => {
+						if(err) console.error(err);
+						user.authoredPosts.splice(user.authoredPosts.indexOf(post._id), 1);
+						user.save((err, userSaved) => {
+							if(err) console.error(err);
+						});
+					})
 					res.sendStatus(200);
 				}
 			})
