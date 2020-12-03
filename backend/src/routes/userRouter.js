@@ -18,7 +18,7 @@ module.exports = () => {
 			}
 			userToBlock.save((err, utb) => {
 				if (err) return console.error(err);
-				console.log(userToBlock.username + " followed.");
+				console.log(userToBlock.username + " blocked.");
 			});
 			User.findByUsername(req.user.username, (err, currentUser) => {
 				if (err) return console.error(err);
@@ -120,6 +120,7 @@ module.exports = () => {
 	.get((req, res) => {
         req.logOut();
 		// logs user out and redirects the page to the sign in page 
+		req.logout();
 	});
 
 	return userRouter;
