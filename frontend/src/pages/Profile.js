@@ -53,7 +53,7 @@ class Profile extends React.Component {
     async handleFollow() {
         try {
             console.log(this.props)
-            const data = await axios.put(`${process.env.BACKEND_URL}/user/followToggle/${this.props.match.params.userId}`);
+            const data = await axios.put(`${process.env.BACKEND_URL}/user/followToggle/${this.props.match.params.userId}`, {...this.state.input});
         } catch(error) {
             console.log("Follow error", error);
         }
