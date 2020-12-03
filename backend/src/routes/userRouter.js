@@ -10,17 +10,17 @@ module.exports = () => {
 		// Header contains UserID named Blocker and another UserID named Blockee
 		User.findById(req.params.userToBlockId, (err, userToBlock) => {
 			if (err) return console.error(err);
-			if(userToBlock.profile.blockedBy.indexOf(currentUser._id) > -1) {
-				userToBlock.profile.blockedBy.splice(userToBlock.profile.blockedBy.indexOf(currentUser._id), 1);
-			}
-			else {
-				userToBlock.profile.blockedBy.push(currentUser._id);
-			}
-			userToBlock.save((err, utb) => {
-				if (err) return console.error(err);
-				console.log(userToBlock.username + " blocked.");
-			});
 			User.findByUsername(req.user.username, (err, currentUser) => {
+				if(userToBlock.profile.blockedBy.indexOf(currentUser._id) > -1) {
+					userToBlock.profile.blockedBy.splice(userToBlock.profile.blockedBy.indexOf(currentUser._id), 1);
+				}
+				else {
+					userToBlock.profile.blockedBy.push(currentUser._id);
+				}
+				userToBlock.save((err, utb) => {
+					if (err) return console.error(err);
+					console.log(userToBlock.username + " blocked.");
+				});
 				if (err) return console.error(err);
 				if(currentUser.profile.blockedUsers.indexOf(userToBlock._id) > -1) {
 					currentUser.profile.blockedUsers.splice(currentUser.profile.blockedUsers.indexOf(userToBlock._id), 1);
@@ -53,8 +53,8 @@ module.exports = () => {
 	userRouter.route("/followToggle/:userToFollowId")
 	.put((req, res) => {
 		User.findById(req.params.userToFollowId, (err, userToFollow) => {
+			if (err) return console.error(err);
 			User.findByUsername(req.user.username, (err, currentUser) => {
-				if (err) return console.error(err);
 				if(userToFollow.profile.followedBy.indexOf(currentUser._id) > -1) {
 					userToFollow.profile.followedBy.splice(userToFollow.profile.followedBy.indexOf(currentUser._id), 1);
 				}
