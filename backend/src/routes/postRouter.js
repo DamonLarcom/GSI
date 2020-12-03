@@ -59,17 +59,34 @@ module.exports = () => {
 		.patch((req, res) => {
 			// update post object numLike and user who liked
 			Post.findById(req.params.postId, (err, postToLike) => {
-				postToLike.likeCount = postToLike.likeCount + 1;
 				User.findById(req.user._id, (err, currentUser) => {
-					currentUser.likedPosts.push(postToLike._id);
-					currentUser.save((err, cu) => {
-						if (err) return console.error(err);
-						console.log(currentUser.username + " liked post " + postToLike._id);
-					});
-				});
-	
-				postToLike.save((err, ptl) => {
-					if (err) return console.error(err);
+
+					if (!currentUser.likedPosts.includes(postToLike._id)) {
+						postToLike.likeCount = postToLike.likeCount + 1;
+						currentUser.likedPosts.push(postToLike._id);
+
+						currentUser.save((err, cu) => {
+							if (err) return console.error(err);
+							console.log(currentUser.username + " liked post " + postToLike._id);
+						});
+
+						postToLike.save((err, ptl) => {
+							if (err) return console.error(err);
+						});
+					} else {
+						postToLike.likeCount = postToLike.likeCount - 1;
+						currentUser.likedPosts.splice(currentUser.likedPosts.indexOf(postToLike._id), 1);
+
+						currentUser.save((err, cu) => {
+							if (err) return console.error(err);
+							console.log(currentUser.username + " unliked post " + postToLike._id);
+						});
+
+						postToLike.save((err, ptl) => {
+							if (err) return console.error(err);
+						});
+					}
+
 				});
 			});
 		});

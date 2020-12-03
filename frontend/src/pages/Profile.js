@@ -75,6 +75,8 @@ class Profile extends React.Component {
             })
         });
 
+        collection.sort();
+
         this.setState({user: {...this.state.user, posts: collection}})
     }
 
@@ -120,7 +122,6 @@ class Profile extends React.Component {
                                         <>
                                         {
                                             this.state.user.posts.map(post => {
-                                                console.log(post)
                                                 return(<Post key={post._id} username={post.username} userId={post.user} text={post.text} postId={post._id}/>);
                                             })
                                         }
