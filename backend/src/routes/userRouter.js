@@ -10,17 +10,17 @@ module.exports = () => {
 		// Header contains UserID named Blocker and another UserID named Blockee
 		User.findById(req.params.userToBlockId, (err, userToBlock) => {
 			if (err) return console.error(err);
-			if(userToBlock.profile.blockedBy.indexOf(currentUser._id) > -1) {
-				userToBlock.profile.blockedBy.splice(userToBlock.profile.blockedBy.indexOf(currentUser._id), 1);
-			}
-			else {
-				userToBlock.profile.blockedBy.push(currentUser._id);
-			}
-			userToBlock.save((err, utb) => {
-				if (err) return console.error(err);
-				console.log(userToBlock.username + " blocked.");
-			});
 			User.findByUsername(req.user.username, (err, currentUser) => {
+				if(userToBlock.profile.blockedBy.indexOf(currentUser._id) > -1) {
+					userToBlock.profile.blockedBy.splice(userToBlock.profile.blockedBy.indexOf(currentUser._id), 1);
+				}
+				else {
+					userToBlock.profile.blockedBy.push(currentUser._id);
+				}
+				userToBlock.save((err, utb) => {
+					if (err) return console.error(err);
+					console.log(userToBlock.username + " blocked.");
+				});
 				if (err) return console.error(err);
 				if(currentUser.profile.blockedUsers.indexOf(userToBlock._id) > -1) {
 					currentUser.profile.blockedUsers.splice(currentUser.profile.blockedUsers.indexOf(userToBlock._id), 1);
@@ -54,17 +54,17 @@ module.exports = () => {
 	.put((req, res) => {
 		User.findById(req.params.userToFollowId, (err, userToFollow) => {
 			if (err) return console.error(err);
-			if(userToFollow.profile.followedBy.indexOf(currentUser._id) > -1) {
-				userToFollow.profile.followedBy.splice(userToFollow.profile.followedBy.indexOf(currentUser._id), 1);
-			}
-			else {
-				userToFollow.profile.followedBy.push(currentUser._id);
-			}
-			userToFollow.save((err, utf) => {
-				if (err) return console.error(err);
-				console.log(userToFollow.username + " followed.");
-			});
 			User.findByUsername(req.user.username, (err, currentUser) => {
+				if(userToFollow.profile.followedBy.indexOf(currentUser._id) > -1) {
+					userToFollow.profile.followedBy.splice(userToFollow.profile.followedBy.indexOf(currentUser._id), 1);
+				}
+				else {
+					userToFollow.profile.followedBy.push(currentUser._id);
+				}
+				userToFollow.save((err, utf) => {
+					if (err) return console.error(err);
+					console.log(userToFollow.username + " followed.");
+				});
 				if (err) return console.error(err);
 				if(currentUser.profile.followedUsers.indexOf(userToFollow._id) > -1) {
 					currentUser.profile.followedUsers.splice(currentUser.profile.followedUsers.indexOf(userToFollow._id), 1);
@@ -116,12 +116,7 @@ module.exports = () => {
 			});
     });
     
-	userRouter.route("/logout")
-	.get((req, res) => {
-        // logs user out and redirects the page to the sign in page 
-        req.logout();
-        res.sendStatus(200);
-	});
+	
 
 	return userRouter;
 }

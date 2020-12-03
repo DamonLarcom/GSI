@@ -11,6 +11,7 @@ class Profile extends React.Component {
 
         this.getPosts = this.getPosts.bind(this);
         this.getProfile = this.getProfile.bind(this);
+        this.handleFollow = this.handleFollow.bind(this);
 
         this.state = {
             user: {
@@ -50,14 +51,19 @@ class Profile extends React.Component {
     }
 
     async handleFollow() {
-        //follow other user here.
+        try {
+            console.log(this.props)
+            const data = await axios.put(`${process.env.BACKEND_URL}/user/followToggle/${this.props.match.params.userId}`, {...this.state.input});
+        } catch(error) {
+            console.log("Follow error", error);
+        }
     }
 
     async handleBlock() {
         //block other user here.
     }
 
-    async checkFollow() {
+    checkFollow() {
         if(this.props.user.followedUsers.includes(this.props.match.params.userId)) {
             return true;
         }
