@@ -118,6 +118,7 @@ module.exports = () => {
     
 	userRouter.route("/logout")
 	.get((req, res) => {
+        req.logOut();
 		// logs user out and redirects the page to the sign in page 
 	});
 
