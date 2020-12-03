@@ -13,6 +13,7 @@ import ProfileForm from "./ProfileForm";
 import { connect } from "react-redux";
 import ProfileView from "./ProfileView";
 import Blocked from "./Blocked";
+import Post from "../components/Post";
 
 class App extends React.Component {
     constructor(props) {
@@ -40,6 +41,7 @@ class App extends React.Component {
                       <Route exact path="/"><Home/></Route>
                       <Route path="/home"><Home/></Route>
                       <Route path="/search"><Search/></Route>
+                      <Route path="/post/:postId" render={(props) => (<Post {...props} details/>)}></Route>
                       <Route path="/post"><PostForm/></Route>
                   </Switch>
                 </div>
