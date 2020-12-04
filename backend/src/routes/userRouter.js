@@ -142,9 +142,28 @@ module.exports = () => {
 					});
 				});
 			});
+			user.likedPosts.forEach((item, index) => {
+				Post.findById(item, (err, post) => {
+					post.likeCount = post.likeCount - 1;
+					post.save((err, fu) => {
+						if (err) return console.error(err);
+					});
+				});
+			});
 
 			Post.deleteMany({ user: user._id }, (err, posts) => {
 				if(err) console.error(err);
+				for(post in posts) {
+					User.find({"likedPosts": {$in: post._id}}, (err, users) => {
+						if(err) console.error(err);
+						for(user of users) {
+							user.likedPosts.splice(user.likedPosts.indexOf(post._id), 1);
+							user.save((err, userSaved) => {
+								if(err) console.error(err);
+							});
+						}
+					})
+				}
 			});
 			res.sendStatus(200);
 		});
