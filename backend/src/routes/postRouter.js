@@ -69,10 +69,6 @@ module.exports = () => {
 							if (err) return console.error(err);
 							console.log(currentUser.username + " liked post " + postToLike._id);
 						});
-
-						postToLike.save((err, ptl) => {
-							if (err) return console.error(err);
-						});
 					} else {
 						postToLike.likeCount = postToLike.likeCount - 1;
 						currentUser.likedPosts.splice(currentUser.likedPosts.indexOf(postToLike._id), 1);
@@ -81,12 +77,12 @@ module.exports = () => {
 							if (err) return console.error(err);
 							console.log(currentUser.username + " unliked post " + postToLike._id);
 						});
-
-						postToLike.save((err, ptl) => {
-							if (err) return console.error(err);
-						});
 					}
 
+					postToLike.save((err, ptl) => {
+						if (err) return console.error(err);
+					});
+					
 				});
 			});
 		});
@@ -146,6 +142,15 @@ module.exports = () => {
 						user.save((err, userSaved) => {
 							if(err) console.error(err);
 						});
+					})
+					User.find({"likedPosts": {$in: post._id}}, (err, users) => {
+						if(err) console.error(err);
+						for(user of users) {
+							user.likedPosts.splice(user.likedPosts.indexOf(post._id), 1);
+							user.save((err, userSaved) => {
+								if(err) console.error(err);
+							});
+						}
 					})
 					res.sendStatus(200);
 				}
