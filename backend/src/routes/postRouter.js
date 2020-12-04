@@ -92,7 +92,7 @@ module.exports = () => {
 			// add a comment on a post
 			Post.findById(req.params.postId, (err, post) => {
 				if(err) console.error(err);
-				post.comments.push({commentAuthor: req.user._id, commentText: req.body.commentText, commentDate: Date.now()});
+				post.comments.push({commentAuthor: req.user._id, commentAuthorUsername: req.user.username, commentText: req.body.commentText, commentDate: Date.now()});
 				post.save((err, post) => {
 					if(err) console.error(err);
 				})

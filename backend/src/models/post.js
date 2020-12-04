@@ -18,6 +18,7 @@ let postSchema = mongoose.Schema({
 	comments: [
 		{
 			commentAuthor: String,
+			commentAuthorUsername: String,
 			commentText: String,
 			commentDate: Date
 		}
