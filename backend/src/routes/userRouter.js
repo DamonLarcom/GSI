@@ -113,21 +113,33 @@ module.exports = () => {
 			user.profile.followedUsers.forEach((item, index) => {
 				User.findById(item, (err, foundUser) => {
 					foundUser.profile.followedBy.splice(foundUser.profile.followedBy.indexOf(user._id));
+					foundUser.save((err, fu) => {
+						if (err) return console.error(err);
+					});
 				});
 			});
 			user.profile.followedBy.forEach((item, index) => {
 				User.findById(item, (err, foundUser) => {
 					foundUser.profile.followedUsers.splice(foundUser.profile.followedUsers.indexOf(user._id));
+					foundUser.save((err, fu) => {
+						if (err) return console.error(err);
+					});
 				});
 			});
 			user.profile.blockedUsers.forEach((item, index) => {
 				User.findById(item, (err, foundUser) => {
 					foundUser.profile.blockedBy.splice(foundUser.profile.blockedBy.indexOf(user._id));
+					foundUser.save((err, fu) => {
+						if (err) return console.error(err);
+					});
 				});
 			});
 			user.profile.blockedBy.forEach((item, index) => {
 				User.findById(item, (err, foundUser) => {
 					foundUser.profile.blockedBy.splice(foundUser.profile.blockedUsers.indexOf(user._id));
+					foundUser.save((err, fu) => {
+						if (err) return console.error(err);
+					});
 				});
 			});
 
