@@ -149,10 +149,12 @@ module.exports = () => {
 					})
 					User.find({"likedPosts": {$in: req.post._id}}, (err, users) => {
 						if(err) console.error(err);
-						user.likedPosts.splice(user.likedPosts.indexOf(post._id), 1);
-						user.save((err, userSaved) => {
-							if(err) console.error(err);
-						});
+						for(user of users) {
+							user.likedPosts.splice(user.likedPosts.indexOf(post._id), 1);
+							user.save((err, userSaved) => {
+								if(err) console.error(err);
+							});
+						}
 					})
 					res.sendStatus(200);
 				}
