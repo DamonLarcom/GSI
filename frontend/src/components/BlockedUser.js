@@ -1,5 +1,6 @@
 import React from "react";
 import {Button, Card} from "react-bootstrap";
+import axios from "axios";
 
 
 const BlockedUser = props => {
@@ -14,7 +15,7 @@ const BlockedUser = props => {
         <Card>
             <Card.Body>
                 <Card.Title>{props.username}</Card.Title>
-                <Button variant="danger" onclick={unblockUser}>Unblock</Button>
+                <Button variant="danger" onClick={unblockUser}>Unblock</Button>
             </Card.Body>
         </Card>
     );
