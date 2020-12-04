@@ -143,7 +143,7 @@ module.exports = () => {
 							if(err) console.error(err);
 						});
 					})
-					User.find({"likedPosts": {$in: req.post._id}}, (err, users) => {
+					User.find({"likedPosts": {$in: post._id}}, (err, users) => {
 						if(err) console.error(err);
 						for(user of users) {
 							user.likedPosts.splice(user.likedPosts.indexOf(post._id), 1);
