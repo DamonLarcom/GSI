@@ -147,6 +147,13 @@ module.exports = () => {
 							if(err) console.error(err);
 						});
 					})
+					User.find({"likedPosts": {$in: req.post._id}}, (err, users) => {
+						if(err) console.error(err);
+						user.likedPosts.splice(user.likedPosts.indexOf(post._id), 1);
+						user.save((err, userSaved) => {
+							if(err) console.error(err);
+						});
+					})
 					res.sendStatus(200);
 				}
 			})
