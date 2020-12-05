@@ -69,10 +69,6 @@ module.exports = () => {
 							if (err) return console.error(err);
 							console.log(currentUser.username + " liked post " + postToLike._id);
 						});
-
-						postToLike.save((err, ptl) => {
-							if (err) return console.error(err);
-						});
 					} else {
 						postToLike.likeCount = postToLike.likeCount - 1;
 						currentUser.likedPosts.splice(currentUser.likedPosts.indexOf(postToLike._id), 1);
@@ -81,12 +77,12 @@ module.exports = () => {
 							if (err) return console.error(err);
 							console.log(currentUser.username + " unliked post " + postToLike._id);
 						});
-
-						postToLike.save((err, ptl) => {
-							if (err) return console.error(err);
-						});
 					}
 
+					postToLike.save((err, ptl) => {
+						if (err) return console.error(err);
+					});
+					
 				});
 			});
 		});
@@ -96,7 +92,7 @@ module.exports = () => {
 			// add a comment on a post
 			Post.findById(req.params.postId, (err, post) => {
 				if(err) console.error(err);
-				post.comments.push({commentAuthor: req.user._id, commentText: req.body.commentText, commentDate: Date.now()});
+				post.comments.push({commentAuthor: req.user._id, commentAuthorUsername: req.user.username, commentText: req.body.commentText, commentDate: Date.now()});
 				post.save((err, post) => {
                     if(err) console.error(err);
                     res.sendStatus(200);
@@ -148,6 +144,15 @@ module.exports = () => {
 						user.save((err, userSaved) => {
 							if(err) console.error(err);
 						});
+					})
+					User.find({"likedPosts": {$in: post._id}}, (err, users) => {
+						if(err) console.error(err);
+						for(user of users) {
+							user.likedPosts.splice(user.likedPosts.indexOf(post._id), 1);
+							user.save((err, userSaved) => {
+								if(err) console.error(err);
+							});
+						}
 					})
 					res.sendStatus(200);
 				}

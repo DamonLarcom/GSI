@@ -55,7 +55,6 @@ class Profile extends React.Component {
         try {
             console.log(this.props)
             const data = await axios.put(`${process.env.BACKEND_URL}/user/followToggle/${this.props.match.params.userId}`, {...this.state.input});
-            location.reload();
         } catch(error) {
             console.log("Follow error", error);
         }
@@ -65,7 +64,6 @@ class Profile extends React.Component {
         try {
             console.log(this.props)
             const data = await axios.put(`${process.env.BACKEND_URL}/user/blockToggle/${this.props.match.params.userId}`, {...this.state.input});
-            location.reload();
         } catch(error) {
             console.log("Blocking error", error);
         }
