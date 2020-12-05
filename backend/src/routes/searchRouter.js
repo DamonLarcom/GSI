@@ -19,7 +19,7 @@ module.exports = () => {
 	});
 
 	searchRouter.route("/keyword")
-	.get((req, res) => {
+	.put((req, res) => {
 		// get the search term and search the post collection for a partial match on post text and re-render the page with results
 		Post.find({"text": {"$regex": new RegExp(req.body.searchText, "i")}}, (err, posts) => {
 			if(err) console.error(err);

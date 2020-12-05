@@ -3,7 +3,7 @@ import React from "react";
 import axios from "axios";
 import Post from "../components/Post";
 
-import {Button, Form, InputGroup, FormControl} from "react-bootstrap";
+import {Button, Form, InputGroup, FormControl, ButtonGroup} from "react-bootstrap";
 
 export default class Search extends React.Component {
     constructor(props) {
@@ -36,8 +36,8 @@ export default class Search extends React.Component {
                 <InputGroup>
                     <FormControl type="text" placeholder="Search" onChange={this.handleChange}/>
                     <InputGroup.Append>
-                        <Button style={{marginLeft: "1%"}} onClick={this.handleUserSubmit}>Search For Users</Button>
-                        <Button style={{marginLeft: "1%"}} onClick={this.handleKeywordSubmit}>Search For Posts</Button>
+                            <Button onClick={this.handleUserSubmit}>Search For Users</Button>
+                            <Button onClick={this.handleKeywordSubmit}>Search For Posts</Button>
                     </InputGroup.Append>
                 </InputGroup>
                 <ul>
