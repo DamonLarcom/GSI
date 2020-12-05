@@ -39,7 +39,7 @@ class Post extends React.Component {
 
     async postComment () {
         await axios.patch(`${process.env.BACKEND_URL}/post/comment/${this.state._id}`, {commentText: this.state.commentInput});
-        this.setState({...this.state, comments:[...this.state.comments, {commentAuthor: this.props.user._id, commentText: this.state.commentInput, commentDate: Date.now()}]});
+        window.location.reload();
     }
 
     render() {
@@ -60,7 +60,7 @@ class Post extends React.Component {
                                     <Accordion.Collapse eventKey="0">
                                         <>
                                             {this.state?.comments?.map(comment => {
-                                                return(<Comment key={comment.commentAuthor} username={comment.commentAuthor} text={comment.commentText}/>);
+                                                return(<Comment key={comment._id} username={comment.commentAuthorUsername} userId={comment.commentAuthor} text={comment.commentText}/>);
                                             })}
                                             <Card>
                                                 <Card.Body>
