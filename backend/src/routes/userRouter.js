@@ -37,15 +37,11 @@ module.exports = () => {
 
 	userRouter.route("/blockedUsers")
 	.get((req, res) => {
-		User.findById(req.user._id, (err, user) => {
+        User.findById(req.user._id, (err, user) => {
             if (err) console.log(err)
-
-            const blockedUsers = user.profile.blockedUsers
-
-            const users = User.find({ user: { $in: blockedUsers } })
-            users.exec(function (error, users) {
-                if (error) console.log(error)
-                res.json(users)
+            User.find({ _id: user.profile.blockedUsers}, (err, blocks) => {
+                if (err) console.error(err);
+                res.send(blocks);
             })
         })
 	});

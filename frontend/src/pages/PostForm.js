@@ -9,22 +9,40 @@ class PostForm extends React.Component {
         super(props);
         this.createPost = this.createPost.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.updatePost = this.updatePost.bind(this);
+        this.getPost = this.getPost.bind(this);
 
         this.state = {
             text: "",
             user: "Test User"
         };
+
+        if(this.props.edit) {
+            this.getPost();
+        }
     }
 
     handleChange(e) {
         this.setState({text: e.target.value})
     }
 
-    createPost(e) {
+    async createPost(e) {
         e.preventDefault();
-        axios.post(`${process.env.BACKEND_URL}/post`, {user: this.props.user, text: this.state.text})
+        await axios.post(`${process.env.BACKEND_URL}/post`, {user: this.props.user, text: this.state.text})
         location.href="#/"
         return false;
+    }
+
+    async updatePost(e) {
+        e.preventDefault();
+        await axios.patch(`${process.env.BACKEND_URL}/post/${this.props.match.params.postId}`, {text: this.state.text});
+        location.href="#/"
+        return false;
+    }
+
+    async getPost() {
+        const post = await (await axios.get(`${process.env.BACKEND_URL}/post/${this.props.match.params.postId}`)).data;
+        this.setState({...post});
     }
 
     render() {
@@ -55,10 +73,10 @@ class PostForm extends React.Component {
                         <Card.Body>
                                 <Form.Group>
                                     <Form.Label>Post</Form.Label>
-                                    <Form.Control as="textarea" placeholder="Edit your thoughts..."></Form.Control>
+                                    <Form.Control as="textarea" defaultValue={this.state.text} placeholder="Edit your thoughts..."></Form.Control>
                                 </Form.Group>
                                 <Form.Group>
-                                    <Form.Control as="input" type="submit" value="Edit Post" onSubmit={this.createPost}></Form.Control>
+                                    <Form.Control as={Button} variant="primary" type="submit" onClick={this.updatePost}>Update Post</Form.Control>
                                 </Form.Group>
                         </Card.Body>
                     </Card>}

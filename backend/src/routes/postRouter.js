@@ -98,7 +98,8 @@ module.exports = () => {
 				if(err) console.error(err);
 				post.comments.push({commentAuthor: req.user._id, commentText: req.body.commentText, commentDate: Date.now()});
 				post.save((err, post) => {
-					if(err) console.error(err);
+                    if(err) console.error(err);
+                    res.sendStatus(200);
 				})
 			})
 		});
@@ -130,7 +131,8 @@ module.exports = () => {
 			Post.findById(req.params.postId, (err, post) => {
 				post.text = req.body.text;
 				post.save((err, post) => {
-					if(err) console.error(err);
+                    if(err) console.error(err);
+                    res.sendStatus(200);
 				})
 			});
 		})

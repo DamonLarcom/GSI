@@ -20,7 +20,6 @@ class App extends React.Component {
         super(props);
 
         axios.get(`${process.env.BACKEND_URL}/`).then(res => {
-            console.log(res.data);
             if(res.data) {
                 this.props.dispatch({type: 'STORE_USER', data: { User: {...res.data}}});
             }
@@ -41,6 +40,7 @@ class App extends React.Component {
                       <Route exact path="/"><Home/></Route>
                       <Route path="/home"><Home/></Route>
                       <Route path="/search"><Search/></Route>
+                      <Route path="/post/comment/:postId/edit" render={(props) => (<PostForm {...props} edit/>)}></Route>
                       <Route path="/post/:postId" render={(props) => (<Post {...props} details/>)}></Route>
                       <Route path="/post"><PostForm/></Route>
                   </Switch>

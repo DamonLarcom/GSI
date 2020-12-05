@@ -1,8 +1,9 @@
-import axios from "axios"
-import React from "react"
-import { Button, Card } from "react-bootstrap"
+import axios from "axios";
+import React from "react";
+import { Button, Card, Accordion, FormControl, Form, ButtonGroup } from "react-bootstrap";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
+import Comment from "./Comment";
 
 /**
  * @param {{ username: String; text: String; postId: any }} props
@@ -12,14 +13,15 @@ class Post extends React.Component {
     constructor(props) {
         super(props);
         this.deletePost = this.deletePost.bind(this);
-        this.state = {
+        this.postComment = this.postComment.bind(this);
 
+        this.state = {
+            commentInput: ""
         }
         if(this.props.details) {
             axios.get(`${process.env.BACKEND_URL}/post/${this.props.match.params.postId}`).then(res => {
                 const post = res.data;
                 this.setState({...post});
-                console.log(this.state);;
             });
         }
     }
@@ -35,14 +37,50 @@ class Post extends React.Component {
         window.location = "/";
     }
 
+    async postComment () {
+        await axios.patch(`${process.env.BACKEND_URL}/post/comment/${this.state._id}`, {commentText: this.state.commentInput});
+        this.setState({...this.state, comments:[...this.state.comments, {commentAuthor: this.props.user._id, commentText: this.state.commentInput, commentDate: Date.now()}]});
+    }
+
     render() {
         return (
             <Card>
-                {console.log(this.state)}
                 <Card.Body>
-                    <Card.Title>Posted by {this.props.username||this.state.username}</Card.Title>
+                    <Card.Title>Posted by <NavLink to={`/profile/${this.state.user || this.props.userId}/view`}>{this.props.username||this.state.username}</NavLink></Card.Title>
                     <Card.Text>{this.props.text||this.state.text}</Card.Text>
-                    {(this.props?.user?._id == this.state.user) && this.props?.details ?<Button variant="danger" onClick={this.deletePost}>Delete</Button>:null}
+                    {(this.props?.user?._id == this.state.user) && this.props?.details ? (
+                        <>
+                            <Accordion>
+                                <Card>
+                                    <Card.Header>
+                                        <Accordion.Toggle as={Button} variant="link" eventKey="0">
+                                            Comments
+                                        </Accordion.Toggle>
+                                    </Card.Header>
+                                    <Accordion.Collapse eventKey="0">
+                                        <>
+                                            {this.state?.comments?.map(comment => {
+                                                return(<Comment key={comment.commentAuthor} username={comment.commentAuthor} text={comment.commentText}/>);
+                                            })}
+                                            <Card>
+                                                <Card.Body>
+                                                    <Card.Title>Create Comment</Card.Title>
+                                                    <Form>
+                                                        <FormControl as="textarea" placeholder="Comment" onChange={(e)=>{this.setState({...this.state, commentInput: e.target.value})}}/>
+                                                        <Button onClick={this.postComment} style={{marginTop: "2%"}}>Post Comment</Button>
+                                                    </Form>
+                                                </Card.Body>
+                                            </Card>
+                                        </>
+                                    </Accordion.Collapse>
+                                </Card>
+                            </Accordion>
+                            <ButtonGroup>
+                                <Button variant="primary" as={NavLink} to={`/post/comment/${this.state._id}/edit`}>Edit</Button>
+                                <Button variant="danger" onClick={this.deletePost}>Delete</Button>
+                            </ButtonGroup>
+                        </>
+                    ): null}
                     {!this.props?.details ? <Button as={NavLink} to={`/post/${this.props.postId}`} variant="primary">Read More</Button>: null}
                 </Card.Body>
             </Card>

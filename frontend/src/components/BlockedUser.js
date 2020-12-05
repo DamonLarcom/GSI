@@ -14,7 +14,7 @@ const BlockedUser = props => {
         <Card>
             <Card.Body>
                 <Card.Title>{props.username}</Card.Title>
-                <Button variant="danger" onclick={unblockUser}>Unblock</Button>
+                <Button variant="danger" onClick={unblockUser}>Unblock</Button>
             </Card.Body>
         </Card>
     );
