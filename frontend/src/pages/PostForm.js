@@ -24,6 +24,7 @@ class PostForm extends React.Component {
 
     handleChange(e) {
         this.setState({text: e.target.value})
+        console.log(this.state.text);
     }
 
     async createPost(e) {
@@ -73,7 +74,7 @@ class PostForm extends React.Component {
                         <Card.Body>
                                 <Form.Group>
                                     <Form.Label>Post</Form.Label>
-                                    <Form.Control as="textarea" defaultValue={this.state.text} placeholder="Edit your thoughts..."></Form.Control>
+                                    <Form.Control as="textarea" defaultValue={this.state.text} onChange={this.handleChange} placeholder="Edit your thoughts..."></Form.Control>
                                 </Form.Group>
                                 <Form.Group>
                                     <Form.Control as={Button} variant="primary" type="submit" onClick={this.updatePost}>Update Post</Form.Control>

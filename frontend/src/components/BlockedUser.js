@@ -5,7 +5,6 @@ import axios from "axios";
 
 const BlockedUser = props => {
     const unblockUser = async() => {
-        console.log(props);
         const status = (await axios.put(`${process.env.BACKEND_URL}/user/blockToggle/${props.userToBlockId}`)).status
         if(status === 200) {
             console.log("User blocked/unblocked");

@@ -124,6 +124,8 @@ module.exports = () => {
 		})
 		.patch((req, res) => {
 			// Edits a post with the post as the body
+			console.log("am here");
+			console.log(req.body);
 			Post.findById(req.params.postId, (err, post) => {
 				post.text = req.body.text;
 				post.save((err, post) => {

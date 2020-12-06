@@ -48,7 +48,7 @@ class Post extends React.Component {
                 <Card.Body>
                     <Card.Title>Posted by <NavLink to={`/profile/${this.state.user || this.props.userId}/view`}>{this.props.username||this.state.username}</NavLink></Card.Title>
                     <Card.Text>{this.props.text||this.state.text}</Card.Text>
-                    {(this.props?.user?._id == this.state.user) && this.props?.details ? (
+                    {this.props?.details ? (
                         <>
                             <Accordion>
                                 <Card>
@@ -62,23 +62,27 @@ class Post extends React.Component {
                                             {this.state?.comments?.map(comment => {
                                                 return(<Comment key={comment._id} username={comment.commentAuthorUsername} userId={comment.commentAuthor} text={comment.commentText}/>);
                                             })}
-                                            <Card>
-                                                <Card.Body>
-                                                    <Card.Title>Create Comment</Card.Title>
-                                                    <Form>
-                                                        <FormControl as="textarea" placeholder="Comment" onChange={(e)=>{this.setState({...this.state, commentInput: e.target.value})}}/>
-                                                        <Button onClick={this.postComment} style={{marginTop: "2%"}}>Post Comment</Button>
-                                                    </Form>
-                                                </Card.Body>
-                                            </Card>
+                                            {this.props?.user?._id ? (
+                                                <Card>
+                                                    <Card.Body>
+                                                        <Card.Title>Create Comment</Card.Title>
+                                                        <Form>
+                                                            <FormControl as="textarea" placeholder="Comment" onChange={(e)=>{this.setState({...this.state, commentInput: e.target.value})}}/>
+                                                            <Button onClick={this.postComment} style={{marginTop: "2%"}}>Post Comment</Button>
+                                                        </Form>
+                                                    </Card.Body>
+                                                </Card>
+                                            ): null}
                                         </>
                                     </Accordion.Collapse>
                                 </Card>
                             </Accordion>
-                            <ButtonGroup>
-                                <Button variant="primary" as={NavLink} to={`/post/comment/${this.state._id}/edit`}>Edit</Button>
-                                <Button variant="danger" onClick={this.deletePost}>Delete</Button>
-                            </ButtonGroup>
+                            {(this.props?.user?._id == this.state.user) ? (
+                                <ButtonGroup>
+                                    <Button variant="primary" as={NavLink} to={`/post/comment/${this.state._id}/edit`}>Edit</Button>
+                                    <Button variant="danger" onClick={this.deletePost}>Delete</Button>
+                                </ButtonGroup>
+                            ): null}
                         </>
                     ): null}
                     {!this.props?.details ? <Button as={NavLink} to={`/post/${this.props.postId}`} variant="primary">Read More</Button>: null}
