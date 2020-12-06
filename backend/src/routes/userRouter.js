@@ -19,7 +19,7 @@ module.exports = () => {
 				}
 				userToBlock.save((err, utb) => {
 					if (err) return console.error(err);
-					console.log(userToBlock.username + " blocked.");
+					console.log(userToBlock.username + " blocked/unblocked.");
 				});
 				if (err) return console.error(err);
 				if(currentUser.profile.blockedUsers.indexOf(userToBlock._id) > -1) {

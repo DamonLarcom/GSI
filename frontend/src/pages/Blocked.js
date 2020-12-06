@@ -27,7 +27,8 @@ class Blocked extends React.Component {
                 <Card.Body>
                     {
                         this.state.blocked.map(blockeduser => {
-                            return(<BlockedUser key={blockeduser.userId} username={blockeduser.username}/>);
+                            console.log(blockeduser);
+                            return(<BlockedUser key={blockeduser._id} userToBlockId={blockeduser._id} username={blockeduser.username}/>);
                         })
                     }
                 </Card.Body>
