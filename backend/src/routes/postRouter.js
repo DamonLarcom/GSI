@@ -107,7 +107,8 @@ module.exports = () => {
 
 				post.comments.splice(post.comments.findIndex(c => c._id = req.body.commentToDelete._id), 1);
 				post.save((err, post) => {
-					if(err) console.error(err);
+                    if(err) console.error(err);
+                    res.sendStatus(200);
 				})
 			})
 		});

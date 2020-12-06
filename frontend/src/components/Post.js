@@ -14,6 +14,7 @@ class Post extends React.Component {
         super(props);
         this.deletePost = this.deletePost.bind(this);
         this.postComment = this.postComment.bind(this);
+        this.deleteComment = this.deleteComment.bind(this);
 
         this.state = {
             commentInput: ""
@@ -35,6 +36,12 @@ class Post extends React.Component {
             }
         }
         window.location = "/";
+    }
+
+    async deleteComment (id) {
+        console.log("Delete Comment");
+        await axios.patch(`${process.env.BACKEND_URL}/post/deleteCom/${this.props.postId || this.state._id}`, {commentToDelete: {_id: id}});
+        window.location.reload();
     }
 
     async postComment () {
@@ -60,7 +67,7 @@ class Post extends React.Component {
                                     <Accordion.Collapse eventKey="0">
                                         <>
                                             {this.state?.comments?.map(comment => {
-                                                return(<Comment key={comment._id} username={comment.commentAuthorUsername} userId={comment.commentAuthor} text={comment.commentText}/>);
+                                                return(<Comment key={comment._id} username={comment.commentAuthorUsername} userId={comment.commentAuthor} commentId={comment._id} text={comment.commentText} onDelete={this.deleteComment}/>);
                                             })}
                                             {this.props?.user?._id ? (
                                                 <Card>
