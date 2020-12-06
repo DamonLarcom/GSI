@@ -12,7 +12,6 @@ class Comment extends React.Component {
     render() {
         return (
             <Card>
-                {console.log(this.props)}
                 <Card.Body>
                     <Card.Title>Posted by <NavLink to={`/profile/${this.props.userId}/view`}>{this.props.username}</NavLink></Card.Title>
                     <Card.Text>{this.props.text}</Card.Text>

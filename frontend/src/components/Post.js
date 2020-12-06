@@ -15,37 +15,43 @@ class Post extends React.Component {
         this.deletePost = this.deletePost.bind(this);
         this.postComment = this.postComment.bind(this);
         this.deleteComment = this.deleteComment.bind(this);
+        this.likePost = this.likePost.bind(this);
 
         this.state = {
             commentInput: ""
         }
-        if(this.props.details) {
+        if (this.props.details) {
             axios.get(`${process.env.BACKEND_URL}/post/${this.props.match.params.postId}`).then(res => {
                 const post = res.data;
-                this.setState({...post});
+                this.setState({ ...post });
             });
         }
     }
 
-    async deletePost () {
+    async deletePost() {
         console.log("Delete Post");
         const deleteStatus = (await axios.delete(`${process.env.BACKEND_URL}/post/${this.props.postId || this.state._id}`)).status
-        if(deleteStatus === 200) {
-            if(this?.props?.postDelete) {
-                this.props?.postDeleted({...this.props});
+        if (deleteStatus === 200) {
+            if (this?.props?.postDelete) {
+                this.props?.postDeleted({ ...this.props });
             }
         }
         window.location = "/";
     }
 
-    async deleteComment (id) {
-        console.log("Delete Comment");
-        await axios.patch(`${process.env.BACKEND_URL}/post/deleteCom/${this.props.postId || this.state._id}`, {commentToDelete: {_id: id}});
+    async likePost() {
+        await axios.patch(`${process.env.BACKEND_URL}/post/likeToggle/${this.state._id}`);
         window.location.reload();
     }
 
-    async postComment () {
-        await axios.patch(`${process.env.BACKEND_URL}/post/comment/${this.state._id}`, {commentText: this.state.commentInput});
+    async deleteComment(id) {
+        console.log("Delete Comment");
+        await axios.patch(`${process.env.BACKEND_URL}/post/deleteCom/${this.props.postId || this.state._id}`, { commentToDelete: { _id: id } });
+        window.location.reload();
+    }
+
+    async postComment() {
+        await axios.patch(`${process.env.BACKEND_URL}/post/comment/${this.state._id}`, { commentText: this.state.commentInput });
         window.location.reload();
     }
 
@@ -53,8 +59,9 @@ class Post extends React.Component {
         return (
             <Card>
                 <Card.Body>
-                    <Card.Title>Posted by <NavLink to={`/profile/${this.state.user || this.props.userId}/view`}>{this.props.username||this.state.username}</NavLink></Card.Title>
-                    <Card.Text>{this.props.text||this.state.text}</Card.Text>
+                    <Card.Title>Posted by <NavLink to={`/profile/${this.state.user || this.props.userId}/view`}>{this.props.username || this.state.username}</NavLink></Card.Title>
+                    <Card.Text>Likes {this.props.likeCount | this.state.likeCount}</Card.Text>
+                    <Card.Text>{this.props.text || this.state.text}</Card.Text>
                     {this.props?.details ? (
                         <>
                             <Accordion>
@@ -67,36 +74,36 @@ class Post extends React.Component {
                                     <Accordion.Collapse eventKey="0">
                                         <>
                                             {this.state?.comments?.map(comment => {
-                                                return(<Comment key={comment._id} username={comment.commentAuthorUsername} userId={comment.commentAuthor} commentId={comment._id} text={comment.commentText} onDelete={this.deleteComment}/>);
+                                                return (<Comment key={comment._id} username={comment.commentAuthorUsername} userId={comment.commentAuthor} commentId={comment._id} text={comment.commentText} onDelete={this.deleteComment} />);
                                             })}
                                             {this.props?.user?._id ? (
                                                 <Card>
                                                     <Card.Body>
                                                         <Card.Title>Create Comment</Card.Title>
                                                         <Form>
-                                                            <FormControl as="textarea" placeholder="Comment" onChange={(e)=>{this.setState({...this.state, commentInput: e.target.value})}}/>
-                                                            <Button onClick={this.postComment} style={{marginTop: "2%"}}>Post Comment</Button>
+                                                            <FormControl as="textarea" placeholder="Comment" onChange={(e) => { this.setState({ ...this.state, commentInput: e.target.value }) }} />
+                                                            <Button onClick={this.postComment} style={{ marginTop: "2%" }}>Post Comment</Button>
                                                         </Form>
                                                     </Card.Body>
                                                 </Card>
-                                            ): null}
+                                            ) : null}
                                         </>
                                     </Accordion.Collapse>
                                 </Card>
                             </Accordion>
-                            {(this.props?.user?._id == this.state.user) ? (
+                            {(this.props?.user?._id == this.state.user) && this.props.user ? (
                                 <ButtonGroup>
                                     <Button variant="primary" as={NavLink} to={`/post/comment/${this.state._id}/edit`}>Edit</Button>
                                     <Button variant="danger" onClick={this.deletePost}>Delete</Button>
                                 </ButtonGroup>
-                            ): null}
+                            ) : null}
                         </>
-                    ): null}
-                    {!this.props?.details ? <Button as={NavLink} to={`/post/${this.props.postId}`} variant="primary">Read More</Button>: null}
+                    ) : null}
+                    {!this.props?.details ? <Button as={NavLink} to={`/post/${this.props.postId}`} variant="primary">Read More</Button> : this.props.user ? (<Button onClick={this.likePost}>Like</Button>):null}
                 </Card.Body>
             </Card>
         );
     }
 }
 
-export default connect(state=>({...state}))(Post);
+export default connect(state => ({ ...state }))(Post);

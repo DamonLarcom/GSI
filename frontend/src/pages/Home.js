@@ -25,7 +25,7 @@ class Home extends React.Component {
         return(
             <div className="home posts-wrapper">
                 {this.state.posts.map(post => {
-                    return(<Post text={post.text} userId={post.user} username={post.username} postId={post._id} key={post._id}/>);
+                    return(<Post {...post} text={post.text} userId={post.user} username={post.username} postId={post._id} key={post._id} />);
                 })}
             </div>
         );

@@ -67,7 +67,8 @@ module.exports = () => {
 
 						currentUser.save((err, cu) => {
 							if (err) return console.error(err);
-							console.log(currentUser.username + " liked post " + postToLike._id);
+                            console.log(currentUser.username + " liked post " + postToLike._id);
+                            res.sendStatus(200);
 						});
 					} else {
 						postToLike.likeCount = postToLike.likeCount - 1;
@@ -76,11 +77,12 @@ module.exports = () => {
 						currentUser.save((err, cu) => {
 							if (err) return console.error(err);
 							console.log(currentUser.username + " unliked post " + postToLike._id);
+                            res.sendStatus(200);
 						});
 					}
 
 					postToLike.save((err, ptl) => {
-						if (err) return console.error(err);
+                        if (err) return console.error(err);
 					});
 					
 				});
