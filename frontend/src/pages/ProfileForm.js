@@ -1,8 +1,9 @@
 import axios from "axios";
 import React from "react";
 import { Button, Card, Form } from "react-bootstrap";
+import { connect } from "react-redux";
 
-export default class ProfileForm extends React.Component {
+class ProfileForm extends React.Component {
     constructor(props) {
         super(props);
         axios.get(`${process.env.BACKEND_URL}/user/${this.props.match.params.userId}`).then(res => {
@@ -28,7 +29,9 @@ export default class ProfileForm extends React.Component {
     }
 
     render() {
+        console.log(this);
         return(
+            this.props.match.params.userId === this.props?.user?._id ?
             <div style={{margin: "0 auto", padding: "5%"}}>
                 <Card style={{padding: "1.25rem"}}>
                     <Card.Title>Editing Your Profile</Card.Title>
@@ -56,7 +59,9 @@ export default class ProfileForm extends React.Component {
                         </Form>
                     </Card.Body>
                 </Card>
-            </div>
+            </div> : <p>This isn't your profile.</p>
         );
     }
 }
+
+export default connect(state => ({...state}))(ProfileForm)

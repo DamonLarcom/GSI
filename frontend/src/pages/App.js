@@ -36,11 +36,11 @@ class App extends React.Component {
                         <Route path="/profile/:userId/blocked" component={Blocked} />
                         <Route path="/profile/:userId/view" component={ProfileView} />
                         <Route path="/profile/:userId/edit" component={ProfileForm} />
-                        <Route path="/profile/:userId" component={Profile} key={location.pathname} />
+                        <Route path="/profile/:userId" component={Profile}/>
                         <Route path="/home"><Home /></Route>
                         <Route exact path="/"><Home /></Route>
                         <Route path="/search"><Search /></Route>
-                        <Route path="/post/comment/:postId/edit" render={(props) => (<PostForm {...props} edit/>)}></Route>
+                        <Route path="/post/comment/:postId/edit" render={(props) => (<PostForm {...props} edit />)}></Route>
                         <Route path="/post/:postId" render={(props) => (<Post {...props} details />)}></Route>
                         <Route path="/post"><PostForm /></Route>
                     </Switch>
