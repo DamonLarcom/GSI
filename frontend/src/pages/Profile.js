@@ -113,7 +113,9 @@ class Profile extends React.Component {
                         <Card.Body>
                             {this.props.user?.email ? <Card.Text>Email: {this.state.user.email}</Card.Text>:null}
                             {this.props.user?.phoneNum ? <Card.Text>Phone: {this.state.user.phoneNum}</Card.Text>:null}
-                            <Card.Text>{this.state.user.followedBy.length} Followers | {this.state.user.followedUsers.length} Following</Card.Text>
+                            <Card.Text>{this.state.user.followedBy.length} <NavLink to={`/profile/${this.props.match.params.userId}/followers`}>Followers </NavLink> 
+                                        | {this.state.user.followedUsers.length} <NavLink to={`/profile/${this.props.match.params.userId}/following`}>Following</NavLink>
+                            </Card.Text>
                             <Card.Text>{this.state.user.bio}</Card.Text>
                             <ButtonGroup>
                                 

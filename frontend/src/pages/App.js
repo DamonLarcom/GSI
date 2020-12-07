@@ -13,6 +13,7 @@ import ProfileForm from "./ProfileForm";
 import { connect } from "react-redux";
 import ProfileView from "./ProfileView";
 import Blocked from "./Blocked";
+import Following from "./Following"
 import Post from "../components/Post";
 
 class App extends React.Component {
@@ -36,6 +37,8 @@ class App extends React.Component {
                       <Route path="/profile/:userId/blocked" component={Blocked}/>
                       <Route path="/profile/:userId/view" component={ProfileView}/>
                       <Route path="/profile/:userId/edit" component={ProfileForm}/>
+                      <Route path="/profile/:userId/followers" render={(props) => (<Following {...props} followers/>)}></Route>
+                      <Route path="/profile/:userId/following" render={(props) => (<Following {...props} followers/>)}></Route>
                       <Route path="/profile/:userId" component={Profile} key={location.pathname}/>
                       <Route exact path="/"><Home/></Route>
                       <Route path="/home"><Home/></Route>
