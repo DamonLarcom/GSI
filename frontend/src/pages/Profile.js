@@ -125,7 +125,7 @@ class Profile extends React.Component {
                                     </>
                                 ): (
                                     <>
-                                        <Button variant="primary" onClick={this.handleFollow}>{this.checkFollow? "Follow" : "Unfollow"}</Button>
+                                        <Button variant="primary" onClick={this.handleFollow}>{this.checkFollow ? "Unfollow" : "Follow"}</Button>
                                         <Button variant="danger" onClick={this.handleBlock}>Block</Button>
                                     </>
                                 )}    

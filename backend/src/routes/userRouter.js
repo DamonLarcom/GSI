@@ -1,6 +1,7 @@
 const express = require('express');
 const User = require('../models/user');
 const Post = require('../models/post');
+const post = require('../models/post');
 const userRouter = express.Router();
 
 module.exports = () => {
@@ -44,7 +45,27 @@ module.exports = () => {
                 res.send(blocks);
             })
         })
-    });
+	});
+	userRouter.route("/followedUsers")
+	.get((req, res) => {
+		User.findById(req.user._id, (err, user) => {
+			if(err) console.error(err);
+			User.find({_id: {$in : user.profile.followedUsers}}, (err, followedUsers) => {
+				if(err) console.error(err);
+				res.json(followedUsers);
+			})
+		})
+	})
+	userRouter.route("/followedByUsers")
+	.get((req, res) => {
+		User.findById(req.user._id, (err, user) => {
+			if(err) console.error(err);
+			User.find({_id: {$in : user.profile.followedBy}}, (err, followedBy) => {
+				if(err) console.error(err);
+				res.json(followedBy);
+			})
+		})
+	})
 
 	userRouter.route("/followToggle/:userToFollowId")
 	.put((req, res) => {
@@ -146,14 +167,26 @@ module.exports = () => {
 					});
 				});
 			});
+			Post.find({"comments.commentAuthor": req.user._id}, (err, posts) => {
+				if(err) console.error(err);
+				for(eachPost of posts) {
+					eachPost.comments = eachPost.comments.filter(c => c.commentAuthor != req.user._id);
+					console.log(eachPost.comments);
+					eachPost.save((err, post) => {
+						if(err) console.error(err);
+						console.log("post saved");
+						console.log(post);
+					})
+				}
+			});
 
 			Post.deleteMany({ user: user._id }, (err, posts) => {
 				if(err) console.error(err);
-				for(post in posts) {
-					User.find({"likedPosts": {$in: post._id}}, (err, users) => {
+				for(eachPost in posts) {
+					User.find({"likedPosts": {$in: eachPost._id}}, (err, users) => {
 						if(err) console.error(err);
 						for(user of users) {
-							user.likedPosts.splice(user.likedPosts.indexOf(post._id), 1);
+							user.likedPosts.splice(user.likedPosts.indexOf(eachPost._id), 1);
 							user.save((err, userSaved) => {
 								if(err) console.error(err);
 							});
