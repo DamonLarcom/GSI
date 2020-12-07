@@ -23,6 +23,7 @@ class SignUp extends React.Component {
             const data = await (await axios.post(`${process.env.BACKEND_URL}/signup`, {...this.state.input})).data;
             this.props.dispatch({type: 'STORE_USER', data: { User: data }});
             this.setState({ show: false });
+            location.reload();
         } catch (error) {
             console.log("Sign Up error", error);
             this.setState({ show: true})

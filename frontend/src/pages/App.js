@@ -1,5 +1,5 @@
 import React from "react";
-import {HashRouter as Router, Switch, Route, Link} from "react-router-dom";
+import { HashRouter as Router, Switch, Route, Link } from "react-router-dom";
 import axios from 'axios';
 
 import Navigation from "../components/Navigation";
@@ -21,12 +21,12 @@ class App extends React.Component {
         super(props);
 
         axios.get(`${process.env.BACKEND_URL}/`).then(res => {
-            if(res.data) {
-                this.props.dispatch({type: 'STORE_USER', data: { User: {...res.data}}});
+            if (res.data) {
+                this.props.dispatch({ type: 'STORE_USER', data: { User: { ...res.data } } });
             }
         })
     }
-    
+
     render() {
 
         return (
@@ -37,8 +37,8 @@ class App extends React.Component {
                       <Route path="/profile/:userId/blocked" component={Blocked}/>
                       <Route path="/profile/:userId/view" component={ProfileView}/>
                       <Route path="/profile/:userId/edit" component={ProfileForm}/>
-                      <Route path="/profile/:userId/followers" render={(props) => (<Following {...props} followers/>)}></Route>
-                      <Route path="/profile/:userId/following" render={(props) => (<Following {...props} followers/>)}></Route>
+                      <Route path="/profile/:userId/followedByUsers" render={(props) => (<Following {...props} followers/>)}></Route>
+                      <Route path="/profile/:userId/followedUsers" render={(props) => (<Following {...props} />)}></Route>
                       <Route path="/profile/:userId" component={Profile} key={location.pathname}/>
                       <Route exact path="/"><Home/></Route>
                       <Route path="/home"><Home/></Route>
@@ -53,4 +53,4 @@ class App extends React.Component {
     }
 }
 
-export default connect((state)=>({...state}))(App);
+export default connect((state) => ({ ...state }))(App);

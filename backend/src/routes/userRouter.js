@@ -45,7 +45,27 @@ module.exports = () => {
                 res.send(blocks);
             })
         })
-    });
+	});
+	userRouter.route("/followedUsers")
+	.get((req, res) => {
+		User.findById(req.user._id, (err, user) => {
+			if(err) console.error(err);
+			User.find({_id: {$in : user.profile.followedUsers}}, (err, followedUsers) => {
+				if(err) console.error(err);
+				res.json(followedUsers);
+			})
+		})
+	})
+	userRouter.route("/followedByUsers")
+	.get((req, res) => {
+		User.findById(req.user._id, (err, user) => {
+			if(err) console.error(err);
+			User.find({_id: {$in : user.profile.followedBy}}, (err, followedBy) => {
+				if(err) console.error(err);
+				res.json(followedBy);
+			})
+		})
+	})
 
 	userRouter.route("/followToggle/:userToFollowId")
 	.put((req, res) => {
