@@ -32,6 +32,7 @@ class Login extends React.Component {
             })).data;
             this.props.dispatch({ type: 'STORE_USER', data: { User: data } });
             this.setState({ show: false });
+            location.reload();
         } catch (error) {
             console.error("Login error", error);
             console.log(error.response);

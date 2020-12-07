@@ -14,7 +14,7 @@ class Home extends React.Component {
 
     async retrivePosts() {
         //followedPosts
-        let data = await (await axios.get(`${process.env.BACKEND_URL}/post`)).data;
+        let data = await (await axios.get(`${process.env.BACKEND_URL}/post/followedPosts`)).data;
         console.log(data);
         this.setState({
             posts: data
