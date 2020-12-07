@@ -3,7 +3,7 @@ import QueryString from "querystring";
 import React from "react";
 import { connect } from "react-redux";
 
-import { Button, Modal, Nav, Form } from "react-bootstrap";
+import { Button, Modal, Nav, Form, Alert } from "react-bootstrap";
 import axios from "axios";
 
 class Login extends React.Component {
@@ -11,6 +11,8 @@ class Login extends React.Component {
         super(props);
         this.state = {
             show: false,
+            hasError: false,
+            errorMessage: "",
             input: {
                 username: '',
                 password: ''
@@ -31,8 +33,14 @@ class Login extends React.Component {
             this.props.dispatch({ type: 'STORE_USER', data: { User: data } });
             this.setState({ show: false });
         } catch (error) {
-            console.log("Login error", error);
-            this.setState({ show: true })
+            console.error("Login error", error);
+            console.log(error.response);
+            if(error.response.status === 400) {
+                this.setState({ show: true, hasError: true, errorMessage: "Invalid Login"})
+            }
+            else if(error.response.status === 401) {
+                this.setState({ show: true, hasError: true, errorMessage: "Invalid Username or Password"});
+            }
         }
     }
 
@@ -47,6 +55,7 @@ class Login extends React.Component {
                     <Modal.Header closeButton>
                         <Modal.Title>Login</Modal.Title>
                     </Modal.Header>
+                    <Alert variant="danger" show={this.state.hasError} style={{marginBottom: "0", borderRadius: "0"}}>{this.state.errorMessage}</Alert>
                     <Modal.Body>
                         <Form>
                             <Form.Group controlId="formBasicEmail">
