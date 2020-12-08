@@ -126,10 +126,11 @@ module.exports = () => {
 					User.findById(req.user._id, (err, userChange) => {
 						if(err) console.error(err);
 						if(req.body.newPassword != "") {
-							userChange.changePassword(req.body.oldPassword, req.body.newPassword, (err) => {
+							userChange.changePassword(req.body.oldPassword, req.body.newPassword, (err, user) => {
 								if(err) res.sendStatus(401);
 							})
 						}
+						console.log(userChange);
 						if(req.body.username != "") {
 							userChange.username = req.body.username;
 						}

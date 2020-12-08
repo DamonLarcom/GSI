@@ -1,6 +1,7 @@
 import React from "react";
 import BlockedUser from "../components/BlockedUser";
 import axios from "axios";
+import { connect } from "react-redux";
 import { Button, Card } from "react-bootstrap";
 
 class Blocked extends React.Component {
@@ -36,4 +37,4 @@ class Blocked extends React.Component {
     }
 }
 
-export default Blocked;
+export default connect((state) => ({...state}))(Blocked)

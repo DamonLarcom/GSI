@@ -1,7 +1,9 @@
 import React from "react";
 import FollowedUser from "../components/FollowedUser";
 import axios from "axios";
-import { Button, Card } from "react-bootstrap";
+import { Button, Card} from "react-bootstrap";
+import { connect } from "react-redux";
+
 
 class Following extends React.Component {
     constructor(props) {
@@ -44,9 +46,9 @@ class Following extends React.Component {
                         this.state.followed.map(followuser => {
                             return (
                                 this.props.followers ?
-                                    <FollowedUser key={followuser._id} userToFollowId={followuser._id} username={followuser.username} follower />
+                                    <FollowedUser key={followuser._id} userId={followuser._id} username={followuser.username} follower showUnfollow={this.props.user?.profile.followedUsers.indexOf(followuser._id) > -1}/>
                                     :
-                                    <FollowedUser key={followuser._id} userToFollowId={followuser._id} username={followuser.username} />
+                                    <FollowedUser key={followuser._id} userId={followuser._id} username={followuser.username} showUnfollow={this.props.user?.profile.followedUsers.indexOf(followuser._id) > -1}/>
                             )
                         })
                     }
@@ -56,4 +58,4 @@ class Following extends React.Component {
     }
 }
 
-export default Following;
+export default connect((state) => ({...state}))(Following)
