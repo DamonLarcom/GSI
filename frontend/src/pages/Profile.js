@@ -13,6 +13,7 @@ class Profile extends React.Component {
         this.getProfile = this.getProfile.bind(this);
         this.handleFollow = this.handleFollow.bind(this);
         this.handleBlock = this.handleBlock.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
 
         this.state = {
             user: {
@@ -25,29 +26,30 @@ class Profile extends React.Component {
                 followedUsers: [],
                 authoredPosts: [],
                 posts: []
-            }
+            },
+            showDelete: false,
         }
-        this.handleDelete = this.handleDelete.bind(this);
         this.getProfile();
     }
 
     getProfile() {
         axios.get(`${process.env.BACKEND_URL}/user/${this.props.match.params.userId}`)
-        .then(res => {
-            this.setState({user:{...this.state.user, ...res.data.profile, authoredPosts: res.data.authoredPosts, username: res.data.username}});
-            this.forceUpdate();
-            this.getPosts();
-        });
+            .then(res => {
+                console.log(res.data);
+                this.setState({ user: { ...this.state.user, ...res.data.profile, authoredPosts: res.data.authoredPosts, username: res.data.username }});
+                this.forceUpdate();
+                this.getPosts();
+            });
     }
 
     async handleDelete() {
         try {
-            const data = await axios.delete(`${process.env.BACKEND_URL}/user/${this.props.match.params.userId}`, {...this.state.input});
-            this.setState({ show: false });
+            const data = await axios.delete(`${process.env.BACKEND_URL}/user/${this.props.match.params.userId}`, { ...this.state.input });
+            this.setState({ showDelete: false });
             window.location = "/"
         } catch (error) {
             console.log("Delete error", error);
-            this.setState({ show: true})
+            this.setState({ showDelete: true });
         }
     }
 
@@ -84,27 +86,27 @@ class Profile extends React.Component {
         }
         return false;
     }
-    
+
     getPosts() {
         let collection = [];
 
         this.state.user.authoredPosts.forEach(postId => {
             axios.get(`${process.env.BACKEND_URL}/post/${postId}`)
-            .then(res => {
-                collection.push(res.data);
-                this.forceUpdate();
-            })
+                .then(res => {
+                    collection.push(res.data);
+                    this.forceUpdate();
+                })
         });
 
         collection.sort();
 
-        this.setState({user: {...this.state.user, posts: collection}})
+        this.setState({ user: { ...this.state.user, posts: collection } })
     }
 
     render() {
-        return(
+        return (
             !this.props?.user?.profile?.blockedUsers?.includes(this.props.match.params.userId) ? (<>
-                <Modal show={this.state.show} onHide={() => { this.setState({ show: false }) }} centered>
+                <Modal show={this.state.showDelete} onHide={() => { this.setState({ showDelete: false }) }} centered>
                     <Modal.Header closeButton>
                         <Modal.Title>Delete Profile</Modal.Title>
                     </Modal.Header>
@@ -112,7 +114,7 @@ class Profile extends React.Component {
                         <p>Are you sure you want to delete?</p>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={() => { this.setState({ show: false }) }}>Close</Button>
+                        <Button variant="secondary" onClick={() => { this.setState({ showDelete: false }) }}>Close</Button>
                         <Button variant="danger" onClick={this.handleDelete}>Delete</Button>
                     </Modal.Footer>
                 </Modal>
@@ -164,4 +166,4 @@ class Profile extends React.Component {
     }
 }
 
-export default connect(state=>({ ...state }))(Profile);
+export default connect(state => ({ ...state }))(Profile);

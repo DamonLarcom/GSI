@@ -45,7 +45,7 @@ class SignUp extends React.Component {
                         <Form>
                             <Form.Group controlId="formBasicEmail">
                                 <Form.Label>Username</Form.Label>
-                                <Form.Control type="email" placeholder="Enter username" onChange={e => {this.setState({input: {...this.state.input, username: e.target.value}})}}/>
+                                <Form.Control type="text" placeholder="Enter username" onChange={e => {this.setState({input: {...this.state.input, username: e.target.value}})}}/>
                             </Form.Group>
 
                             <Form.Group controlId="formBasicPassword">
