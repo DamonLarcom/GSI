@@ -1,7 +1,8 @@
 const express = require('express');
 const User = require('../models/user');
 const Post = require('../models/post');
-const post = require('../models/post');
+const passport = require("passport");
+
 const userRouter = express.Router();
 
 module.exports = () => {
@@ -59,9 +60,9 @@ module.exports = () => {
             })
         })
 	});
-	userRouter.route("/followedUsers")
+	userRouter.route("/followedUsers/:userId")
 	.get((req, res) => {
-		User.findById(req.user._id, (err, user) => {
+		User.findById(req.params.userId, (err, user) => {
 			if(err) console.error(err);
 			User.find({_id: {$in : user.profile.followedUsers}}, (err, followedUsers) => {
 				if(err) console.error(err);
@@ -69,9 +70,9 @@ module.exports = () => {
 			})
 		})
 	})
-	userRouter.route("/followedByUsers")
+	userRouter.route("/followedByUsers/:userId")
 	.get((req, res) => {
-		User.findById(req.user._id, (err, user) => {
+		User.findById(req.params.userId, (err, user) => {
 			if(err) console.error(err);
 			User.find({_id: {$in : user.profile.followedBy}}, (err, followedBy) => {
 				if(err) console.error(err);
@@ -112,6 +113,35 @@ module.exports = () => {
 
 	userRouter.route("/following/:userId")
 	.get((req, res) => {
+	});
+
+	userRouter.route("/:userId/updateUser")
+		.put((req, res) => {
+			User.findOne({username: {$regex: new RegExp(req.body.username, "i")}}, (err, foundUser) => {
+				if(err) console.error(err);
+				if(foundUser) {
+					console.log("someone already has this username");
+					res.sendStatus(400);
+				} else {
+					User.findById(req.user._id, (err, userChange) => {
+						if(err) console.error(err);
+						if(req.body.newPassword != "") {
+							userChange.changePassword(req.body.oldPassword, req.body.newPassword, (err) => {
+								if(err) res.sendStatus(401);
+							})
+						}
+						if(req.body.username != "") {
+							userChange.username = req.body.username;
+						}
+						userChange.save((err, savedUser) => {
+							if(err) console.error(err)
+							res.send(savedUser);
+						});
+					});
+				}
+			})
+		res.send(req.user);
+		// get user details from form and log them in, direct them to home page 
 	});
 
 	userRouter.route("/:userId")

@@ -16,9 +16,10 @@ module.exports = () => {
 		});
 	homeRouter.route("/signup")
 		.post((req, res) => {
-			User.findOne({username: req.body.username}, (err, foundUser) => {
+			User.findOne({username: {$regex: new RegExp(req.body.username, "i")}}, (err, foundUser) => {
 				if(err) console.error(err);
 				if(foundUser) {
+					res.sendStatus(400);
 					console.log("someone already has this username");
 				} else {
 					let newUser = new User({
