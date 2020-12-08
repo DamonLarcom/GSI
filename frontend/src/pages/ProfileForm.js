@@ -43,8 +43,11 @@ class ProfileForm extends React.Component {
             oldPassword: this.state.input.oldPasswordChange
         });
 
-       if(res.status === 400 || res.status === 401) {
-           console.error("Change User Error");
+       if(res.status === 401) {
+           console.error("That password is incorrect");
+       }
+       if(res.status === 400) {
+           console.error("That username is taken");
        }
     }
 

@@ -55,9 +55,13 @@ class Profile extends React.Component {
 
     async handleFollow() {
         try {
-            console.log(this.props)
-            const data = await axios.put(`${process.env.BACKEND_URL}/user/followToggle/${this.props.match.params.userId}`, { ...this.state.input });
-        } catch (error) {
+            const data = await axios.put(`${process.env.BACKEND_URL}/user/followToggle/${this.props.match.params.userId}`, {...this.state.input})
+            .then(res => {
+                if (res.data) {
+                this.props.dispatch({ type: 'STORE_USER', data: { User: { ...res.data } } });
+                window.location.reload();
+            }});
+        } catch(error) {
             console.log("Follow error", error);
         }
     }
@@ -65,14 +69,19 @@ class Profile extends React.Component {
     async handleBlock() {
         try {
             console.log(this.props)
-            const data = await axios.put(`${process.env.BACKEND_URL}/user/blockToggle/${this.props.match.params.userId}`, { ...this.state.input });
-        } catch (error) {
+            const data = await axios.put(`${process.env.BACKEND_URL}/user/blockToggle/${this.props.match.params.userId}`, {...this.state.input})
+            .then(res => {
+                if (res.data) {
+                    this.props.dispatch({ type: 'STORE_USER', data: { User: { ...res.data } } });
+                }
+            });
+        } catch(error) {
             console.log("Blocking error", error);
         }
     }
 
     checkFollow() {
-        if (this?.props?.user?.followedUsers?.includes(this.props.match.params.userId)) {
+        if(this.props.user?.profile?.followedUsers.includes(this.props.match.params.userId)) {
             return true;
         }
         return false;
@@ -110,47 +119,47 @@ class Profile extends React.Component {
                     </Modal.Footer>
                 </Modal>
 
-                <Card style={{ margin: "2em", padding: "2em" }}>
-                    <Card.Title>{this.state.user.username} {this.state.user.name ? "(" + this.state.user.name + ")" : null}</Card.Title>
-                    <Card.Body>
-                        {this.props.user?.email ? <Card.Text>Email: {this.state.user.email}</Card.Text> : null}
-                        {this.props.user?.phoneNum ? <Card.Text>Phone: {this.state.user.phoneNum}</Card.Text> : null}
-                        <Card.Text>{this.state.user.followedBy.length} Followers | {this.state.user.followedUsers.length} Following</Card.Text>
-                        <Card.Text>{this.state.user.bio}</Card.Text>
-                        <ButtonGroup>
-                            {this.props?.user?._id == this.props.match.params.userId ? (
-                                <>
-                                    <Button variant="primary" as={NavLink} to={`/profile/${this.props.match.params.userId}/edit`}>Edit Profile</Button>
-                                    <Button variant="outline-danger" as={NavLink} to={`/profile/${this.props.match.params.userId}/blocked`}>Blocked Users</Button>
-                                    <Button variant="danger" onClick={() => { this.setState({ showDelete: true }) }}>Delete Profile</Button>
-                                </>
-                            ) : (
+                <Card style={{margin: "2em", padding: "2em"}}>
+                    <Card.Title>{this.state.user.username} {this.state.user.name ? "(" + this.state.user.name + ")": null }</Card.Title>
+                        <Card.Body>
+                            {this.props.user?.email ? <Card.Text>Email: {this.state.user.email}</Card.Text>:null}
+                            {this.props.user?.phoneNum ? <Card.Text>Phone: {this.state.user.phoneNum}</Card.Text>:null}
+                            <Card.Text>{this.state.user.followedBy.length} <NavLink to={`/profile/${this.props.match.params.userId}/followedBy`}>Followers</NavLink> | {this.state.user.followedUsers.length} <NavLink to={`/profile/${this.props.match.params.userId}/followed`}>Following</NavLink></Card.Text>
+                            <Card.Text>{this.state.user.bio}</Card.Text>
+                            <ButtonGroup>
+                                {this.props?.user?._id == this.props.match.params.userId ?  (
                                     <>
-                                        <Button variant="primary" onClick={this.handleFollow}>{this.checkFollow() ? "Unfollow" : "Follow"}</Button>
+                                        <Button variant="primary" as={NavLink} to={`/profile/${this.props.match.params.userId}/edit`}>Edit Profile</Button>
+                                        <Button variant="outline-danger" as={NavLink} to={`/profile/${this.props.match.params.userId}/blocked`}>Blocked Users</Button>
+                                        <Button variant="danger" onClick={() => { this.setState({ show: true }) }}>Delete Profile</Button>
+                                    </>
+                                ): (
+                                    <>
+                                        <Button variant={this.checkFollow() ? "outline-primary":"primary"} onClick={this.handleFollow}>{this.checkFollow() ? "Unfollow" : "Follow"}</Button>
                                         <Button variant="danger" onClick={this.handleBlock}>Block</Button>
                                     </>
-                                )}
-                        </ButtonGroup>
-
-                        <Accordion>
-                            <Card>
-                                <Card.Header>
-                                    <Accordion.Toggle as={Button} variant="link" eventKey="0">
-                                        Posts
-                                    </Accordion.Toggle>
-                                </Card.Header>
-                                <Accordion.Collapse eventKey="0">
-                                    <>
+                                )}    
+                            </ButtonGroup>
+                            
+                            <Accordion>
+                                <Card>
+                                    <Card.Header>
+                                        <Accordion.Toggle as={Button} variant="link" eventKey="0">
+                                            Posts
+                                        </Accordion.Toggle>
+                                    </Card.Header>
+                                    <Accordion.Collapse eventKey="0">
+                                        <>
                                         {
                                             this.state.user.posts.map(post => {
-                                                return (<Post key={post._id} username={post.username} userId={post.user} text={post.text} postId={post._id} />);
+                                                return(<Post key={post._id} username={post.username} userId={post.user} text={post.text} postId={post._id}/>);
                                             })
                                         }
-                                    </>
-                                </Accordion.Collapse>
-                            </Card>
-                        </Accordion>
-                    </Card.Body>
+                                        </>
+                                    </Accordion.Collapse>
+                                </Card>
+                            </Accordion>
+                        </Card.Body>
                 </Card>
             </>) : <p>Looks like you've been blocked.</p>
         );

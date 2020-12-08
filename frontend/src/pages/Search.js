@@ -48,10 +48,7 @@ export default class Search extends React.Component {
                 </InputGroup>
                 <ul>
                     {this.state.results.map((Object) => {
-                        console.log(this.props.userid);
                         if (Object.hasOwnProperty('profile')) {
-                            console.log(Object.profile.blockedBy);
-                            console.log(Object.profile.blockedUsers);
                             if (!Object.profile.blockedBy.includes(this.props.userid) && !Object.profile.blockedUsers.includes(this.props.userid)) {
                                 return <li key={Object._id}><a href={`/#/profile/${Object._id}/view`}>{Object.username}</a></li>
                             }
