@@ -71,7 +71,7 @@ module.exports = () => {
 	.put((req, res) => {
 		User.findById(req.params.userToFollowId, (err, userToFollow) => {
 			if (err) return console.error(err);
-			User.findByUsername(req.user.username, (err, currentUser) => {
+			User.findById(req.user._id, (err, currentUser) => {
 				if(userToFollow.profile.followedBy.indexOf(currentUser._id) > -1) {
 					userToFollow.profile.followedBy.splice(userToFollow.profile.followedBy.indexOf(currentUser._id), 1);
 				}
@@ -91,6 +91,7 @@ module.exports = () => {
 				}
 				currentUser.save((err, cu) => {
 					if (err) return console.error(err);
+					res.json(cu);
 				});
 			});
 		});

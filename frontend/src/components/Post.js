@@ -60,7 +60,6 @@ class Post extends React.Component {
             <Card>
                 <Card.Body>
                     <Card.Title>Posted by <NavLink to={`/profile/${this.state.user || this.props.userId}/view`}>{this.props.username || this.state.username}</NavLink></Card.Title>
-                    <Card.Text>Likes {this.props.likeCount | this.state.likeCount}</Card.Text>
                     <Card.Text>{this.props.text || this.state.text}</Card.Text>
                     {this.props?.details ? (
                         <>
@@ -100,6 +99,7 @@ class Post extends React.Component {
                         </>
                     ) : null}
                     {!this.props?.details ? <Button as={NavLink} to={`/post/${this.props.postId}`} variant="primary">Read More</Button> : this.props.user ? (<Button onClick={this.likePost}>Like</Button>):null}
+                    <Card.Text>Likes {this.props.likeCount | this.state.likeCount}</Card.Text>
                 </Card.Body>
             </Card>
         );
