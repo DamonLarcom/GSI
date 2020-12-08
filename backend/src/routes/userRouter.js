@@ -115,7 +115,7 @@ module.exports = () => {
 	.get((req, res) => {
 	});
 
-	userRouter.route("/:userId/updateUser")
+	userRouter.route("/updateUser")
 		.put((req, res) => {
 			User.findOne({username: {$regex: new RegExp(req.body.username, "i")}}, (err, foundUser) => {
 				if(err) console.error(err);
