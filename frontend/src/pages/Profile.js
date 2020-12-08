@@ -70,8 +70,9 @@ class Profile extends React.Component {
             const data = await axios.put(`${process.env.BACKEND_URL}/user/blockToggle/${this.props.match.params.userId}`, {...this.state.input})
             .then(res => {
                 if (res.data) {
-                this.props.dispatch({ type: 'STORE_USER', data: { User: { ...res.data } } });
-            }});;
+                    this.props.dispatch({ type: 'STORE_USER', data: { User: { ...res.data } } });
+                }
+            });
         } catch(error) {
             console.log("Blocking error", error);
         }
