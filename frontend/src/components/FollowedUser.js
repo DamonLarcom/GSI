@@ -15,7 +15,8 @@ const FollowedUser = props => {
         <Card>
             <Card.Body>
                 <Card.Title>{props.username}</Card.Title>
-                <Button variant="danger" onClick={unfollowUser}>Unfollow</Button>
+                {!props.follower? <Button variant="danger" onClick={unfollowUser}>Unfollow</Button>: null}
+                
             </Card.Body>
         </Card>
     );

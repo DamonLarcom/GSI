@@ -108,26 +108,12 @@ class Profile extends React.Component {
                 </Modal.Footer>
             </Modal>
 
-<<<<<<< HEAD
-                <Card style={{margin: "2em", padding: "2em"}}>
-                    <Card.Title>{this.state.user.username} {this.state.user.name ? "(" + this.state.user.name + ")": null }</Card.Title>
-                        <Card.Body>
-                            {this.props.user?.email ? <Card.Text>Email: {this.state.user.email}</Card.Text>:null}
-                            {this.props.user?.phoneNum ? <Card.Text>Phone: {this.state.user.phoneNum}</Card.Text>:null}
-                            <Card.Text>{this.state.user.followedBy.length} <NavLink to={`/profile/${this.props.match.params.userId}/followers`}>Followers </NavLink> 
-                                        | {this.state.user.followedUsers.length} <NavLink to={`/profile/${this.props.match.params.userId}/following`}>Following</NavLink>
-                            </Card.Text>
-                            <Card.Text>{this.state.user.bio}</Card.Text>
-                            <ButtonGroup>
-                                
-                                {this.props?.user?._id == this.props.match.params.userId ?  (
-=======
             <Card style={{margin: "2em", padding: "2em"}}>
                 <Card.Title>{this.state.user.username} {this.state.user.name ? "(" + this.state.user.name + ")": null }</Card.Title>
                     <Card.Body>
                         {this.props.user?.email ? <Card.Text>Email: {this.state.user.email}</Card.Text>:null}
                         {this.props.user?.phoneNum ? <Card.Text>Phone: {this.state.user.phoneNum}</Card.Text>:null}
-                        <Card.Text>{this.state.user.followedBy.length} Followers | {this.state.user.followedUsers.length} Following</Card.Text>
+                        <Card.Text>{this.state.user.followedBy.length} <NavLink to={`/profile/${this.props.match.params.userId}/followedBy`}>Followers</NavLink> | {this.state.user.followedUsers.length} <NavLink to={`/profile/${this.props.match.params.userId}/followed`}>Following</NavLink></Card.Text>
                         <Card.Text>{this.state.user.bio}</Card.Text>
                         <ButtonGroup>
                             {this.props?.user?._id == this.props.match.params.userId ?  (
@@ -152,7 +138,6 @@ class Profile extends React.Component {
                                     </Accordion.Toggle>
                                 </Card.Header>
                                 <Accordion.Collapse eventKey="0">
->>>>>>> a6d7c295780d1e581e54a628ecbe4948fca8993d
                                     <>
                                     {
                                         this.state.user.posts.map(post => {
