@@ -47,7 +47,7 @@ class Profile extends React.Component {
             window.location = "/"
         } catch (error) {
             console.log("Delete error", error);
-            this.setState({ show: true})
+            this.setState({ show: true});
         }
     }
 
@@ -124,7 +124,7 @@ class Profile extends React.Component {
                                 </>
                             ): (
                                 <>
-                                    <Button variant="primary" onClick={this.handleFollow}>{this.checkFollow ? "Unfollow" : "Follow"}</Button>
+                                    <Button variant="primary" onClick={this.handleFollow}>{this.checkFollow() ? "Unfollow" : "Follow"}</Button>
                                     <Button variant="danger" onClick={this.handleBlock}>Block</Button>
                                 </>
                             )}    

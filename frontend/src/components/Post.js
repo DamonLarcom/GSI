@@ -99,7 +99,7 @@ class Post extends React.Component {
                             ) : null}
                         </>
                     ) : null}
-                    {!this.props?.details ? <Button as={NavLink} to={`/post/${this.props.postId}`} variant="primary">Read More</Button> : this.props.user ? (<Button onClick={this.likePost}>Like</Button>):null}
+                    {!this.props?.details ? <Button as={NavLink} to={`/post/${this.props.postId}`} variant="primary">Read More</Button> : this.props.user ? (<Button onClick={this.likePost}>{!this.props.user.likedPosts.includes(this.props.postId || this.state._id) ? "Like" : "Dislike"}</Button>):null}
                 </Card.Body>
             </Card>
         );
