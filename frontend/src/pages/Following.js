@@ -21,7 +21,7 @@ class Following extends React.Component {
     }
 
     async retrieveFollowing() {
-        let data = await (await axios.get(`${process.env.BACKEND_URL}/user/followedUsers`)).data;
+        let data = await (await axios.get(`${process.env.BACKEND_URL}/user/followedUsers/${this.props.match.params.userId}`)).data;
         console.log(data);
         this.setState({
             followed: data
@@ -29,7 +29,7 @@ class Following extends React.Component {
     }
 
     async retrieveFollowedBy() {
-        let data = await (await axios.get(`${process.env.BACKEND_URL}/user/followedByUsers`)).data;
+        let data = await (await axios.get(`${process.env.BACKEND_URL}/user/followedByUsers/${this.props.match.params.userId}`)).data;
         this.setState({
             followed: data
         })
