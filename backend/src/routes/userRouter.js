@@ -13,6 +13,7 @@ module.exports = () => {
 		User.findById(req.params.userToBlockId, (err, userToBlock) => {
 			if (err) return console.error(err);
 			User.findByUsername(req.user.username, (err, currentUser) => {
+				if (err) return console.error(err);
 				if(userToBlock.profile.blockedBy.indexOf(currentUser._id) > -1) {
 					userToBlock.profile.blockedBy.splice(userToBlock.profile.blockedBy.indexOf(currentUser._id), 1);
 				}
@@ -29,7 +30,6 @@ module.exports = () => {
 					if (err) return console.error(err);
 					console.log(userToBlock.username + " blocked/unblocked.");
 				});
-				if (err) return console.error(err);
 				if(currentUser.profile.blockedUsers.indexOf(userToBlock._id) > -1) {
 					currentUser.profile.blockedUsers.splice(currentUser.profile.blockedUsers.indexOf(userToBlock._id), 1);
 				}
@@ -86,6 +86,7 @@ module.exports = () => {
 		User.findById(req.params.userToFollowId, (err, userToFollow) => {
 			if (err) return console.error(err);
 			User.findById(req.user._id, (err, currentUser) => {
+				if (err) return console.error(err);
 				if(userToFollow.profile.followedBy.indexOf(currentUser._id) > -1) {
 					userToFollow.profile.followedBy.splice(userToFollow.profile.followedBy.indexOf(currentUser._id), 1);
 				}
@@ -96,7 +97,6 @@ module.exports = () => {
 					if (err) return console.error(err);
 					console.log(userToFollow.username + " followed.");
 				});
-				if (err) return console.error(err);
 				if(currentUser.profile.followedUsers.indexOf(userToFollow._id) > -1) {
 					currentUser.profile.followedUsers.splice(currentUser.profile.followedUsers.indexOf(userToFollow._id), 1);
 				}
