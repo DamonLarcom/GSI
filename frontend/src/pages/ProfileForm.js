@@ -37,18 +37,30 @@ class ProfileForm extends React.Component {
 
 
     async handleEditUser() {
-        const res = await axios.put(`${process.env.BACKEND_URL}/user/updateUser`, {
-            username: this.state.input.usernameChange,
-            password: this.state.input.passwordChange,
-            oldPassword: this.state.input.oldPasswordChange
-        });
-
-       if(res.status === 401) {
-           console.error("That password is incorrect");
-       }
-       if(res.status === 400) {
-           console.error("That username is taken");
-       }
+        if(this.state.input.passwordChange != "") {
+            const resP = await axios.put(`${process.env.BACKEND_URL}/user/updatePass`, {
+                newPassword: this.state.input.passwordChange,
+                oldPassword: this.state.input.oldPasswordChange
+            }).then(res => {
+                if(res.data && res.status !== 401) {
+                    this.props.dispatch({ type: 'STORE_USER', data: { User: { ...res.data } } });
+                } else if(res.status === 401) {
+                    console.error("That password is incorrect");
+                }
+            });
+        }
+        if(this.state.input.usernameChange !="") {
+            const resU = await axios.put(`${process.env.BACKEND_URL}/user/updateUser`, {
+                username: this.state.input.usernameChange
+            }).then(res => {
+                if(res.data && res.status !== 400) {
+                    this.props.dispatch({ type: 'STORE_USER', data: { User: { ...res.data } } });
+                }else if(res.status === 400) {
+                    console.error("That username is taken");
+                }
+            });
+        }
+        window.location = `/#/profile/${this.props.match.params.userId}`;
     }
 
     render() {

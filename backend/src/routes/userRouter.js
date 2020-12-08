@@ -2,6 +2,7 @@ const express = require('express');
 const User = require('../models/user');
 const Post = require('../models/post');
 const passport = require("passport");
+const post = require('../models/post');
 
 const userRouter = express.Router();
 
@@ -117,32 +118,52 @@ module.exports = () => {
 
 	userRouter.route("/updateUser")
 		.put((req, res) => {
-			User.findOne({username: {$regex: new RegExp(req.body.username, "i")}}, (err, foundUser) => {
+			User.findOne({username: {$regex: new RegExp(`^${req.body.username}$`, "i")}}, (err, foundUser) => {
 				if(err) console.error(err);
-				if(foundUser) {
-					console.log("someone already has this username");
+				if(foundUser && req.body.username !="") {
 					res.sendStatus(400);
+					console.log("someone already has this username");
 				} else {
 					User.findById(req.user._id, (err, userChange) => {
 						if(err) console.error(err);
-						if(req.body.newPassword != "") {
-							userChange.changePassword(req.body.oldPassword, req.body.newPassword, (err, user) => {
-								if(err) res.sendStatus(401);
-							})
-						}
-						console.log(userChange);
 						if(req.body.username != "") {
 							userChange.username = req.body.username;
 						}
 						userChange.save((err, savedUser) => {
 							if(err) console.error(err)
-							res.send(savedUser);
+								Post.find({user: savedUser._id}, (err, posts) => {
+									for(thePost of posts) {
+										thePost.username = savedUser.username;
+										thePost.save((err, savedPost) => {
+											if(err) console.error(err);
+										})
+									}
+								})
+								res.json(savedUser);
 						});
 					});
 				}
 			})
-		res.send(req.user);
 		// get user details from form and log them in, direct them to home page 
+	});
+	userRouter.route("/updatePass")
+	.put((req, res) => {
+		User.findById(req.user._id, (err, userChange) => {
+			if(err) console.error(err);
+			if(req.body.newPassword != "") {
+				userChange.changePassword(req.body.oldPassword, req.body.newPassword)
+				.then(() => {
+					console.log('password changed');
+					userChange.save((err, savedUser) => {
+						if(err) console.error(err)
+						res.json(savedUser);
+					});
+				})
+				.catch((error) => {
+					res.sendStatus(401);
+				})
+			}
+		});
 	});
 
 	userRouter.route("/:userId")

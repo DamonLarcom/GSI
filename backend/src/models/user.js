@@ -31,4 +31,18 @@ let userSchema = mongoose.Schema({
 
 userSchema.plugin(passportMongoose);
 
+userSchema.statics.serializeUser = function() {
+    return function(user, cb) {
+        cb(null, user.id);
+    }
+};
+
+userSchema.statics.deserializeUser = function() {
+    var self = this;
+
+    return function(id, cb) {
+        self.findById(id, cb);
+    }
+};
+
 module.exports = User = mongoose.model("users", userSchema);

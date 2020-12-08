@@ -131,7 +131,7 @@ class Profile extends React.Component {
                                     <>
                                         <Button variant="primary" as={NavLink} to={`/profile/${this.props.match.params.userId}/edit`}>Edit Profile</Button>
                                         <Button variant="outline-danger" as={NavLink} to={`/profile/${this.props.match.params.userId}/blocked`}>Blocked Users</Button>
-                                        <Button variant="danger" onClick={() => { this.setState({ show: true }) }}>Delete Profile</Button>
+                                        <Button variant="danger" onClick={() => { this.setState({ showDelete: true }) }}>Delete Profile</Button>
                                     </>
                                 ): (
                                     <>

@@ -16,7 +16,7 @@ module.exports = () => {
 		});
 	homeRouter.route("/signup")
 		.post((req, res) => {
-			User.findOne({username: {$regex: new RegExp(req.body.username, "i")}}, (err, foundUser) => {
+			User.findOne({username: {$regex: new RegExp(`^${req.body.username}$`, "i")}}, (err, foundUser) => {
 				if(err) console.error(err);
 				if(foundUser) {
 					res.sendStatus(400);
