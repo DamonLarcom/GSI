@@ -61,12 +61,12 @@ class Login extends React.Component {
                         <Form>
                             <Form.Group controlId="formBasicEmail">
                                 <Form.Label>Username</Form.Label>
-                                <Form.Control type="email" placeholder="Enter username" onChange={e => { this.setState({ input: { ...this.state.input, username: e.target.value } }) }} />
+                                <Form.Control type="email" placeholder="Username" onChange={e => { this.setState({ input: { ...this.state.input, username: e.target.value } }) }} />
                             </Form.Group>
 
                             <Form.Group controlId="formBasicPassword">
-                                <Form.Label>Password</Form.Label>
-                                <Form.Control type="password" placeholder="Password" onChange={e => { this.setState({ input: { ...this.state.input, password: e.target.value } }) }} />
+                                <Form.Label>Password(Alphanumeric & 8 characters minimum)</Form.Label>
+                                <Form.Control type="password" minLength="8" placeholder="Password" onChange={e => { this.setState({ input: { ...this.state.input, password: e.target.value } }) }} />
                             </Form.Group>
                         </Form>
                     </Modal.Body>
