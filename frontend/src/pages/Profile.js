@@ -54,11 +54,11 @@ class Profile extends React.Component {
     async handleFollow() {
         try {
             const data = await axios.put(`${process.env.BACKEND_URL}/user/followToggle/${this.props.match.params.userId}`, {...this.state.input})
-                            .then(res => {
-                                if (res.data) {
-                                this.props.dispatch({ type: 'STORE_USER', data: { User: { ...res.data } } });
-                                window.location.reload();
-                            }});
+            .then(res => {
+                if (res.data) {
+                this.props.dispatch({ type: 'STORE_USER', data: { User: { ...res.data } } });
+                window.location.reload();
+            }});
         } catch(error) {
             console.log("Follow error", error);
         }
@@ -67,7 +67,11 @@ class Profile extends React.Component {
     async handleBlock() {
         try {
             console.log(this.props)
-            const data = await axios.put(`${process.env.BACKEND_URL}/user/blockToggle/${this.props.match.params.userId}`, {...this.state.input});
+            const data = await axios.put(`${process.env.BACKEND_URL}/user/blockToggle/${this.props.match.params.userId}`, {...this.state.input})
+            .then(res => {
+                if (res.data) {
+                this.props.dispatch({ type: 'STORE_USER', data: { User: { ...res.data } } });
+            }});;
         } catch(error) {
             console.log("Blocking error", error);
         }

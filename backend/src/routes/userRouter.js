@@ -43,6 +43,7 @@ module.exports = () => {
 				}
 				currentUser.save((err, cu) => {
 					if (err) return console.error(err);
+					res.json(cu);
 				});
 			});
 		});
