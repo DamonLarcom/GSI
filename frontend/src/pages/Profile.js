@@ -111,7 +111,7 @@ class Profile extends React.Component {
     }
 
     render() {
-        if(this.props.users) {
+        if(this.props.user) {
             return (
                 !this.props?.user?.profile?.blockedBy?.includes(this.props.match.params.userId) ? (<>
                     <Modal show={this.state.showDelete} onHide={() => { this.setState({ showDelete: false }) }} centered>
