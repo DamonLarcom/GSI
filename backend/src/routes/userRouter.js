@@ -128,9 +128,8 @@ module.exports = () => {
 						if(err) console.error(err);
 						if(req.body.username != "") {
 							userChange.username = req.body.username;
-						}
-						userChange.save((err, savedUser) => {
-							if(err) console.error(err)
+							userChange.save((err, savedUser) => {
+								if(err) console.error(err)
 								Post.find({user: savedUser._id}, (err, posts) => {
 									for(thePost of posts) {
 										thePost.username = savedUser.username;
@@ -147,9 +146,14 @@ module.exports = () => {
 										})
 									}
 								})
-								res.json(savedUser);
-						});
+							});
+						}
 					});
+					User.findById(req.user._id, (err, userFound) => {
+						if(err) console.error(err);
+						res.json(userFound);
+					});
+
 				}
 			})
 		// get user details from form and log them in, direct them to home page 
