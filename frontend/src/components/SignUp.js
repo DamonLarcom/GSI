@@ -41,7 +41,10 @@ class SignUp extends React.Component {
 
     async handleSignup() {
         try {
-            if(this.showAlertInfo() && this.validateSignUpPassword(this.state.input.password)) {
+            if(!/^[1-z]+$/.test(this.state.input.username)) {
+                this.setState({...this.state, alertText: "Invalid Username"});
+            }
+            else if(this.showAlertInfo() && this.validateSignUpPassword(this.state.input.password)) {
                 const data = await (await axios.post(`${process.env.BACKEND_URL}/signup`, {...this.state.input})).data;
                 this.props.dispatch({type: 'STORE_USER', data: { User: data }});
                 this.setState({ show: false });
@@ -71,7 +74,7 @@ class SignUp extends React.Component {
                         { this.state.alertText != "" ? <Alert variant="danger">{this.state.alertText}</Alert>:null}
                         <Form>
                             <Form.Group controlId="formBasicEmail">
-                                <Form.Label>Username</Form.Label>
+                                <Form.Label>Username(Aphanumeric & Underscores)</Form.Label>
                                 <Form.Control type="text" placeholder="Enter username" onChange={e => {this.setState({input: {...this.state.input, username: e.target.value}})}}/>
                             </Form.Group>
 
