@@ -22,7 +22,8 @@ class ProfileForm extends React.Component {
                 oldPasswordChange: ""
             },
             showEditUser: false,
-            alertText: ""
+            alertTextUser: "",
+            alertTextPass: ""
         }
 
         this.submitEdit = this.submitEdit.bind(this);
@@ -33,12 +34,12 @@ class ProfileForm extends React.Component {
     showAlertInfo() {
         let regex = /^[0-z]{8,}$/;
         if(this.state.input.passwordChange.length < 8) {
-            this.setState({...this.state, alertText: "Password too short"});
+            this.setState({...this.state, alertTextPass: "Password too short"});
         }
         else if(!regex.test(this.state.input.passwordChange)) {
-            this.setState({...this.state, alertText: "Non-alphanumeric password."});
+            this.setState({...this.state, alertTextPass: "Non-alphanumeric password."});
         } else {
-            this.setState({...this.state, alertText: ""});
+            this.setState({...this.state, alertTextPass: ""});
             return true;
         }
         return false;
@@ -68,12 +69,12 @@ class ProfileForm extends React.Component {
                 }
                 else if(res.status === 400) {
                     hasError = true;
-                    this.setState({...this.state, alertText: "That username is taken."});
+                    this.setState({...this.state, alertTextUser: "That username is taken."});
                 }
             }
             catch(err) {
                 hasError = true;
-                this.setState({...this.state, alertText: "That username is taken."});
+                this.setState({...this.state, alertTextUser: "That username is taken."});
             }
         }
         
@@ -87,15 +88,15 @@ class ProfileForm extends React.Component {
                 if(resP.data && resP.status !== 401) {
                     this.props.dispatch({ type: 'STORE_USER', data: { User: { ...resP.data } } });
                 } else if(resP.status === 401) {
-                    this.setState({...this.state, alertText: "Password Incorrect"});
+                    this.setState({...this.state, alertTextPass: "Password Incorrect"});
                 }
             } catch(err) {
                 hasError = true;
-                this.setState({...this.state, alertText: "Password Incorrect"});
+                this.setState({...this.state, alertTextPass: "Password Incorrect"});
             }
         } else {
             hasError = true;
-            this.setState({...this.state, alertText: "Password Incorrect"});
+            this.setState({...this.state, alertTextPass: "Password Incorrect"});
         }
         if(!hasError) {
             window.location = `/#/profile/${this.props.match.params.userId}`;
@@ -149,7 +150,7 @@ class ProfileForm extends React.Component {
                                         <Accordion.Collapse eventKey="0">
                                             <>
                                                 <Form>
-                                                { this.state.alertText != "" ? <Alert variant="danger">{this.state.alertText}</Alert>:null}
+                                                { this.state.alertTextUser != "" ? <Alert variant="danger">{this.state.alertTextUser}</Alert>:null}
                                                     <Form.Group controlId="formBasicEmail">
                                                         <Form.Label>Username</Form.Label>
                                                         <Form.Control type="text" placeholder="Enter username" defaultValue={this.state.input.usernameChange} onChange={e => { this.setState({ input: { ...this.state.input, usernameChange: e.target.value } }) }} />
@@ -168,7 +169,7 @@ class ProfileForm extends React.Component {
                                         <Accordion.Collapse eventKey="0">
                                             <>
                                                 <Form>
-                                                { this.state.alertText != "" ? <Alert variant="danger">{this.state.alertText}</Alert>:null}
+                                                { this.state.alertTextPass != "" ? <Alert variant="danger">{this.state.alertTextPass}</Alert>:null}
                                                     <Form.Group controlId="formBasicPassword">
                                                         <Form.Label>Old Password</Form.Label>
                                                         <Form.Control type="password" placeholder="Password" onChange={e => { this.setState({ input: { ...this.state.input, oldPasswordChange: e.target.value } }) }} />
