@@ -17,8 +17,8 @@ const Navigation = (props) => {
                 <Nav.Link as={NavLink} to={`/profile/${props.user._id}`}>Profile</Nav.Link>
             </Nav.Item>: null}
             {console.log()}
-            {!props.user ? <Login/>: <Nav.Item><Nav.Link onClick={() => {props.dispatch({type: 'LOGOUT_USER'});}}>Log Out</Nav.Link></Nav.Item>}
-            {!props.user ? <SignUp/>: null}
+            {!props.user ? null: <Nav.Item><Nav.Link onClick={() => {props.dispatch({type: 'LOGOUT_USER'});}}>Log Out</Nav.Link></Nav.Item>}
+            {/* {!props.user ? <SignUp/>: null} */}
             {props.user ? 
             <Nav.Item>
                 <Nav.Link as={NavLink} to="/post">Create Post</Nav.Link>

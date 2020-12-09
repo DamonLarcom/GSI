@@ -18,12 +18,21 @@ class SignUp extends React.Component {
         this.handleSignup = this.handleSignup.bind(this);
     }
 
+    validateSignUpPassword(pass) {
+        let regex = /^[1-z]{8,}$/g
+        return regex.test(pass);
+    }
+
     async handleSignup() {
         try {
-            const data = await (await axios.post(`${process.env.BACKEND_URL}/signup`, {...this.state.input})).data;
-            this.props.dispatch({type: 'STORE_USER', data: { User: data }});
-            this.setState({ show: false });
-            location.reload();
+            if(this.validateSignUpPassword(this.state.input.password)) {
+                const data = await (await axios.post(`${process.env.BACKEND_URL}/signup`, {...this.state.input})).data;
+                this.props.dispatch({type: 'STORE_USER', data: { User: data }});
+                this.setState({ show: false });
+                location.href ="/#/";
+            } else {
+                console.error("Invalid Password");
+            }
         } catch (error) {
             console.log("Sign Up error", error);
             this.setState({ show: true})
@@ -49,8 +58,8 @@ class SignUp extends React.Component {
                             </Form.Group>
 
                             <Form.Group controlId="formBasicPassword">
-                                <Form.Label>Password</Form.Label>
-                                <Form.Control type="password" placeholder="Password" onChange={e => {this.setState({input: {...this.state.input, password: e.target.value}})}}/>
+                                <Form.Label>Password(Alphanumeric & 8 characters minimum)</Form.Label>
+                                <Form.Control type="password" minLength={8} placeholder="Password" onChange={e => {this.setState({input: {...this.state.input, password: e.target.value}})}}/>
                             </Form.Group>
                         </Form>
                     </Modal.Body>

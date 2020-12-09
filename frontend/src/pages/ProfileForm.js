@@ -28,6 +28,11 @@ class ProfileForm extends React.Component {
         this.handleEditUser = this.handleEditUser.bind(this);
     }
 
+    validateSignUpPassword(pass) {
+        let regex = /^[1-z]{8,}$/g
+        return regex.test(pass);
+    }
+
     submitEdit(e) {
         e.preventDefault();
         axios.put(`${process.env.BACKEND_URL}/user/${this.props.match.params.userId}`, { user: this.state }).then(res => {
@@ -37,7 +42,8 @@ class ProfileForm extends React.Component {
 
 
     async handleEditUser() {
-        if(this.state.input.passwordChange != "") {
+        let hasError = false;
+        if(this.state.input.passwordChange != "" && this.validateSignUpPassword(this.state.input.passwordChange)) {
             const resP = await axios.put(`${process.env.BACKEND_URL}/user/updatePass`, {
                 newPassword: this.state.input.passwordChange,
                 oldPassword: this.state.input.oldPasswordChange
@@ -48,8 +54,11 @@ class ProfileForm extends React.Component {
                     console.error("That password is incorrect");
                 }
             });
+        } else {
+            hasError = true;
+            console.error("Invalid Password");
         }
-        if(this.state.input.usernameChange !="") {
+        if(this.state.input.usernameChange != "") {
             const resU = await axios.put(`${process.env.BACKEND_URL}/user/updateUser`, {
                 username: this.state.input.usernameChange
             }).then(res => {
@@ -60,7 +69,9 @@ class ProfileForm extends React.Component {
                 }
             });
         }
-        window.location = `/#/profile/${this.props.match.params.userId}`;
+        if(!hasError) {
+            window.location = `/#/profile/${this.props.match.params.userId}`;
+        }
     }
 
     render() {

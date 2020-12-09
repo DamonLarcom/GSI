@@ -15,6 +15,9 @@ import ProfileView from "./ProfileView";
 import Blocked from "./Blocked";
 import Following from "./Following"
 import Post from "../components/Post";
+import Login from "../components/Login";
+import SignUp from "../components/SignUp";
+import { Modal } from "react-bootstrap";
 
 class App extends React.Component {
     constructor(props) {
@@ -23,6 +26,8 @@ class App extends React.Component {
         axios.get(`${process.env.BACKEND_URL}/`).then(res => {
             if (res.data) {
                 this.props.dispatch({ type: 'STORE_USER', data: { User: { ...res.data } } });
+            } else {
+                window.location.href = "/#/login";
             }
         })
     }
@@ -34,6 +39,16 @@ class App extends React.Component {
                 <div>
                   <Navigation/>
                   <Switch>
+                      <Route path="/login" render={props => {
+                          return(
+                              <>
+                              <Modal show={true} centered backdrop="static">
+                                  <Login/>
+                                  <SignUp/>
+                              </Modal>
+                              </>
+                          );
+                      }}/>
                       <Route path="/profile/:userId/blocked" component={Blocked}/>
                       <Route path="/profile/:userId/view" component={ProfileView}/>
                       <Route path="/profile/:userId/edit" component={ProfileForm}/>

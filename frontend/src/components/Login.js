@@ -18,7 +18,6 @@ class Login extends React.Component {
                 password: ''
             }
         }
-
         
         this.handleLogin = this.handleLogin.bind(this);
     }
@@ -32,7 +31,7 @@ class Login extends React.Component {
             })).data;
             this.props.dispatch({ type: 'STORE_USER', data: { User: data } });
             this.setState({ show: false });
-            location.reload();
+            location.href ="/#/";
         } catch (error) {
             console.error("Login error", error);
             console.log(error.response);
@@ -65,7 +64,7 @@ class Login extends React.Component {
                             </Form.Group>
 
                             <Form.Group controlId="formBasicPassword">
-                                <Form.Label>Password(Alphanumeric & 8 characters minimum)</Form.Label>
+                                <Form.Label>Password</Form.Label>
                                 <Form.Control type="password" minLength="8" placeholder="Password" onChange={e => { this.setState({ input: { ...this.state.input, password: e.target.value } }) }} />
                             </Form.Group>
                         </Form>
