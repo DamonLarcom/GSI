@@ -139,6 +139,14 @@ module.exports = () => {
 										})
 									}
 								})
+								Post.find({"comments.commentAuthorUsername": savedUser._id}, (err, posts) => {
+									for(thePost of posts) {
+										thePost.comments.commentAuthorUsername = savedUser.username;
+										thePost.save((err, savedPost) => {
+											if(err) console.error(err);
+										})
+									}
+								})
 								res.json(savedUser);
 						});
 					});
