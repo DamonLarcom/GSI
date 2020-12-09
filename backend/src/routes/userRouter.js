@@ -21,10 +21,10 @@ module.exports = () => {
 				else {
 					userToBlock.profile.blockedBy.push(currentUser._id);
 					if(userToBlock.profile.followedBy.indexOf(currentUser._id) > -1) {
-						userToBlock.profile.followedBy.splice(userToBlock.profile.followedBy.indexOf(currentUser._id));
+						userToBlock.profile.followedBy.splice(userToBlock.profile.followedBy.indexOf(currentUser._id), 1);
 					}
 					if(userToBlock.profile.followedUsers.indexOf(currentUser._id) > -1) {
-						userToBlock.profile.followedUsers.splice(userToBlock.profile.followedUsers.indexOf(currentUser._id));
+						userToBlock.profile.followedUsers.splice(userToBlock.profile.followedUsers.indexOf(currentUser._id), 1);
 					}
 				}
 				userToBlock.save((err, utb) => {
@@ -37,10 +37,10 @@ module.exports = () => {
 				else {
 					currentUser.profile.blockedUsers.push(userToBlock._id);
 					if(currentUser.profile.followedBy.indexOf(userToBlock._id) > -1) {
-						currentUser.profile.followedBy.splice(currentUser.profile.followedBy.indexOf(userToBlock._id));
+						currentUser.profile.followedBy.splice(currentUser.profile.followedBy.indexOf(userToBlock._id), 1);
 					}
 					if(currentUser.profile.followedUsers.indexOf(userToBlock._id) > -1) {
-						currentUser.profile.followedUsers.splice(currentUser.profile.followedUsers.indexOf(userToBlock._id));
+						currentUser.profile.followedUsers.splice(currentUser.profile.followedUsers.indexOf(userToBlock._id), 1);
 					}
 				}
 				currentUser.save((err, cu) => {
