@@ -59,32 +59,43 @@ class ProfileForm extends React.Component {
 
     async handleEditUser() {
         let hasError = false;
-        debugger;
-        if(this.showAlertInfo() && this.state.input.passwordChange != "" && this.validateSignUpPassword(this.state.input.passwordChange)) {
-            const resP = await axios.put(`${process.env.BACKEND_URL}/user/updatePass`, {
-                newPassword: this.state.input.passwordChange,
-                oldPassword: this.state.input.oldPasswordChange
-            }).then(res => {
-                if(res.data && res.status !== 401) {
-                    this.props.dispatch({ type: 'STORE_USER', data: { User: { ...res.data } } });
-                } else if(res.status === 401) {
-                    this.setState({...this.state, alertText: "Password Incorrect"});
-                }
-            });
-        } else {
-            hasError = true;
-            console.error("Invalid Password");
-        }
-        if(this.state.input.usernameChange != "") {
-            const resU = await axios.put(`${process.env.BACKEND_URL}/user/updateUser`, {
-                username: this.state.input.usernameChange
-            }).then(res => {
+        if(this.state.input.passwordChange.length === 0) {
+            try {
+                const res = await axios.put(`${process.env.BACKEND_URL}/user/updateUser`, { username: this.state.input.usernameChange })
+                
                 if(res.data && res.status !== 400) {
                     this.props.dispatch({ type: 'STORE_USER', data: { User: { ...res.data } } });
-                }else if(res.status === 400) {
+                }
+                else if(res.status === 400) {
+                    hasError = true;
                     this.setState({...this.state, alertText: "That username is taken."});
                 }
-            });
+            }
+            catch(err) {
+                hasError = true;
+                this.setState({...this.state, alertText: "That username is taken."});
+            }
+        }
+        
+        else if(this.showAlertInfo() && this.state.input.passwordChange != "" && this.validateSignUpPassword(this.state.input.passwordChange)) {
+            debugger;
+            try {
+                const resP = await axios.put(`${process.env.BACKEND_URL}/user/updatePass`, {
+                    newPassword: this.state.input.passwordChange,
+                    oldPassword: this.state.input.oldPasswordChange
+                })
+                if(resP.data && resP.status !== 401) {
+                    this.props.dispatch({ type: 'STORE_USER', data: { User: { ...resP.data } } });
+                } else if(resP.status === 401) {
+                    this.setState({...this.state, alertText: "Password Incorrect"});
+                }
+            } catch(err) {
+                hasError = true;
+                this.setState({...this.state, alertText: "Password Incorrect"});
+            }
+        } else {
+            hasError = true;
+            this.setState({...this.state, alertText: "Password Incorrect"});
         }
         if(!hasError) {
             window.location = `/#/profile/${this.props.match.params.userId}`;
