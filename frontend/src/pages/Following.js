@@ -14,7 +14,7 @@ class Following extends React.Component {
 
         this.retrieveFollowedBy = this.retrieveFollowedBy.bind(this);
         this.retrieveFollowing = this.retrieveFollowing.bind(this);
-
+        
         if (this.props.followers) {
             this.retrieveFollowedBy();
         } else {
@@ -38,23 +38,29 @@ class Following extends React.Component {
     }
 
     render() {
-        return (
-            <Card style={{ margin: "2em", padding: "2em" }}>
-                <Card.Title>{this.props.followers ? "Followers" : "Following"}</Card.Title>
-                <Card.Body>
-                    {
-                        this.state.followed.map(followuser => {
-                            return (
-                                this.props.followers ?
-                                    <FollowedUser key={followuser._id} userId={followuser._id} username={followuser.username} follower showUnfollow={this.props.user?.profile.followedUsers.indexOf(followuser._id) > -1}/>
-                                    :
-                                    <FollowedUser key={followuser._id} userId={followuser._id} username={followuser.username} showUnfollow={this.props.user?.profile.followedUsers.indexOf(followuser._id) > -1}/>
-                            )
-                        })
-                    }
-                </Card.Body>
-            </Card>
-        );
+        if(this.props.user) {
+            return (
+                <Card style={{ margin: "2em", padding: "2em" }}>
+                    <Card.Title>{this.props.followers ? "Followers" : "Following"}</Card.Title>
+                    <Card.Body>
+                        {
+                            this.state.followed.map(followuser => {
+                                return (
+                                    this.props.followers ?
+                                        <FollowedUser key={followuser._id} userId={followuser._id} username={followuser.username} follower showUnfollow={this.props.user?.profile.followedUsers.indexOf(followuser._id) > -1}/>
+                                        :
+                                        <FollowedUser key={followuser._id} userId={followuser._id} username={followuser.username} showUnfollow={this.props.user?.profile.followedUsers.indexOf(followuser._id) > -1}/>
+                                )
+                            })
+                        }
+                    </Card.Body>
+                </Card>
+            );
+        }
+        else {
+            this.props.dispatch({type: "TO_LOGIN"})
+            return(<></>);
+        }
     }
 }
 

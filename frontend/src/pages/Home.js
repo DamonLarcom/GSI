@@ -22,13 +22,19 @@ class Home extends React.Component {
     }
 
     render() {
-        return(
-            <div className="home posts-wrapper">
-                {this.state.posts.map(post => {
-                    return(<Post {...post} text={post.text} userId={post.user} username={post.username} postId={post._id} key={post._id} />);
-                })}
-            </div>
-        );
+        if(this.props.user) {
+            return(
+                <div className="home posts-wrapper">
+                    {this.state.posts.map(post => {
+                        return(<Post {...post} text={post.text} userId={post.user} username={post.username} postId={post._id} key={post._id} />);
+                    })}
+                </div>
+            );
+        }
+        else {
+            this.props.dispatch({type: "TO_LOGIN"})
+            return(<></>);
+        }
     }
 }
 

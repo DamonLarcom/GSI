@@ -104,65 +104,71 @@ class Profile extends React.Component {
     }
 
     render() {
-        return (
-            !this.props?.user?.profile?.blockedUsers?.includes(this.props.match.params.userId) ? (<>
-                <Modal show={this.state.showDelete} onHide={() => { this.setState({ showDelete: false }) }} centered>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Delete Profile</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <p>Are you sure you want to delete?</p>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={() => { this.setState({ showDelete: false }) }}>Close</Button>
-                        <Button variant="danger" onClick={this.handleDelete}>Delete</Button>
-                    </Modal.Footer>
-                </Modal>
+        if(this.props.user) {
+            return (
+                !this.props?.user?.profile?.blockedUsers?.includes(this.props.match.params.userId) ? (<>
+                    <Modal show={this.state.showDelete} onHide={() => { this.setState({ showDelete: false }) }} centered>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Delete Profile</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <p>Are you sure you want to delete?</p>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={() => { this.setState({ showDelete: false }) }}>Close</Button>
+                            <Button variant="danger" onClick={this.handleDelete}>Delete</Button>
+                        </Modal.Footer>
+                    </Modal>
 
-                <Card style={{margin: "2em", padding: "2em"}}>
-                    <Card.Title>{this.state.user.username} {this.state.user.name ? "(" + this.state.user.name + ")": null }</Card.Title>
-                        <Card.Body>
-                            {this.props.user?.email ? <Card.Text>Email: {this.state.user.email}</Card.Text>:null}
-                            {this.props.user?.phoneNum ? <Card.Text>Phone: {this.state.user.phoneNum}</Card.Text>:null}
-                            <Card.Text>{this.state.user.followedBy.length} <NavLink to={`/profile/${this.props.match.params.userId}/followedBy`}>Followers</NavLink> | {this.state.user.followedUsers.length} <NavLink to={`/profile/${this.props.match.params.userId}/followed`}>Following</NavLink></Card.Text>
-                            <Card.Text>{this.state.user.bio}</Card.Text>
-                            <ButtonGroup>
-                                {this.props?.user?._id == this.props.match.params.userId ?  (
-                                    <>
-                                        <Button variant="primary" as={NavLink} to={`/profile/${this.props.match.params.userId}/edit`}>Edit Profile</Button>
-                                        <Button variant="outline-danger" as={NavLink} to={`/profile/${this.props.match.params.userId}/blocked`}>Blocked Users</Button>
-                                        <Button variant="danger" onClick={() => { this.setState({ showDelete: true }) }}>Delete Profile</Button>
-                                    </>
-                                ): (
-                                    <>
-                                        <Button variant={this.checkFollow() ? "outline-primary":"primary"} onClick={this.handleFollow}>{this.checkFollow() ? "Unfollow" : "Follow"}</Button>
-                                        <Button variant="danger" onClick={this.handleBlock}>Block</Button>
-                                    </>
-                                )}    
-                            </ButtonGroup>
-                            
-                            <Accordion>
-                                <Card>
-                                    <Card.Header>
-                                        <Accordion.Toggle as={Button} variant="link" eventKey="0">
-                                            Posts
-                                        </Accordion.Toggle>
-                                    </Card.Header>
-                                    <Accordion.Collapse eventKey="0">
+                    <Card style={{margin: "2em", padding: "2em"}}>
+                        <Card.Title>{this.state.user.username} {this.state.user.name ? "(" + this.state.user.name + ")": null }</Card.Title>
+                            <Card.Body>
+                                {this.props.user?.email ? <Card.Text>Email: {this.state.user.email}</Card.Text>:null}
+                                {this.props.user?.phoneNum ? <Card.Text>Phone: {this.state.user.phoneNum}</Card.Text>:null}
+                                <Card.Text>{this.state.user.followedBy.length} <NavLink to={`/profile/${this.props.match.params.userId}/followedBy`}>Followers</NavLink> | {this.state.user.followedUsers.length} <NavLink to={`/profile/${this.props.match.params.userId}/followed`}>Following</NavLink></Card.Text>
+                                <Card.Text>{this.state.user.bio}</Card.Text>
+                                <ButtonGroup>
+                                    {this.props?.user?._id == this.props.match.params.userId ?  (
                                         <>
-                                        {
-                                            this.state.user.posts.map(post => {
-                                                return(<Post key={post._id} username={post.username} userId={post.user} text={post.text} postId={post._id}/>);
-                                            })
-                                        }
+                                            <Button variant="primary" as={NavLink} to={`/profile/${this.props.match.params.userId}/edit`}>Edit Profile</Button>
+                                            <Button variant="outline-danger" as={NavLink} to={`/profile/${this.props.match.params.userId}/blocked`}>Blocked Users</Button>
+                                            <Button variant="danger" onClick={() => { this.setState({ showDelete: true }) }}>Delete Profile</Button>
                                         </>
-                                    </Accordion.Collapse>
-                                </Card>
-                            </Accordion>
-                        </Card.Body>
-                </Card>
-            </>) : <p>Looks like you've been blocked.</p>
-        );
+                                    ): (
+                                        <>
+                                            <Button variant={this.checkFollow() ? "outline-primary":"primary"} onClick={this.handleFollow}>{this.checkFollow() ? "Unfollow" : "Follow"}</Button>
+                                            <Button variant="danger" onClick={this.handleBlock}>Block</Button>
+                                        </>
+                                    )}    
+                                </ButtonGroup>
+                                
+                                <Accordion>
+                                    <Card>
+                                        <Card.Header>
+                                            <Accordion.Toggle as={Button} variant="link" eventKey="0">
+                                                Posts
+                                            </Accordion.Toggle>
+                                        </Card.Header>
+                                        <Accordion.Collapse eventKey="0">
+                                            <>
+                                            {
+                                                this.state.user.posts.map(post => {
+                                                    return(<Post key={post._id} username={post.username} userId={post.user} text={post.text} postId={post._id}/>);
+                                                })
+                                            }
+                                            </>
+                                        </Accordion.Collapse>
+                                    </Card>
+                                </Accordion>
+                            </Card.Body>
+                    </Card>
+                </>) : <p>Looks like you've been blocked.</p>
+            );
+        }
+        else {
+            this.props.dispatch({type: "TO_LOGIN"})
+            return(<></>);
+        }
     }
 }
 

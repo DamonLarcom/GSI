@@ -22,18 +22,24 @@ class Blocked extends React.Component {
     }
 
     render() {
-        return(
-            <Card style={{margin: "2em", padding: "2em"}}>
-                <Card.Title>Blocked Users</Card.Title>
-                <Card.Body>
-                    {
-                        this.state.blocked.map(blockeduser => {
-                            return(<BlockedUser key={blockeduser._id} userToBlockId={blockeduser._id} username={blockeduser.username}/>);
-                        })
-                    }
-                </Card.Body>
-            </Card>
-        );
+        if(this.props.user) {
+            return(
+                <Card style={{margin: "2em", padding: "2em"}}>
+                    <Card.Title>Blocked Users</Card.Title>
+                    <Card.Body>
+                        {
+                            this.state.blocked.map(blockeduser => {
+                                return(<BlockedUser key={blockeduser._id} userToBlockId={blockeduser._id} username={blockeduser.username}/>);
+                            })
+                        }
+                    </Card.Body>
+                </Card>
+            );
+        }
+        else {
+            this.props.dispatch({type: "TO_LOGIN"})
+            return(<></>);
+        }
     }
 }
 

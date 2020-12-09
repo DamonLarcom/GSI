@@ -47,42 +47,48 @@ class PostForm extends React.Component {
     }
 
     render() {
-        return (
-            <div style={{ padding: "5%" }}>
-                {!this.props.edit ?
-                    <Card style={{ padding: "2%" }}>
-                        <Card.Title>
-                            <h1>Create a Post</h1>
-                        </Card.Title>
-                        <Card.Body>
-                            <Form>
-                                <Form.Group controlId="text">
-                                    <Form.Label>Post</Form.Label>
-                                    <Form.Control as="textarea" placeholder="Share your thoughts..." value={this.state.text} onChange={this.handleChange}></Form.Control>
-                                </Form.Group>
-                                <Form.Group>
-                                    <Form.Control as={Button} variant="primary" type="submit" onClick={this.createPost}>Create Post</Form.Control>
-                                </Form.Group>
-                            </Form>
-                        </Card.Body>
-                    </Card>
-                    :
-                    <Card style={{ padding: "2%" }}>
-                        <Card.Title>
-                            <h1>Edit Post</h1>
-                        </Card.Title>
-                        <Card.Body>
-                                <Form.Group>
-                                    <Form.Label>Post</Form.Label>
-                                    <Form.Control as="textarea" defaultValue={this.state.text} onChange={this.handleChange} placeholder="Edit your thoughts..."></Form.Control>
-                                </Form.Group>
-                                <Form.Group>
-                                    <Form.Control as={Button} variant="primary" type="submit" onClick={this.updatePost}>Update Post</Form.Control>
-                                </Form.Group>
-                        </Card.Body>
-                    </Card>}
-            </div>
-        );
+        if(this.props.user) {
+            return (
+                <div style={{ padding: "5%" }}>
+                    {!this.props.edit ?
+                        <Card style={{ padding: "2%" }}>
+                            <Card.Title>
+                                <h1>Create a Post</h1>
+                            </Card.Title>
+                            <Card.Body>
+                                <Form>
+                                    <Form.Group controlId="text">
+                                        <Form.Label>Post</Form.Label>
+                                        <Form.Control as="textarea" placeholder="Share your thoughts..." value={this.state.text} onChange={this.handleChange}></Form.Control>
+                                    </Form.Group>
+                                    <Form.Group>
+                                        <Form.Control as={Button} variant="primary" type="submit" onClick={this.createPost}>Create Post</Form.Control>
+                                    </Form.Group>
+                                </Form>
+                            </Card.Body>
+                        </Card>
+                        :
+                        <Card style={{ padding: "2%" }}>
+                            <Card.Title>
+                                <h1>Edit Post</h1>
+                            </Card.Title>
+                            <Card.Body>
+                                    <Form.Group>
+                                        <Form.Label>Post</Form.Label>
+                                        <Form.Control as="textarea" defaultValue={this.state.text} onChange={this.handleChange} placeholder="Edit your thoughts..."></Form.Control>
+                                    </Form.Group>
+                                    <Form.Group>
+                                        <Form.Control as={Button} variant="primary" type="submit" onClick={this.updatePost}>Update Post</Form.Control>
+                                    </Form.Group>
+                            </Card.Body>
+                        </Card>}
+                </div>
+            );
+        }
+        else {
+            this.props.dispatch({type: "TO_LOGIN"})
+            return(<></>);
+        }
     }
 }
 

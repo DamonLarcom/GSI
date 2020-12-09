@@ -20,6 +20,8 @@ const reducer = (state = defaultState, action) => {
             let newState = {...state};
             delete newState.user;
             return(newState);
+        case "TO_LOGIN":
+            window.location = `/#/login`;
     }
 }
 
