@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { Button, Modal, Nav, Form } from "react-bootstrap";
+import { Button, Modal, Nav, Form, Alert } from "react-bootstrap";
 import axios from "axios";
 
 class SignUp extends React.Component {
@@ -12,20 +12,36 @@ class SignUp extends React.Component {
             input: {
                 username: '',
                 password: ''
-            }
+            },
+            alertText: ""
         }
 
         this.handleSignup = this.handleSignup.bind(this);
+        this.showAlertInfo = this.showAlertInfo.bind(this);
     }
 
     validateSignUpPassword(pass) {
-        let regex = /^[1-z]{8,}$/g
+        let regex = /^[1-z]{8,}$/
         return regex.test(pass);
+    }
+
+    showAlertInfo() {
+        let regex = /^[1-z]{8,}$/;
+        if(this.state.input.password.length < 8) {
+            this.setState({...this.state, alertText: "Password too short"});
+        }
+        else if(!regex.test(this.state.input.password)) {
+            this.setState({...this.state, alertText: "Non-alphanumeric password."});
+        } else {
+            this.setState({...this.state, alertText: ""});
+            return true;
+        }
+        return false;
     }
 
     async handleSignup() {
         try {
-            if(this.validateSignUpPassword(this.state.input.password)) {
+            if(this.showAlertInfo() && this.validateSignUpPassword(this.state.input.password)) {
                 const data = await (await axios.post(`${process.env.BACKEND_URL}/signup`, {...this.state.input})).data;
                 this.props.dispatch({type: 'STORE_USER', data: { User: data }});
                 this.setState({ show: false });
@@ -35,6 +51,7 @@ class SignUp extends React.Component {
             }
         } catch (error) {
             console.log("Sign Up error", error);
+            this.setState({...this.state, alertText: "Username taken or invalid"});
             this.setState({ show: true})
         }
     }
@@ -51,6 +68,7 @@ class SignUp extends React.Component {
                         <Modal.Title>Sign Up</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
+                        { this.state.alertText != "" ? <Alert variant="danger">{this.state.alertText}</Alert>:null}
                         <Form>
                             <Form.Group controlId="formBasicEmail">
                                 <Form.Label>Username</Form.Label>
@@ -59,7 +77,7 @@ class SignUp extends React.Component {
 
                             <Form.Group controlId="formBasicPassword">
                                 <Form.Label>Password(Alphanumeric & 8 characters minimum)</Form.Label>
-                                <Form.Control type="password" minLength={8} placeholder="Password" onChange={e => {this.setState({input: {...this.state.input, password: e.target.value}})}}/>
+                                <Form.Control type="password" minLength={8} placeholder="Password" onChange={e => {this.setState({input: {...this.state.input, password: e.target.value}});}}/>
                             </Form.Group>
                         </Form>
                     </Modal.Body>

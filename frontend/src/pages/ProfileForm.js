@@ -1,6 +1,6 @@
 import axios from "axios";
 import React from "react";
-import { Accordion, Button, Card, Form, Modal } from "react-bootstrap";
+import { Accordion, Button, Card, Form, Modal, Alert } from "react-bootstrap";
 import { connect } from "react-redux";
 
 class ProfileForm extends React.Component {
@@ -21,11 +21,27 @@ class ProfileForm extends React.Component {
                 passwordChange: "",
                 oldPasswordChange: ""
             },
-            showEditUser: false
+            showEditUser: false,
+            alertText: ""
         }
 
         this.submitEdit = this.submitEdit.bind(this);
         this.handleEditUser = this.handleEditUser.bind(this);
+        this.showAlertInfo = this.showAlertInfo.bind(this);
+    }
+
+    showAlertInfo() {
+        let regex = /^[1-z]{8,}$/;
+        if(this.state.input.passwordChange.length < 8) {
+            this.setState({...this.state, alertText: "Password too short"});
+        }
+        else if(!regex.test(this.state.input.passwordChange)) {
+            this.setState({...this.state, alertText: "Non-alphanumeric password."});
+        } else {
+            this.setState({...this.state, alertText: ""});
+            return true;
+        }
+        return false;
     }
 
     validateSignUpPassword(pass) {
@@ -43,7 +59,8 @@ class ProfileForm extends React.Component {
 
     async handleEditUser() {
         let hasError = false;
-        if(this.state.input.passwordChange != "" && this.validateSignUpPassword(this.state.input.passwordChange)) {
+        debugger;
+        if(this.showAlertInfo() && this.state.input.passwordChange != "" && this.validateSignUpPassword(this.state.input.passwordChange)) {
             const resP = await axios.put(`${process.env.BACKEND_URL}/user/updatePass`, {
                 newPassword: this.state.input.passwordChange,
                 oldPassword: this.state.input.oldPasswordChange
@@ -51,7 +68,7 @@ class ProfileForm extends React.Component {
                 if(res.data && res.status !== 401) {
                     this.props.dispatch({ type: 'STORE_USER', data: { User: { ...res.data } } });
                 } else if(res.status === 401) {
-                    console.error("That password is incorrect");
+                    this.setState({...this.state, alertText: "Password Incorrect"});
                 }
             });
         } else {
@@ -65,7 +82,7 @@ class ProfileForm extends React.Component {
                 if(res.data && res.status !== 400) {
                     this.props.dispatch({ type: 'STORE_USER', data: { User: { ...res.data } } });
                 }else if(res.status === 400) {
-                    console.error("That username is taken");
+                    this.setState({...this.state, alertText: "That username is taken."});
                 }
             });
         }
@@ -75,7 +92,6 @@ class ProfileForm extends React.Component {
     }
 
     render() {
-        console.log(this);
         return (
             <>
                 {this.props.match.params.userId === this.props?.user?._id ? (
@@ -121,6 +137,7 @@ class ProfileForm extends React.Component {
                                     <Accordion.Collapse eventKey="0">
                                         <>
                                             <Form>
+                                            { this.state.alertText != "" ? <Alert variant="danger">{this.state.alertText}</Alert>:null}
                                                 <Form.Group controlId="formBasicEmail">
                                                     <Form.Label>Username</Form.Label>
                                                     <Form.Control type="text" placeholder="Enter username" defaultValue={this.state.input.usernameChange} onChange={e => { this.setState({ input: { ...this.state.input, usernameChange: e.target.value } }) }} />
