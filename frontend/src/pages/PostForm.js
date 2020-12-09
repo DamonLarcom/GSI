@@ -47,7 +47,7 @@ class PostForm extends React.Component {
     }
 
     render() {
-        if(this.props.user) {
+        // if(this.props.user) {
             return (
                 <div style={{ padding: "5%" }}>
                     {!this.props.edit ?
@@ -84,11 +84,11 @@ class PostForm extends React.Component {
                         </Card>}
                 </div>
             );
-        }
-        else {
-            this.props.dispatch({type: "TO_LOGIN"})
-            return(<></>);
-        }
+        // }
+        // else {
+        //     this.props.dispatch({type: "TO_LOGIN"})
+        //     return(<></>);
+        // }
     }
 }
 

@@ -22,7 +22,7 @@ class Home extends React.Component {
     }
 
     render() {
-        if(this.props.user) {
+        // if(this.props.user) {
             return(
                 <div className="home posts-wrapper">
                     {this.state.posts.map(post => {
@@ -30,11 +30,11 @@ class Home extends React.Component {
                     })}
                 </div>
             );
-        }
-        else {
-            this.props.dispatch({type: "TO_LOGIN"})
-            return(<></>);
-        }
+        // }
+        // else {
+        //     this.props.dispatch({type: "TO_LOGIN"})
+        //     return(<></>);
+        // }
     }
 }
 

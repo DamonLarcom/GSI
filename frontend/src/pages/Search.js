@@ -39,7 +39,7 @@ class Search extends React.Component {
     }
 
     render() {
-        if(this.props.user) {
+        // if(this.props.user) {
             return (
                 <Form style={{ margin: "5%" }}>
                     <InputGroup>
@@ -64,11 +64,11 @@ class Search extends React.Component {
                     </ul>
                 </Form>
             );
-        }
-        else {
-            this.props.dispatch({type: "TO_LOGIN"})
-            return(<></>);
-        }
+        // }
+        // else {
+        //     this.props.dispatch({type: "TO_LOGIN"})
+        //     return(<></>);
+        // }
     }
 }
 

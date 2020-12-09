@@ -14,7 +14,7 @@ class Following extends React.Component {
 
         this.retrieveFollowedBy = this.retrieveFollowedBy.bind(this);
         this.retrieveFollowing = this.retrieveFollowing.bind(this);
-        
+
         if (this.props.followers) {
             this.retrieveFollowedBy();
         } else {
@@ -38,7 +38,7 @@ class Following extends React.Component {
     }
 
     render() {
-        if(this.props.user) {
+        // if(this.props.user) {
             return (
                 <Card style={{ margin: "2em", padding: "2em" }}>
                     <Card.Title>{this.props.followers ? "Followers" : "Following"}</Card.Title>
@@ -56,11 +56,11 @@ class Following extends React.Component {
                     </Card.Body>
                 </Card>
             );
-        }
-        else {
-            this.props.dispatch({type: "TO_LOGIN"})
-            return(<></>);
-        }
+        // }
+        // else {
+        //     this.props.dispatch({type: "TO_LOGIN"})
+        //     return(<></>);
+        // }
     }
 }
 

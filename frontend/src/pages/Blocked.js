@@ -22,7 +22,7 @@ class Blocked extends React.Component {
     }
 
     render() {
-        if(this.props.user) {
+        // if(this.props.user) {
             return(
                 <Card style={{margin: "2em", padding: "2em"}}>
                     <Card.Title>Blocked Users</Card.Title>
@@ -35,11 +35,11 @@ class Blocked extends React.Component {
                     </Card.Body>
                 </Card>
             );
-        }
-        else {
-            this.props.dispatch({type: "TO_LOGIN"})
-            return(<></>);
-        }
+        // }
+        // else {
+        //     this.props.dispatch({type: "TO_LOGIN"})
+        //     return(<></>);
+        // }
     }
 }
 

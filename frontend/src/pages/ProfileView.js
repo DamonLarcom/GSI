@@ -7,13 +7,13 @@ class ProfileView extends React.Component {
         super(props);
     }
     render() {
-        if(this.props.user) {
+        // if(this.props.user) {
             return(<Profile {...this.props}/>);
-        }
-        else {
-            this.props.dispatch({type: "TO_LOGIN"})
-            return(<></>);
-        }
+        // }
+        // else {
+        //     this.props.dispatch({type: "TO_LOGIN"})
+        //     return(<></>);
+        // }
     }
 }
 export default connect(state=>({ ...state }))(ProfileView);

@@ -111,7 +111,7 @@ class Profile extends React.Component {
     }
 
     render() {
-        if(this.props.user) {
+        // if(this.props.user) {
             return (
                 !this.props?.user?.profile?.blockedBy?.includes(this.props.match.params.userId) ? (<>
                     <Modal show={this.state.showDelete} onHide={() => { this.setState({ showDelete: false }) }} centered>
@@ -171,11 +171,11 @@ class Profile extends React.Component {
                     </Card>
                 </>) : <p>Looks like you've been blocked.</p>
             );
-        }
-        else {
-            this.props.dispatch({type: "TO_LOGIN"})
-            return(<></>);
-        }
+        // }
+        // else {
+        //     this.props.dispatch({type: "TO_LOGIN"})
+        //     return(<></>);
+        // }
     }
 }
 

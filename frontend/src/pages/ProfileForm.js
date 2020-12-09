@@ -104,7 +104,7 @@ class ProfileForm extends React.Component {
     }
 
     render() {
-        if(this.props.user) {
+        // if(this.props.user) {
             return (
                 <>
                     {this.props.match.params.userId === this.props?.user?._id ? (
@@ -191,11 +191,11 @@ class ProfileForm extends React.Component {
                     }
                 </>
             );
-        }
-        else {
-            this.props.dispatch({type: "TO_LOGIN"})
-            return(<></>);
-        }
+        // }
+        // else {
+        //     this.props.dispatch({type: "TO_LOGIN"})
+        //     return(<></>);
+        // }
     }
 }
 
