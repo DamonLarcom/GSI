@@ -21,10 +21,10 @@ module.exports = () => {
 				else {
 					userToBlock.profile.blockedBy.push(currentUser._id);
 					if(userToBlock.profile.followedBy.indexOf(currentUser._id) > -1) {
-						userToBlock.profile.followedBy.splice(userToBlock.profile.followedBy.indexOf(currentUser._id));
+						userToBlock.profile.followedBy.splice(userToBlock.profile.followedBy.indexOf(currentUser._id), 1);
 					}
 					if(userToBlock.profile.followedUsers.indexOf(currentUser._id) > -1) {
-						userToBlock.profile.followedUsers.splice(userToBlock.profile.followedUsers.indexOf(currentUser._id));
+						userToBlock.profile.followedUsers.splice(userToBlock.profile.followedUsers.indexOf(currentUser._id), 1);
 					}
 				}
 				userToBlock.save((err, utb) => {
@@ -37,10 +37,10 @@ module.exports = () => {
 				else {
 					currentUser.profile.blockedUsers.push(userToBlock._id);
 					if(currentUser.profile.followedBy.indexOf(userToBlock._id) > -1) {
-						currentUser.profile.followedBy.splice(currentUser.profile.followedBy.indexOf(userToBlock._id));
+						currentUser.profile.followedBy.splice(currentUser.profile.followedBy.indexOf(userToBlock._id), 1);
 					}
 					if(currentUser.profile.followedUsers.indexOf(userToBlock._id) > -1) {
-						currentUser.profile.followedUsers.splice(currentUser.profile.followedUsers.indexOf(userToBlock._id));
+						currentUser.profile.followedUsers.splice(currentUser.profile.followedUsers.indexOf(userToBlock._id), 1);
 					}
 				}
 				currentUser.save((err, cu) => {
@@ -128,9 +128,8 @@ module.exports = () => {
 						if(err) console.error(err);
 						if(req.body.username != "") {
 							userChange.username = req.body.username;
-						}
-						userChange.save((err, savedUser) => {
-							if(err) console.error(err)
+							userChange.save((err, savedUser) => {
+								if(err) console.error(err)
 								Post.find({user: savedUser._id}, (err, posts) => {
 									for(thePost of posts) {
 										thePost.username = savedUser.username;
@@ -139,9 +138,22 @@ module.exports = () => {
 										})
 									}
 								})
-								res.json(savedUser);
-						});
+								Post.find({"comments.commentAuthorUsername": savedUser._id}, (err, posts) => {
+									for(thePost of posts) {
+										thePost.comments.commentAuthorUsername = savedUser.username;
+										thePost.save((err, savedPost) => {
+											if(err) console.error(err);
+										})
+									}
+								})
+							});
+						}
 					});
+					User.findById(req.user._id, (err, userFound) => {
+						if(err) console.error(err);
+						res.json(userFound);
+					});
+
 				}
 			})
 		// get user details from form and log them in, direct them to home page 

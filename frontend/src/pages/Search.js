@@ -2,6 +2,7 @@
 import React from "react";
 import axios from "axios";
 import Post from "../components/Post";
+import { connect } from "react-redux";
 
 import { Button, Form, InputGroup, FormControl, ButtonGroup } from "react-bootstrap";
 
@@ -10,7 +11,7 @@ import { Button, Form, InputGroup, FormControl, ButtonGroup } from "react-bootst
  * @param {{ userid: String; }} props
  */
 
-export default class Search extends React.Component {
+class Search extends React.Component {
     constructor(props) {
         super(props)
         this.state = { value: '', results: [], currentUser: null };
@@ -26,7 +27,8 @@ export default class Search extends React.Component {
     async handleKeywordSubmit(e) {
         let searchParam = this.state?.value;
         const posts = await (await axios.put(`${process.env.BACKEND_URL}/search/keyword`, { searchText: this.state.value })).data;
-        const user = await (await axios.get(`${process.env.BACKEND_URL}/user/${this.props.userid}`)).data;
+        console.log(this.props.user);
+        const user = await (await axios.get(`${process.env.BACKEND_URL}/user/${this.props.user?._id}`)).data;
         this.setState({ ...this.state, results: posts, currentUser: user });
     }
 
@@ -49,11 +51,11 @@ export default class Search extends React.Component {
                 <ul>
                     {this.state.results.map((Object) => {
                         if (Object.hasOwnProperty('profile')) {
-                            if (!Object.profile.blockedBy.includes(this.props.userid) && !Object.profile.blockedUsers.includes(this.props.userid)) {
+                            if (!Object.profile.blockedBy.includes(this.props.user?._id) && !Object.profile.blockedUsers.includes(this.props.user?._id)) {
                                 return <li key={Object._id}><a href={`/#/profile/${Object._id}/view`}>{Object.username}</a></li>
                             }
                         } else {
-                            if (this.state.currentUser != null && !this.state.currentUser.user.blockedBy.includes(this.props.userid) && !this.state.currentUser.blockedUsers.includes(this.props.userid)) {
+                            if (this.state.currentUser != null && !this.state.currentUser.profile.blockedBy.includes(Object.user) && !this.state.currentUser.profile.blockedUsers.includes(Object.user)) {
                                 return (<Post text={Object.text} userId={Object.user} username={Object.username} postId={Object._id} key={Object._id} />);
                             }
                         }
@@ -63,3 +65,5 @@ export default class Search extends React.Component {
         );
     }
 }
+
+export default connect(state=>({ ...state }))(Search);
