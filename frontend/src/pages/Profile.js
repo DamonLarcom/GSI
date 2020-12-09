@@ -14,6 +14,7 @@ class Profile extends React.Component {
         this.handleFollow = this.handleFollow.bind(this);
         this.handleBlock = this.handleBlock.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleUnBlock = this.handleUnBlock.bind(this);
 
         this.state = {
             user: {
@@ -66,6 +67,12 @@ class Profile extends React.Component {
         }
     }
 
+    async handleUnBlock() {
+        const data = await axios.put(`${process.env.BACKEND_URL}/user/blockToggle/${this.props.match.params.userId}`)
+        this.props.dispatch({ type: 'STORE_USER', data: { User: { ...data } } });
+        window.location.reload();
+    }
+
     async handleBlock() {
         try {
             console.log(this.props)
@@ -105,7 +112,7 @@ class Profile extends React.Component {
 
     render() {
         return (
-            !this.props?.user?.profile?.blockedUsers?.includes(this.props.match.params.userId) ? (<>
+            !this.props?.user?.profile?.blockedBy?.includes(this.props.match.params.userId) ? (<>
                 <Modal show={this.state.showDelete} onHide={() => { this.setState({ showDelete: false }) }} centered>
                     <Modal.Header closeButton>
                         <Modal.Title>Delete Profile</Modal.Title>
