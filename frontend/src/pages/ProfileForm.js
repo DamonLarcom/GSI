@@ -31,7 +31,7 @@ class ProfileForm extends React.Component {
     }
 
     showAlertInfo() {
-        let regex = /^[1-z]{8,}$/;
+        let regex = /^[0-z]{8,}$/;
         if(this.state.input.passwordChange.length < 8) {
             this.setState({...this.state, alertText: "Password too short"});
         }
@@ -45,7 +45,7 @@ class ProfileForm extends React.Component {
     }
 
     validateSignUpPassword(pass) {
-        let regex = /^[1-z]{8,}$/g
+        let regex = /^[0-z]{8,}$/g
         return regex.test(pass);
     }
 
@@ -144,7 +144,7 @@ class ProfileForm extends React.Component {
                                 <Accordion>
                                     <Card style={{ padding: "1.25rem" }}>
                                         <Accordion.Toggle as={Button} variant="link" eventKey="0">
-                                            Edit Username & Password
+                                            Edit Username
                                         </Accordion.Toggle>
                                         <Accordion.Collapse eventKey="0">
                                             <>
@@ -154,7 +154,21 @@ class ProfileForm extends React.Component {
                                                         <Form.Label>Username</Form.Label>
                                                         <Form.Control type="text" placeholder="Enter username" defaultValue={this.state.input.usernameChange} onChange={e => { this.setState({ input: { ...this.state.input, usernameChange: e.target.value } }) }} />
                                                     </Form.Group>
-
+                                                </Form>
+                                                <Button variant="info" onClick={this.handleEditUser}>Edit Username</Button>
+                                            </>
+                                        </Accordion.Collapse>
+                                    </Card>
+                                </Accordion>
+                                <Accordion>
+                                    <Card style={{ padding: "1.25rem" }}>
+                                        <Accordion.Toggle as={Button} variant="link" eventKey="0">
+                                            Edit Password
+                                        </Accordion.Toggle>
+                                        <Accordion.Collapse eventKey="0">
+                                            <>
+                                                <Form>
+                                                { this.state.alertText != "" ? <Alert variant="danger">{this.state.alertText}</Alert>:null}
                                                     <Form.Group controlId="formBasicPassword">
                                                         <Form.Label>Old Password</Form.Label>
                                                         <Form.Control type="password" placeholder="Password" onChange={e => { this.setState({ input: { ...this.state.input, oldPasswordChange: e.target.value } }) }} />
@@ -165,7 +179,7 @@ class ProfileForm extends React.Component {
                                                         <Form.Control type="password" placeholder="Password" onChange={e => { this.setState({ input: { ...this.state.input, passwordChange: e.target.value } }) }} />
                                                     </Form.Group>
                                                 </Form>
-                                                <Button variant="info" onClick={this.handleEditUser}>Edit Username & Password</Button>
+                                                <Button variant="info" onClick={this.handleEditUser}>Edit Password</Button>
                                             </>
                                         </Accordion.Collapse>
                                     </Card>
