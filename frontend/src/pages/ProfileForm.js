@@ -87,7 +87,6 @@ class ProfileForm extends React.Component {
         }
         
         else if(this.showAlertInfo() && this.state.input.passwordChange != "" && this.validateSignUpPassword(this.state.input.passwordChange)) {
-            debugger;
             try {
                 const resP = await axios.put(`${process.env.BACKEND_URL}/user/updatePass`, {
                     newPassword: this.state.input.passwordChange,
