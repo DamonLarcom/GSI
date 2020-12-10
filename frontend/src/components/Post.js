@@ -26,6 +26,14 @@ class Post extends React.Component {
                 this.setState({ ...post });
             });
         }
+
+        axios.get(`${process.env.BACKEND_URL}/`).then(res => {
+            if (res.data) {
+                this.props.dispatch({ type: 'STORE_USER', data: { User: { ...res.data } } });
+            } else {
+                this.props.dispatch({type: "TO_LOGIN"})
+            }
+        })
     }
 
     async deletePost() {
@@ -56,59 +64,53 @@ class Post extends React.Component {
     }
 
     render() {
-        if(this.props.user) {
-            return (
-                <Card>
-                    <Card.Body>
-                        <Card.Title>Posted by <NavLink to={`/profile/${this.state.user || this.props.userId}/view`}>{this.props.username || this.state.username}</NavLink></Card.Title>
-                        <Card.Text>Likes {this.props.likeCount | this.state.likeCount}</Card.Text>
-                        <Card.Text>{this.props.text || this.state.text}</Card.Text>
-                        {this.props?.details ? (
-                            <>
-                                <Accordion>
-                                    <Card>
-                                        <Card.Header>
-                                            <Accordion.Toggle as={Button} variant="link" eventKey="0">
-                                                Comments
-                                            </Accordion.Toggle>
-                                        </Card.Header>
-                                        <Accordion.Collapse eventKey="0">
-                                            <>
-                                                {this.state?.comments?.map(comment => {
-                                                    return (<Comment key={comment._id} username={comment.commentAuthorUsername} userId={comment.commentAuthor} commentId={comment._id} text={comment.commentText} onDelete={this.deleteComment} />);
-                                                })}
-                                                {this.props?.user?._id ? (
-                                                    <Card>
-                                                        <Card.Body>
-                                                            <Card.Title>Create Comment</Card.Title>
-                                                            <Form>
-                                                                <FormControl as="textarea" placeholder="Comment" onChange={(e) => { this.setState({ ...this.state, commentInput: e.target.value }) }} />
-                                                                <Button onClick={this.postComment} style={{ marginTop: "2%" }}>Post Comment</Button>
-                                                            </Form>
-                                                        </Card.Body>
-                                                    </Card>
-                                                ) : null}
-                                            </>
-                                        </Accordion.Collapse>
-                                    </Card>
-                                </Accordion>
-                                {(this.props?.user?._id == this.state.user) && this.props.user ? (
-                                    <ButtonGroup>
-                                        <Button variant="primary" as={NavLink} to={`/post/comment/${this.state._id}/edit`}>Edit</Button>
-                                        <Button variant="danger" onClick={this.deletePost}>Delete</Button>
-                                    </ButtonGroup>
-                                ) : null}
-                            </>
-                        ) : null}
-                        {!this.props?.details ? <Button as={NavLink} to={`/post/${this.props.postId}`} variant="primary">Read More</Button> : this.props.user ? (<Button onClick={this.likePost}>{!this.props.user.likedPosts.includes(this.props.postId || this.state._id) ? "Like" : "Unlike"}</Button>):null}
-                    </Card.Body>
-                </Card>
-            );
-        }
-        else {
-            this.props.dispatch({type: "TO_LOGIN"})
-            return(<></>);
-        }
+        return (
+            <Card>
+                <Card.Body>
+                    <Card.Title>Posted by <NavLink to={`/profile/${this.state.user || this.props.userId}/view`}>{this.props.username || this.state.username}</NavLink></Card.Title>
+                    <Card.Text>Likes {this.props.likeCount | this.state.likeCount}</Card.Text>
+                    <Card.Text>{this.props.text || this.state.text}</Card.Text>
+                    {this.props?.details ? (
+                        <>
+                            <Accordion>
+                                <Card>
+                                    <Card.Header>
+                                        <Accordion.Toggle as={Button} variant="link" eventKey="0">
+                                            Comments
+                                        </Accordion.Toggle>
+                                    </Card.Header>
+                                    <Accordion.Collapse eventKey="0">
+                                        <>
+                                            {this.state?.comments?.map(comment => {
+                                                return (<Comment key={comment._id} username={comment.commentAuthorUsername} userId={comment.commentAuthor} commentId={comment._id} text={comment.commentText} onDelete={this.deleteComment} />);
+                                            })}
+                                            {this.props?.user?._id ? (
+                                                <Card>
+                                                    <Card.Body>
+                                                        <Card.Title>Create Comment</Card.Title>
+                                                        <Form>
+                                                            <FormControl as="textarea" placeholder="Comment" onChange={(e) => { this.setState({ ...this.state, commentInput: e.target.value }) }} />
+                                                            <Button onClick={this.postComment} style={{ marginTop: "2%" }}>Post Comment</Button>
+                                                        </Form>
+                                                    </Card.Body>
+                                                </Card>
+                                            ) : null}
+                                        </>
+                                    </Accordion.Collapse>
+                                </Card>
+                            </Accordion>
+                            {(this.props?.user?._id == this.state.user) && this.props.user ? (
+                                <ButtonGroup>
+                                    <Button variant="primary" as={NavLink} to={`/post/comment/${this.state._id}/edit`}>Edit</Button>
+                                    <Button variant="danger" onClick={this.deletePost}>Delete</Button>
+                                </ButtonGroup>
+                            ) : null}
+                        </>
+                    ) : null}
+                    {!this.props?.details ? <Button as={NavLink} to={`/post/${this.props.postId}`} variant="primary">Read More</Button> : this.props.user ? (<Button onClick={this.likePost}>{!this.props.user.likedPosts.includes(this.props.postId || this.state._id) ? "Like" : "Unlike"}</Button>):null}
+                </Card.Body>
+            </Card>
+        );
     }
 }
 

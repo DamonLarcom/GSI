@@ -5,6 +5,7 @@ import { Button, Card} from "react-bootstrap";
 import { connect } from "react-redux";
 
 
+
 class Following extends React.Component {
     constructor(props) {
         super(props)
@@ -20,6 +21,14 @@ class Following extends React.Component {
         } else {
             this.retrieveFollowing();
         }
+
+        axios.get(`${process.env.BACKEND_URL}/`).then(res => {
+            if (res.data) {
+                this.props.dispatch({ type: 'STORE_USER', data: { User: { ...res.data } } });
+            } else {
+                this.props.dispatch({type: "TO_LOGIN"})
+            }
+        })
     }
 
     async retrieveFollowing() {
@@ -38,29 +47,23 @@ class Following extends React.Component {
     }
 
     render() {
-        // if(this.props.user) {
-            return (
-                <Card style={{ margin: "2em", padding: "2em" }}>
-                    <Card.Title>{this.props.followers ? "Followers" : "Following"}</Card.Title>
-                    <Card.Body>
-                        {
-                            this.state.followed.map(followuser => {
-                                return (
-                                    this.props.followers ?
-                                        <FollowedUser key={followuser._id} userId={followuser._id} username={followuser.username} follower showUnfollow={this.props.user?.profile.followedUsers.indexOf(followuser._id) > -1}/>
-                                        :
-                                        <FollowedUser key={followuser._id} userId={followuser._id} username={followuser.username} showUnfollow={this.props.user?.profile.followedUsers.indexOf(followuser._id) > -1}/>
-                                )
-                            })
-                        }
-                    </Card.Body>
-                </Card>
-            );
-        // }
-        // else {
-        //     this.props.dispatch({type: "TO_LOGIN"})
-        //     return(<></>);
-        // }
+        return (
+            <Card style={{ margin: "2em", padding: "2em" }}>
+                <Card.Title>{this.props.followers ? "Followers" : "Following"}</Card.Title>
+                <Card.Body>
+                    {
+                        this.state.followed.map(followuser => {
+                            return (
+                                this.props.followers ?
+                                    <FollowedUser key={followuser._id} userId={followuser._id} username={followuser.username} follower showUnfollow={this.props.user?.profile.followedUsers.indexOf(followuser._id) > -1}/>
+                                    :
+                                    <FollowedUser key={followuser._id} userId={followuser._id} username={followuser.username} showUnfollow={this.props.user?.profile.followedUsers.indexOf(followuser._id) > -1}/>
+                            )
+                        })
+                    }
+                </Card.Body>
+            </Card>
+        );
     }
 }
 

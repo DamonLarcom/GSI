@@ -10,6 +10,14 @@ class Home extends React.Component {
             posts: []
         }
         this.retrivePosts();
+
+        axios.get(`${process.env.BACKEND_URL}/`).then(res => {
+            if (res.data) {
+                this.props.dispatch({ type: 'STORE_USER', data: { User: { ...res.data } } });
+            } else {
+                this.props.dispatch({type: "TO_LOGIN"})
+            }
+        })
     }
 
     async retrivePosts() {
@@ -22,19 +30,13 @@ class Home extends React.Component {
     }
 
     render() {
-        // if(this.props.user) {
-            return(
-                <div className="home posts-wrapper">
-                    {this.state.posts.map(post => {
-                        return(<Post {...post} text={post.text} userId={post.user} username={post.username} postId={post._id} key={post._id} />);
-                    })}
-                </div>
-            );
-        // }
-        // else {
-        //     this.props.dispatch({type: "TO_LOGIN"})
-        //     return(<></>);
-        // }
+        return(
+            <div className="home posts-wrapper">
+                {this.state.posts.map(post => {
+                    return(<Post {...post} text={post.text} userId={post.user} username={post.username} postId={post._id} key={post._id} />);
+                })}
+            </div>
+        );
     }
 }
 

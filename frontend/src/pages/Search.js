@@ -18,6 +18,14 @@ class Search extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleUserSubmit = this.handleUserSubmit.bind(this);
         this.handleKeywordSubmit = this.handleKeywordSubmit.bind(this);
+
+        axios.get(`${process.env.BACKEND_URL}/`).then(res => {
+            if (res.data) {
+                this.props.dispatch({ type: 'STORE_USER', data: { User: { ...res.data } } });
+            } else {
+                this.props.dispatch({type: "TO_LOGIN"})
+            }
+        })
     }
 
     handleChange(e) {
@@ -39,36 +47,30 @@ class Search extends React.Component {
     }
 
     render() {
-        // if(this.props.user) {
-            return (
-                <Form style={{ margin: "5%" }}>
-                    <InputGroup>
-                        <FormControl type="text" placeholder="Search" onChange={this.handleChange} />
-                        <InputGroup.Append>
-                            <Button onClick={this.handleUserSubmit}>Search For Users</Button>
-                            <Button onClick={this.handleKeywordSubmit}>Search For Posts</Button>
-                        </InputGroup.Append>
-                    </InputGroup>
-                    <ul>
-                        {this.state.results.map((Object) => {
-                            if (Object.hasOwnProperty('profile')) {
-                                if (!Object.profile.blockedBy.includes(this.props.user?._id) && !Object.profile.blockedUsers.includes(this.props.user?._id)) {
-                                    return <li key={Object._id}><a href={`/#/profile/${Object._id}/view`}>{Object.username}</a></li>
-                                }
-                            } else {
-                                if (this.state.currentUser != null && !this.state.currentUser.profile.blockedBy.includes(Object.user) && !this.state.currentUser.profile.blockedUsers.includes(Object.user)) {
-                                    return (<Post text={Object.text} userId={Object.user} username={Object.username} postId={Object._id} key={Object._id} />);
-                                }
+        return (
+            <Form style={{ margin: "5%" }}>
+                <InputGroup>
+                    <FormControl type="text" placeholder="Search" onChange={this.handleChange} />
+                    <InputGroup.Append>
+                        <Button onClick={this.handleUserSubmit}>Search For Users</Button>
+                        <Button onClick={this.handleKeywordSubmit}>Search For Posts</Button>
+                    </InputGroup.Append>
+                </InputGroup>
+                <ul>
+                    {this.state.results.map((Object) => {
+                        if (Object.hasOwnProperty('profile')) {
+                            if (!Object.profile.blockedBy.includes(this.props.user?._id) && !Object.profile.blockedUsers.includes(this.props.user?._id)) {
+                                return <li key={Object._id}><a href={`/#/profile/${Object._id}/view`}>{Object.username}</a></li>
                             }
-                        })}
-                    </ul>
-                </Form>
-            );
-        // }
-        // else {
-        //     this.props.dispatch({type: "TO_LOGIN"})
-        //     return(<></>);
-        // }
+                        } else {
+                            if (this.state.currentUser != null && !this.state.currentUser.profile.blockedBy.includes(Object.user) && !this.state.currentUser.profile.blockedUsers.includes(Object.user)) {
+                                return (<Post text={Object.text} userId={Object.user} username={Object.username} postId={Object._id} key={Object._id} />);
+                            }
+                        }
+                    })}
+                </ul>
+            </Form>
+        );
     }
 }
 
