@@ -2,6 +2,8 @@ import React from "react";
 import Post from "../components/Post";
 import axios from "axios";
 import { connect } from "react-redux";
+import { NavLink } from "react-router-dom";
+
 
 class Home extends React.Component {
     constructor(props) {
@@ -32,9 +34,13 @@ class Home extends React.Component {
     render() {
         return(
             <div className="home posts-wrapper">
-                {this.state.posts.map(post => {
-                    return(<Post {...post} text={post.text} userId={post.user} username={post.username} postId={post._id} key={post._id} />);
-                })}
+                {this.state.posts.length > 0 ?
+                    <>{this.state.posts.map(post => {
+                        return(<Post {...post} text={post.text} userId={post.user} username={post.username} postId={post._id} key={post._id} />);
+                    })}</>
+                :
+                    <p>Follow some people to get started!<br/> Just head over to the <a style={{color:"blue"}} href="/#/search">search</a> tab to begin!</p>
+                }
             </div>
         );
     }
