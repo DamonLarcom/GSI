@@ -143,9 +143,9 @@ class Profile extends React.Component {
                 <Card style={{margin: "2em", padding: "2em"}}>
                     <Card.Title>{this.state.user.username} {this.state.user.name ? "(" + this.state.user.name + ")": null }</Card.Title>
                         <Card.Body>
-                            {this.props.user?.email ? <Card.Text>Email: {this.state.user.email}</Card.Text>:null}
-                            {this.props.user?.phoneNum ? <Card.Text>Phone: {this.state.user.phoneNum}</Card.Text>:null}
                             <Card.Text>{this.state.user.followedBy.length} <NavLink to={`/profile/${this.props.match.params.userId}/followedBy`}>Followers</NavLink> | {this.state.user.followedUsers.length} <NavLink to={`/profile/${this.props.match.params.userId}/followed`}>Following</NavLink></Card.Text>
+                            {this.props.user?.profile.email ? <Card.Text>Email: {this.state.user.email}</Card.Text>:null}
+                            {this.props.user?.profile.phoneNum ? <Card.Text>Phone: {this.state.user.phoneNum}</Card.Text>:null}
                             <Card.Text>{this.state.user.bio}</Card.Text>
                             {this.checkBlock() ? 
                                 <Button variant="danger" onClick={this.handleBlock}>Unblock</Button>
