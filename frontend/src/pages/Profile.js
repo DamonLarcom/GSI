@@ -101,6 +101,12 @@ class Profile extends React.Component {
         }
         return false;
     }
+    checkBlock() {
+        if(this.props.user?.profile?.blockedUsers.includes(this.props.match.params.userId)) {
+            return true;
+        }
+        return false;
+    }
 
     getPosts() {
         let collection = [];
@@ -141,39 +147,43 @@ class Profile extends React.Component {
                             {this.props.user?.phoneNum ? <Card.Text>Phone: {this.state.user.phoneNum}</Card.Text>:null}
                             <Card.Text>{this.state.user.followedBy.length} <NavLink to={`/profile/${this.props.match.params.userId}/followedBy`}>Followers</NavLink> | {this.state.user.followedUsers.length} <NavLink to={`/profile/${this.props.match.params.userId}/followed`}>Following</NavLink></Card.Text>
                             <Card.Text>{this.state.user.bio}</Card.Text>
-                            <ButtonGroup>
-                                {this.props?.user?._id == this.props.match.params.userId ?  (
-                                    <>
-                                        <Button variant="primary" as={NavLink} to={`/profile/${this.props.match.params.userId}/edit`}>Edit Profile</Button>
-                                        <Button variant="outline-danger" as={NavLink} to={`/profile/${this.props.match.params.userId}/blocked`}>Blocked Users</Button>
-                                        <Button variant="danger" onClick={() => { this.setState({ showDelete: true }) }}>Delete Profile</Button>
-                                    </>
-                                ): (
-                                    <>
-                                        <Button variant={this.checkFollow() ? "outline-primary":"primary"} onClick={this.handleFollow}>{this.checkFollow() ? "Unfollow" : "Follow"}</Button>
-                                        <Button variant="danger" onClick={this.handleBlock}>Block</Button>
-                                    </>
-                                )}    
-                            </ButtonGroup>
-                            
-                            <Accordion>
-                                <Card>
-                                    <Card.Header>
-                                        <Accordion.Toggle as={Button} variant="link" eventKey="0">
-                                            Posts
-                                        </Accordion.Toggle>
-                                    </Card.Header>
-                                    <Accordion.Collapse eventKey="0">
+                            {this.checkBlock() ? 
+                                <Button variant="danger" onClick={this.handleBlock}>Unblock</Button>
+                            :
+                                <><ButtonGroup>
+                                    {this.props?.user?._id == this.props.match.params.userId ?  (
                                         <>
-                                        {
-                                            this.state.user.posts.map(post => {
-                                                return(<Post key={post._id} username={post.username} userId={post.user} text={post.text} postId={post._id}/>);
-                                            })
-                                        }
+                                            <Button variant="primary" as={NavLink} to={`/profile/${this.props.match.params.userId}/edit`}>Edit Profile</Button>
+                                            <Button variant="outline-danger" as={NavLink} to={`/profile/${this.props.match.params.userId}/blocked`}>Blocked Users</Button>
+                                            <Button variant="danger" onClick={() => { this.setState({ showDelete: true }) }}>Delete Profile</Button>
                                         </>
-                                    </Accordion.Collapse>
-                                </Card>
-                            </Accordion>
+                                    ): (
+                                        <>
+                                            <Button variant={this.checkFollow() ? "outline-primary":"primary"} onClick={this.handleFollow}>{this.checkFollow() ? "Unfollow" : "Follow"}</Button>
+                                            <Button variant="danger" onClick={this.handleBlock}>Block</Button>
+                                        </>
+                                    )}    
+                                </ButtonGroup>
+                                
+                                <Accordion>
+                                    <Card>
+                                        <Card.Header>
+                                            <Accordion.Toggle as={Button} variant="link" eventKey="0">
+                                                Posts
+                                            </Accordion.Toggle>
+                                        </Card.Header>
+                                        <Accordion.Collapse eventKey="0">
+                                            <>
+                                            {
+                                                this.state.user.posts.map(post => {
+                                                    return(<Post key={post._id} username={post.username} userId={post.user} text={post.text} postId={post._id}/>);
+                                                })
+                                            }
+                                            </>
+                                        </Accordion.Collapse>
+                                    </Card>
+                                </Accordion></>  
+                            }
                         </Card.Body>
                 </Card>
             </>) : <p>Looks like you've been blocked.</p>
